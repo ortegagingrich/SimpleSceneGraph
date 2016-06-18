@@ -1,4 +1,5 @@
 *.o
 *.out
+*.bmp
 bin/exe
 *~

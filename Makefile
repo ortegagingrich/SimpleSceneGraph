@@ -1,5 +1,6 @@
 CC=g++
-CFLAGS=-Wall
+CFLAGS=-Wall -lSDL2
+LFLAGS=-lSDL2
 LINK=g++
 
 SRC_FOLDER=src/jvisu
@@ -10,7 +11,7 @@ EXE=$(BIN_FOLDER)/exe
 LIB_SOURCES=$(shell find $(SRC_FOLDER) -type f -iname '*.c' -o -iname '*.cpp')
 LIB_HEADERS=$(shell find $(SRC_FOLDER) -type f -iname '*.h')
 
-INTOBJECTS=$(subst $(SRC_FOLDER),$(BIN_FOLDER)/jvisu, $(SOURCES))
+INTOBJECTS=$(subst $(SRC_FOLDER),$(BIN_FOLDER)/jvisu, $(LIB_SOURCES))
 LIB_OBJECTS=$(subst .c,.o,$(subst .cpp,.o,$(INTOBJECTS)))
 
 EXE_OBJECTS=$(BIN_FOLDER)/main.o $(LIB_OBJECTS)
@@ -21,7 +22,7 @@ TEST_HEADERS=$(shell find $(TEST_FOLDER) -type f -iname '*.h')
 
 
 $(BIN_FOLDER)/jvisu/%.o : $(SRC_FOLDER)/%.c*
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(BIN_FOLDER)/test/%.o : $(TEST_FOLDER)/%.c*
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -32,7 +33,7 @@ $(BIN_FOLDER)/main.o: src/main.cpp
 
 
 $(EXE): $(EXE_OBJECTS) $(LIB_HEADERS)
-	$(LINK) $^ -o $@
+	$(LINK) $^ $(LFLAGS) -o $@
 
 .phony: exe
 exe: $(EXE)
