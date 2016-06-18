@@ -8,7 +8,7 @@
 int main(){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	tutorial_1();
+	tutorial_3();
 	
 	return 0;
 }

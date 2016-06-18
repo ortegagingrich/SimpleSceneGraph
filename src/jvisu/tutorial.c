@@ -41,3 +41,157 @@ int tutorial_1(){
 	
 	return 0;
 }
+
+
+/*
+ * Tutorial 2
+ */
+SDL_Window *gWindow = NULL;
+SDL_Surface *gScreenSurface = NULL;
+SDL_Surface *gImage = NULL;
+
+static bool init(){
+	
+	int status = SDL_Init(SDL_INIT_VIDEO);
+	if(status < 0) return false;
+	
+	gWindow = SDL_CreateWindow("jvisu", SDL_WINDOWPOS_UNDEFINED,
+	                     SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
+	                     SDL_WINDOW_SHOWN);
+	if(gWindow == NULL) return false;
+	
+	gScreenSurface = SDL_GetWindowSurface(gWindow);
+	
+	return true;
+}
+
+static bool loadMedia(){
+	char imageName[] = "assets/test/wood.bmp";
+	gImage = SDL_LoadBMP(imageName);
+	if(gImage == NULL){
+		printf("Unable to load image %s.  SDL Error: %s\n", imageName, SDL_GetError());
+		return false;
+	}
+	return true;
+}
+
+static void close(){
+	SDL_FreeSurface(gImage);
+	gImage = NULL;
+	
+	SDL_DestroyWindow(gWindow);
+	gWindow = NULL;
+	
+	SDL_Quit();
+}
+
+
+int tutorial_2(){
+	printf("Tutorial 2\n");
+	
+	if(!init()){
+		printf("Initialization Failure\n");
+		return -1;
+	}
+	
+	if(!loadMedia()){
+		printf("Media Loading Failure\n");
+		return -1;
+	}
+	
+	SDL_BlitSurface(gImage, NULL, gScreenSurface, NULL);
+	
+	SDL_UpdateWindowSurface(gWindow);
+	
+	
+	SDL_Delay(2000);
+	
+	close();
+	return 0;
+}
+
+
+/*
+ * Tutorial 3
+ */
+
+int tutorial_3(){
+	printf("Tutorial 3\n");
+	
+	if(!init()){
+		printf("Initialization Failure\n");
+		return -1;
+	}
+	
+	if(!loadMedia()){
+		printf("Media Loading Failure\n");
+		return -1;
+	}
+	
+	SDL_BlitSurface(gImage, NULL, gScreenSurface, NULL);
+	SDL_UpdateWindowSurface(gWindow);
+	
+	
+	bool quit = false;
+	SDL_Event e;
+	/*
+	 * Main Loop
+	 */
+	while(!quit){
+		// Cycle through event queue
+		while(SDL_PollEvent(&e) != 0){
+			if(e.type == SDL_QUIT){
+				quit = true;
+			}
+		}
+	}
+	
+	Uint32 backgroundColor = SDL_MapRGB(gScreenSurface->format, 0xDD, 0x88, 0xFF);
+	SDL_FillRect(gScreenSurface, NULL, backgroundColor);
+	SDL_UpdateWindowSurface(gWindow);
+	
+	
+	SDL_Delay(500);
+	close();
+	
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
