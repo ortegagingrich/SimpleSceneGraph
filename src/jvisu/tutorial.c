@@ -146,7 +146,7 @@ int tutorial_3(){
 		}
 	}
 	
-	Uint32 backgroundColor = SDL_MapRGB(gScreenSurface->format, 0xDD, 0x88, 0xFF);
+	Uint32 backgroundColor = SDL_MapRGB(gScreenSurface->format, 0x00, 0x00, 0x00);
 	SDL_FillRect(gScreenSurface, NULL, backgroundColor);
 	SDL_UpdateWindowSurface(gWindow);
 	
