@@ -19,12 +19,21 @@ int main(){
 	
 	JWindow *window = new JWindow(640, 480);
 	
+	
+	// Main Loop
+	while(window->isActive()){
+		
+		window->update();
+		
+		//Sleep the appropriate amount of time for the frame
 #ifdef __linux__
-	usleep(3*1000*1000);
+		usleep(16*1000);
 #endif
 #ifdef _WIN32
-	Sleep(3*1000);
+		Sleep(16);
 #endif
+	}
+
 	
 	delete window;
 	
