@@ -21,18 +21,18 @@ TEST_HEADERS=$(shell find $(TEST_FOLDER) -type f -iname '*.h')
 
 
 
-$(BIN_FOLDER)/jvisu/%.o : $(SRC_FOLDER)/%.c*
+$(BIN_FOLDER)/jvisu/%.o : $(SRC_FOLDER)/%.c* $(LIB_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
-$(BIN_FOLDER)/test/%.o : $(TEST_FOLDER)/%.c*
+$(BIN_FOLDER)/test/%.o : $(TEST_FOLDER)/%.c* $(LIB_HEADERS) $(TEST_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_FOLDER)/main.o: src/main.cpp
+$(BIN_FOLDER)/main.o: src/main.cpp $(LIB_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
 
-$(EXE): $(EXE_OBJECTS) $(LIB_HEADERS)
+$(EXE): $(EXE_OBJECTS)
 	$(LINK) $^ $(LFLAGS) -o $@
 
 .phony: exe
