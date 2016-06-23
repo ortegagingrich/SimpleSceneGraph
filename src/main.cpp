@@ -10,6 +10,7 @@
 #include "jvisu/jvisu.h"
 
 
+
 /*
  * This function is the primary entry point for demo/testing purposes.
  */
@@ -18,6 +19,22 @@ int main(){
 	printf("\nEntry Point for jvisu demos.\n");
 	
 	JWindow *window = new JWindow(640, 480);
+	
+	
+	/*
+	 * Try to make a quit callback function
+	 */
+	class QuitCallback : JEventCallback {
+	public:
+		QuitCallback(JWindow *window): JEventCallback(window) {};
+		virtual ~QuitCallback(){};
+		virtual void callback(SDL_Event event){
+			if(event.type != SDL_QUIT) return;
+			printf("Disposing for real.\n");
+			boundWindow->dispose();
+		};
+	};
+	new QuitCallback(window);
 	
 	
 	// Main Loop
