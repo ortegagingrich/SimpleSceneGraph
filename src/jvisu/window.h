@@ -6,7 +6,7 @@
 
 #include <list>
 #include <string>
-#include <SDL2/SDL.h>
+#include "sdl.h"
 
 
 

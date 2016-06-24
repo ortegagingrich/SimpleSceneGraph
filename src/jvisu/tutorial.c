@@ -1,8 +1,17 @@
 /* 
  * Contains code for some tutorials
  */
-#include <SDL2/SDL.h>
+#include "sdl.h"
 #include <stdio.h>
+
+#ifdef _WIN32
+
+#define bool int
+#define true 1
+#define false 0
+
+#endif
+
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;

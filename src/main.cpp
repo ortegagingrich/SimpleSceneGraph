@@ -14,8 +14,7 @@
 /*
  * This function is the primary entry point for demo/testing purposes.
  */
-
-int main(){
+int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
 	JWindow *window = new JWindow(640, 480);

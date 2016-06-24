@@ -1,5 +1,5 @@
 #include <list>
-#include <SDL2/SDL.h>
+#include "sdl.h"
 #include "window.h"
 
 
