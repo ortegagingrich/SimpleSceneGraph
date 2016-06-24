@@ -1,5 +1,9 @@
 *.o
 *.out
 *.bmp
+*.dll
 bin/exe
 *~
+Debug/
+x64/
+jvisu.*
