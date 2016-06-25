@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include "sdl.h"
 
+#define bool int;
+#define true 1;
+#define false 0;
 
 // To keep track of how many windows are active.  If this drops to 0, SDL shuts down.
 static int WINDOWS_ACTIVE = 0;
