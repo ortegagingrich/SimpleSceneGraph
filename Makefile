@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-Wall -lSDL2
-LFLAGS=-lSDL2
+LFLAGS=-lSDL2 -lSDL2_image
 LINK=g++
 
 SRC_FOLDER=src/jvisu
