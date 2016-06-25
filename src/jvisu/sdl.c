@@ -1,6 +1,7 @@
 /*
  * SDL stuff
  */
+#include <stdio.h>
 #include "sdl.h"
 
 
@@ -8,6 +9,21 @@
 static int WINDOWS_ACTIVE = 0;
 // To keep track of whether or not SDL is presently active.
 static bool SDL_ACTIVE = false;
+
+
+static int init(){
+	/**
+	 * Initializes SDL and returns the result;
+	 */
+	
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) return -1;
+	
+	// For PNG loading
+	if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return -1;
+	
+	return 0;
+}
+
 
 int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy){
 	/**
@@ -17,7 +33,7 @@ int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy)
 	
 	// If necessary, initialize SDL
 	if(!SDL_ACTIVE){
-		if(SDL_Init(SDL_INIT_VIDEO) < 0){
+		if(init() < 0){
 			printf("[Error] Failed to initialize SDL.\n");
 			return -1;
 		}
