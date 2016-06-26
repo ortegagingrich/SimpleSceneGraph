@@ -8,8 +8,12 @@
  * Source for Abstract Base Layer Class
  */
 
-Layer::Layer(JWindow *win, std::string i): id(i), window(win) {}
-Layer::~Layer(){}
+Layer::Layer(JWindow *win, std::string i): window(win), id(i) {}
+
+Layer::~Layer(){
+	// Remove this layer from the window
+	window->removeLayer(this);
+}
 
 
 /*
@@ -72,6 +76,12 @@ void LayerBackground::render(SDL_Surface *targetSurface){
 	}
 }
 
+void LayerBackground::clearBackgroundImage(){
+	if(backgroundImageSurface != NULL){
+		SDL_FreeSurface(backgroundImageSurface);
+		backgroundImageSurface = NULL;
+	}
+}
 
 void LayerBackground::setBackgroundImage(std::string imagePath){
 	
@@ -81,9 +91,7 @@ void LayerBackground::setBackgroundImage(std::string imagePath){
 		return;
 	}
 	
-	if(backgroundImageSurface != NULL){
-		SDL_FreeSurface(backgroundImageSurface);
-	}
+	clearBackgroundImage();
 	backgroundImageSurface = SDL_ConvertSurface(loadedImage, window->getFormat(), 0);
 	
 	SDL_FreeSurface(loadedImage);

@@ -65,6 +65,13 @@ public:
 	SDL_PixelFormat *getFormat();
 	
 	SDL_Surface *createNewSurface();
+	
+	void addLayerTop(Layer *layer);
+	void addLayerBottom(Layer *layer);
+	void addLayerAt(Layer *layer, int position);
+	void removeLayer(Layer *layer);
+	Layer *getLayerById(std::string id);
+	std::list<Layer*> getLayers();
 
 private:
 	SDL_Window *window;

@@ -17,14 +17,13 @@ class Node3D;
 // Abstract base class for layers
 class Layer {
 public:
+	JWindow *window;
 	const std::string id;
 	
 	Layer(JWindow *window, std::string id);
 	virtual ~Layer();
 	
 	virtual void render(SDL_Surface *surface) = 0;
-protected:
-	JWindow *window;
 };
 
 
@@ -38,6 +37,7 @@ public:
 	
 	virtual void render(SDL_Surface *surface);
 	
+	void clearBackgroundImage();
 	void setBackgroundImage(std::string path);
 	void setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue);
 	
