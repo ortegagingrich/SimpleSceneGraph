@@ -81,6 +81,7 @@ void LayerBackground::render(SDL_Renderer *renderer){
 	
 	if(backgroundImageSurface != NULL){
 		SDL_Texture *image = SDL_CreateTextureFromSurface(renderer, backgroundImageSurface);
+		SDL_SetTextureBlendMode(image, SDL_BLENDMODE_BLEND);
 		SDL_SetTextureAlphaMod(image, backgroundImageAlpha);
 		SDL_RenderCopy(renderer, image, NULL, NULL);
 		SDL_DestroyTexture(image);
