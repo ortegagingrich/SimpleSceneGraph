@@ -1,12 +1,14 @@
 CC=g++
 CFLAGS=-Wall
 LFLAGS=-lSDL2 -lSDL2_image
+TESTFLAGS=-lgtest -lgtest_main
 LINK=g++
 
 SRC_FOLDER=src/jvisu
 TEST_FOLDER=test
 BIN_FOLDER=bin
 EXE=$(BIN_FOLDER)/exe
+TEST_EXE=$(BIN_FOLDER)/test/exe
 
 LIB_SOURCES=$(shell find $(SRC_FOLDER) -type f -iname '*.c' -o -iname '*.cpp')
 LIB_HEADERS=$(shell find $(SRC_FOLDER) -type f -iname '*.h')
@@ -18,6 +20,7 @@ EXE_OBJECTS=$(BIN_FOLDER)/main.o $(LIB_OBJECTS)
 
 TEST_SOURCES=$(shell find $(TEST_FOLDER) -type f -iname '*.c' -o -iname '*.cpp')
 TEST_HEADERS=$(shell find $(TEST_FOLDER) -type f -iname '*.h')
+TEST_OBJECTS=$(subst .cpp,.o,$(subst $(TEST_FOLDER),$(BIN_FOLDER)/test,$(TEST_SOURCES)))
 
 
 
@@ -35,6 +38,10 @@ $(BIN_FOLDER)/main.o: src/main.cpp $(LIB_HEADERS)
 $(EXE): $(EXE_OBJECTS)
 	$(LINK) $^ $(LFLAGS) -o $@
 
+$(TEST_EXE): $(TEST_OBJECTS) $(LIB_OBJECTS)
+	$(LINK) $< $(LFLAGS) $(TESTFLAGS) -o $@
+
+
 .phony: exe
 exe: $(EXE)
 
@@ -44,10 +51,16 @@ run: $(EXE)
 	./$(EXE)
 
 
+.phony: test
+test: $(TEST_EXE)
+	./$(TEST_EXE)
+
+
 .phony: clobber
 clobber:
 	rm -f $(shell find $(BIN_FOLDER) -type f -iname '*.o')
 	rm -f $(EXE)
+	rm -f $(TEST_EXE)
 
 
 .phony: list

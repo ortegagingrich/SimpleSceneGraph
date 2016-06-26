@@ -3,6 +3,7 @@
 *.bmp
 *.dll
 bin/exe
+bin/test/exe
 *~
 Debug/
 x64/
