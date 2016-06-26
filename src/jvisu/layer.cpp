@@ -26,7 +26,7 @@ LayerBackground::LayerBackground(
 ):
 	Layer(win, i)
 {
-	setBackgroundColor(0x00, 0x00, 0x00);
+	setBackgroundColor(0x00, 0x00, 0x00, 0xff);
 }
 
 LayerBackground::LayerBackground(
@@ -34,11 +34,12 @@ LayerBackground::LayerBackground(
 	std::string i,
 	Uint8 red,
 	Uint8 green,
-	Uint8 blue
+	Uint8 blue,
+	Uint8 alpha
 ):
 	Layer(win, i)
 {
-	setBackgroundColor(red, green, blue);
+	setBackgroundColor(red, green, blue, alpha);
 }
 
 LayerBackground::LayerBackground(
@@ -48,8 +49,8 @@ LayerBackground::LayerBackground(
 ):
 	Layer(win, i)
 {
-	setBackgroundColor(0x00, 0x00, 0x00);
-	setBackgroundImage(imagePath);
+	setBackgroundColor(0x00, 0x00, 0x00, 0xff);
+	setBackgroundImage(imagePath, 0x00);
 }
 
 LayerBackground::~LayerBackground(){
@@ -57,22 +58,32 @@ LayerBackground::~LayerBackground(){
 		SDL_FreeSurface(backgroundImageSurface);
 		backgroundImageSurface = NULL;
 	}
-	if(backgroundColorSurface != NULL){
-		SDL_FreeSurface(backgroundColorSurface);
-		backgroundColorSurface = NULL;
-	}
 }
 
 
-void LayerBackground::render(SDL_Surface *targetSurface){
+void LayerBackground::render(SDL_Renderer *renderer){
 	/**
 	 * Renders the current Layer to the provided surface.
 	 */
-	if(backgroundColorSurface != NULL){
-		SDL_BlitSurface(backgroundColorSurface, NULL, targetSurface, NULL);
-	}
+	
+	// Render the background color
+	SDL_SetRenderDrawColor(
+		renderer,
+		backgroundColorRed,
+		backgroundColorGreen,
+		backgroundColorBlue,
+		backgroundColorAlpha
+	);
+	SDL_RenderFillRect(renderer, NULL);
+	
+	
+	// Now render the image
+	
 	if(backgroundImageSurface != NULL){
-		SDL_BlitSurface(backgroundImageSurface, NULL, targetSurface, NULL);
+		SDL_Texture *image = SDL_CreateTextureFromSurface(renderer, backgroundImageSurface);
+		SDL_SetTextureAlphaMod(image, backgroundImageAlpha);
+		SDL_RenderCopy(renderer, image, NULL, NULL);
+		SDL_DestroyTexture(image);
 	}
 }
 
@@ -83,8 +94,11 @@ void LayerBackground::clearBackgroundImage(){
 	}
 }
 
-void LayerBackground::setBackgroundImage(std::string imagePath){
+void LayerBackground::setBackgroundImage(std::string imagePath, Uint8 alpha){
 	
+	backgroundImageAlpha = alpha;
+	
+	// First load the PNG into a software surface
 	SDL_Surface *loadedImage = IMG_Load(imagePath.c_str());
 	if(loadedImage == NULL){
 		printf("Unable to load background image \"%s\"\n", imagePath.c_str());
@@ -97,52 +111,11 @@ void LayerBackground::setBackgroundImage(std::string imagePath){
 	SDL_FreeSurface(loadedImage);
 }
 
-void LayerBackground::setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue){
+void LayerBackground::setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha){
 	backgroundColorRed = red;
 	backgroundColorGreen = green;
 	backgroundColorBlue = blue;
-	
-	// Make a new SDL surface for the new color
-	Uint32 backgroundColor = SDL_MapRGB(window->getFormat(), red, green, blue);
-	if(backgroundColorSurface == NULL){
-		backgroundColorSurface = window->createNewSurface();
-	}
-	SDL_FillRect(backgroundColorSurface, NULL, backgroundColor);
+	backgroundColorAlpha = alpha;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

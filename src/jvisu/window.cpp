@@ -38,6 +38,7 @@ int JWindow::activate(){
 	}
 	
 	int result = create_SDL_window(&window, windowName.c_str(), screenWidth, screenHeight);
+	
 	if(result < 0) return -1;
 	
 	active = true;
@@ -72,9 +73,9 @@ int JWindow::dispose(){
 		delete layer;
 	}
 	
-	if(buffer != NULL){
-		SDL_FreeSurface(buffer);
-		buffer = NULL;
+	if(renderer != NULL){
+		SDL_DestroyRenderer(renderer);
+		renderer = NULL;
 	}
 	
 	remove_SDL_window(window);
@@ -113,27 +114,24 @@ void JWindow::refresh(){
 	 * when it is needed, in practice, this method is generally called every frame.
 	 */
 	
-	// Reset or Create buffer
-	if(buffer == NULL){
-		buffer = createNewSurface();
-	}else{
-		SDL_FillRect(buffer, NULL, SDL_MapRGB(buffer->format, 0x00, 0x00, 0x00));
+	// Reset or Create renderer
+	if(renderer == NULL){
+		renderer = create_SDL_renderer(window);
 	}
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
+	SDL_RenderClear(renderer);
 	
 	
 	// Fill in the buffer by rendering the layers in order
 	std::list<Layer*>::iterator iter;
 	for(iter = layers.begin(); iter != layers.end(); iter++){
 		Layer *layer = *iter;
-		layer->render(buffer);
+		layer->render(renderer);
 	}
 	
 	
-	// Copy the buffer to the actual surface
-	SDL_BlitSurface(buffer, NULL, SDL_GetWindowSurface(window), NULL);
-	
-	//Update the window surface
-	SDL_UpdateWindowSurface(window);
+	// Actually render the screen now
+	SDL_RenderPresent(renderer);
 }
 
 

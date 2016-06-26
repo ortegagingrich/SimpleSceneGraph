@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
 	 * Background Handling
 	 */
 	LayerBackground *background = (LayerBackground*) window->getLayerById("background");
-	background->setBackgroundColor(0x55, 0x77, 0xbb);
+	background->setBackgroundColor(0x55, 0x77, 0xbb, 0xff);
 	
 	class LayerController : public JEventCallback {
 	public:
@@ -44,17 +44,12 @@ int main(int argc, char* argv[]){
 				SDL_KeyboardEvent key = event.key;
 				if(key.keysym.sym == SDLK_SPACE){
 					if(key.state == SDL_PRESSED){
-						background->setBackgroundColor(0xa1, 0xaa, 0xdd);
+						background->setBackgroundColor(0xa1, 0xaa, 0xdd, 0xff);
 					}else{
-						background->setBackgroundColor(0x55, 0x77, 0xbb);
+						background->setBackgroundColor(0x55, 0x77, 0xbb, 0xff);
 					}
 				}
 				
-				//Experimental event self destruction
-				if(key.keysym.sym == SDLK_ESCAPE){
-					printf("Bork Bork Bork!\n");
-					return;
-				}
 			}
 			/*
 			 * Mouse Event to toggle the background image
@@ -67,7 +62,7 @@ int main(int argc, char* argv[]){
 							background->clearBackgroundImage();
 							imageShowing = false;
 						}else{
-							background->setBackgroundImage("assets/test/cracks.png");
+							background->setBackgroundImage("assets/test/cracks.png", 0x00);
 							imageShowing = true;
 						}
 					}

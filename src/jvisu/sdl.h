@@ -17,5 +17,8 @@
 int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy);
 void remove_SDL_window(SDL_Window *window);
 
+SDL_Renderer *create_SDL_renderer(SDL_Window *window);
+
+void print_SDL_error();
 
 #endif
