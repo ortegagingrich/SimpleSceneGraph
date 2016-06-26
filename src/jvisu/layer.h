@@ -1,8 +1,8 @@
 /**
- * Declarations of public-facing scene graph classes
+ * Declarations of public-facing Layer classes
  */
-#ifndef SCENE_GRAPH_H
-#define SCENE_GRAPH_H
+#ifndef LAYER_H
+#define LAYER_H
 
 #include <list>
 #include <string>
