@@ -80,16 +80,14 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window){
 	SDL_Renderer *renderer = NULL;
 	SDL_ClearError();
 	
-	// Try to create a hardware accelerated renderer.
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 	
-	// If that failed, fall back to a software one.
-	if(strcmp(SDL_GetError(), "Invalid renderer") == 0){
-		print_SDL_error();
-		printf("Failed to create hardware renderer.  ");
-		printf("Falling back to software rendering.\n");
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-	}
+	// For now: Windows: Hardware, Linux: Software
+#ifdef _Win32
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#endif
+#ifdef __linux__
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+#endif
 	
 	return renderer;
 }
