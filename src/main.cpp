@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
 							background->clearBackgroundImage();
 							imageShowing = false;
 						}else{
-							background->setBackgroundImage("assets/test/wood.bmp");
+							background->setBackgroundImage("assets/test/cracks.png");
 							imageShowing = true;
 						}
 					}
