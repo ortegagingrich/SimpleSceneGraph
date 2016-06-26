@@ -7,7 +7,7 @@
 #include <list>
 #include <string>
 #include "sdl.h"
-#include "scene_graph.h"
+#include "layer.h"
 
 
 

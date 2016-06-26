@@ -6,6 +6,6 @@
 #define JVISU_H
 
 #include "window.h"
-#include "scene_graph.h"
+#include "layer.h"
 
 #endif
