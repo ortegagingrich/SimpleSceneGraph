@@ -83,7 +83,7 @@ private:
 	
 	std::list<Layer*> layers;
 	
-	SDL_Renderer *renderer;
+	SDL_Renderer *renderer = NULL;
 	
 	void refresh();
 	void processInput();
