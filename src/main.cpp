@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
 	/*
 	 * Try to make a quit callback function
 	 */
-	class QuitCallback : JEventCallback {
+	class QuitCallback : public JEventCallback {
 	public:
 		QuitCallback(JWindow *window): JEventCallback(window) {};
 		virtual ~QuitCallback(){};

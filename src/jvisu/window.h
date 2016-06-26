@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 #include "sdl.h"
+#include "scene_graph.h"
 
 
 
@@ -61,13 +62,20 @@ public:
 	
 	int getScreenWidth();
 	int getScreenHeight();
+	SDL_PixelFormat *getFormat();
+	
+	SDL_Surface *createNewSurface();
 
 private:
 	SDL_Window *window;
 	std::string windowName;
 	
 	int screenWidth, screenHeight;
-	bool needsRefresh, active;
+	bool active;
+	
+	std::list<Layer*> layers;
+	
+	SDL_Surface *buffer = NULL;
 	
 	void refresh();
 	void processInput();
