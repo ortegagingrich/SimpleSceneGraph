@@ -36,6 +36,7 @@ public:
 	~CallbackManager();
 	
 	void registerCallback(JEventCallback *callback);
+	void unregisterCallback(JEventCallback *callback);
 	void processEvent(SDL_Event event);
 private:
 	// Registered Callbacks

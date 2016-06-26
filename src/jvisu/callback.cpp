@@ -11,7 +11,9 @@ JEventCallback::JEventCallback(JWindow *window): boundWindow(window) {
 	window->callbackManager.registerCallback(this);
 }
 
-JEventCallback::~JEventCallback(){}
+JEventCallback::~JEventCallback(){
+	boundWindow->callbackManager.unregisterCallback(this);
+}
 
 
 /*
@@ -23,13 +25,16 @@ CallbackManager::CallbackManager(){}
 CallbackManager::~CallbackManager(){
 	while(!registered.empty()){
 		delete registered.front();
-		registered.pop_front();
 	}
 }
 
 
 void CallbackManager::registerCallback(JEventCallback *callback){
 	registered.push_front(callback);
+}
+
+void CallbackManager::unregisterCallback(JEventCallback *callback){
+	registered.remove(callback);
 }
 
 

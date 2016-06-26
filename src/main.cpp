@@ -49,6 +49,12 @@ int main(int argc, char* argv[]){
 						background->setBackgroundColor(0x55, 0x77, 0xbb);
 					}
 				}
+				
+				//Experimental event self destruction
+				if(key.keysym.sym == SDLK_ESCAPE){
+					printf("Bork Bork Bork!\n");
+					return;
+				}
 			}
 			/*
 			 * Mouse Event to toggle the background image
@@ -72,7 +78,8 @@ int main(int argc, char* argv[]){
 	private:
 		bool imageShowing;
 	};
-	new LayerController(window, background);
+	LayerController *lc = new LayerController(window, background);
+	//delete lc;
 	
 	
 	/*
