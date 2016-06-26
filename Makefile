@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall -lSDL2
+CFLAGS=-Wall
 LFLAGS=-lSDL2 -lSDL2_image
 LINK=g++
 
@@ -46,7 +46,7 @@ run: $(EXE)
 
 .phony: clobber
 clobber:
-	rm -f $(BIN_FOLDER)/*.o
+	rm -f $(shell find $(BIN_FOLDER) -type f -iname '*.o')
 	rm -f $(EXE)
 
 
