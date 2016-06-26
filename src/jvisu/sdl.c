@@ -63,33 +63,18 @@ void remove_SDL_window(SDL_Window *window){
 	/**
 	 * Destroys the provided SDL window and shuts down SDL if there are no windows left.
 	 */
-	printf("Before %p\n", window);
 	SDL_DestroyWindow(window);
-	printf("After\n");
 	WINDOWS_ACTIVE--;
 	if(WINDOWS_ACTIVE <= 0) SDL_Quit();
 }
 
 
-SDL_Renderer *create_SDL_renderer(SDL_Window *window){
+SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 	/**
-	 * Attempts to create an SDL renderer which supports hardware rendering.
-	 * If that fails (e.g. there are no suitable drivers, etc.), it creates a
-	 * software renderer.
+	 * Attempts to create an SDL renderer.
 	 */
-	SDL_Renderer *renderer = NULL;
-	SDL_ClearError();
-	
-	
-	// For now: Windows: Hardware, Linux: Software
-#ifdef _WIN32
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-#endif
-#ifdef __linux__
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-#endif
-	
-	return renderer;
+	Uint32 flags = hardware_accelerated ? SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
+	return SDL_CreateRenderer(window, -1, flags);
 }
 
 

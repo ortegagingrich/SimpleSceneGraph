@@ -15,7 +15,12 @@
  * Constructors
  */
 
-JWindow::JWindow(int sx, int sy): screenWidth(sx), screenHeight(sy), active(false) {
+JWindow::JWindow(int sx, int sy, bool ha):
+	hardwareAccelerated(ha),
+	screenWidth(sx),
+	screenHeight(sy),
+	active(false) {
+
 	windowName = "jvisu";
 	activate();
 	
@@ -50,7 +55,7 @@ int JWindow::activate(){
  * Destructors
  */
 JWindow::~JWindow(){
-	dispose();
+	if(active) dispose();
 }
 
 
@@ -116,7 +121,7 @@ void JWindow::refresh(){
 	
 	// Reset or Create renderer
 	if(renderer == NULL){
-		renderer = create_SDL_renderer(window);
+		renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
 	}
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(renderer);
@@ -301,39 +306,4 @@ std::list<Layer*> JWindow::getLayers(){
 	 */
 	return layers;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

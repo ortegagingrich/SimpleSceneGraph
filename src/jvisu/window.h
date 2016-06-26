@@ -49,9 +49,11 @@ private:
  */
 class JWindow {
 public:
+	const bool hardwareAccelerated;
+	
 	CallbackManager callbackManager;
 	
-	JWindow(int sx, int sy);
+	JWindow(int sx, int sy, bool ha);
 	~JWindow();
 	int activate();
 	int dispose();
@@ -60,12 +62,13 @@ public:
 	
 	
 	bool isActive();
-	
 	int getScreenWidth();
 	int getScreenHeight();
-	SDL_PixelFormat *getFormat();
 	
+	
+	SDL_PixelFormat *getFormat();
 	SDL_Surface *createNewSurface();
+	
 	
 	void addLayerTop(Layer *layer);
 	void addLayerBottom(Layer *layer);

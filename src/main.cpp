@@ -10,6 +10,13 @@
 #include "jvisu/jvisu.h"
 
 
+#ifdef __linux__
+const bool USE_HARDWARE_ACCELERATION = false;
+#endif
+#ifdef _WIN32
+const bool USE_HARDWARE_ACCELERATION = true;
+#endif
+
 
 /*
  * This function is the primary entry point for demo/testing purposes.
@@ -17,7 +24,7 @@
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	JWindow *window = new JWindow(1280, 720);
+	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	/*
