@@ -82,7 +82,7 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window){
 	
 	
 	// For now: Windows: Hardware, Linux: Software
-#ifdef _Win32
+#ifdef _WIN32
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 #endif
 #ifdef __linux__
