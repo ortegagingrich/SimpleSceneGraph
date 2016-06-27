@@ -3,6 +3,9 @@
  * These are small lightweight objects which are created by some Layer sub-types
  * at render time.
  */
+#ifndef RENDERABLE_H
+#define RENDERABLE_H
+
 #include <list>
 #include "sdl.h"
 
@@ -22,4 +25,7 @@ public:
  * Helper Functions
  */
 void sort_renderables_by_z_level(std::list<Renderable*> &renderables);
+
+
+#endif
 

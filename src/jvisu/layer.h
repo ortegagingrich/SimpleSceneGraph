@@ -12,6 +12,7 @@
 class JWindow;
 class Node2D;
 class Node3D;
+class Renderable;
 
 
 // Abstract base class for layers
@@ -50,12 +51,14 @@ private:
 
 class Layer2D: public Layer {
 public:
-	Node2D *root;
+	Node2D *rootNode;
 	
-	Layer2D();
+	Layer2D(JWindow *window, std::string id);
 	~Layer2D();
 	
 	virtual void render(SDL_Renderer *renderer);
+private:
+	std::list<Renderable*> renderables;
 };
 
 

@@ -1,6 +1,8 @@
 #include "sdl.h"
 #include "window.h"
 #include "layer.h"
+#include "scene_graph.h"
+#include "renderable.h"
 
 
 
@@ -22,7 +24,37 @@ Layer::~Layer(){
  * Source for Layer2D
  */
 
+Layer2D::Layer2D(JWindow *win, std::string i): Layer(win, i) {
+	rootNode = new Node2D();
+}
 
+Layer2D::~Layer2D(){
+	delete rootNode;
+}
+
+
+void Layer2D::render(SDL_Renderer *renderer){
+	if(rootNode == NULL){
+		printf("Cannot Render layer \"%s\"; rootNode is NULL.\n", id.c_str());
+		return;
+	}
+	
+	// Construct list of rendererables by recursively traversing the scene graph
+	renderables.clear();
+	rootNode->render(renderables);
+	
+	// Sort the render list by z value
+	sort_renderables_by_z_level(renderables);
+	
+	// Render the renderables in z-order
+	while(!renderables.empty()){
+		Renderable *renderable = renderables.front();
+		if(renderable != NULL){
+			renderable->render(renderer);
+		}
+		renderables.pop_front();
+	}
+}
 
 
 
