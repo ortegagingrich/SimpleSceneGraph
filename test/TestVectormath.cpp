@@ -5,6 +5,13 @@
 #include "../src/jvisu/vectormath.h"
 
 
+TEST(TestVectormath, Vector2fIdentity){
+	Vector2f v1(42.0, -47);
+	Vector2f v2 = v1;
+	EXPECT_EQ(v1, v2);
+}
+
+
 TEST(TestVectormath, Vector2fAddition){
 	Vector2f v1(1, -4);
 	Vector2f v2(3.5f,  2);
@@ -34,6 +41,22 @@ TEST(TestVectormath, Vector2fSubtraction){
 	EXPECT_EQ(v2.y - v3.y, v4.y);
 	EXPECT_EQ(v1.x - v2.x, v5.x);
 	EXPECT_EQ(v1.y - v2.y, v5.y);
+}
+
+
+TEST(TestVectormath, Vector2fScalarMultiplication){
+	Vector2f v1(1, -4);
+	Vector2f v2 = 0.5f * v1;
+	Vector2f v3 = v2 * 0.5f;
+	
+	EXPECT_EQ(v1/4, v3);
+	
+	v1 /= 2.0;
+	v3 *= 2;
+	
+	EXPECT_EQ(v1, v2);
+	EXPECT_EQ(v1, v3);
+	
 }
 
 

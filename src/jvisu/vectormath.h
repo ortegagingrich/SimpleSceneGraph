@@ -14,15 +14,29 @@ public:
 	Vector2f(float x, float y);
 	
 	void setZero();
-	float norm();
-	float normSquared();
+	float norm() const;
+	float normSquared() const;
 	
 	// Overloaded Operators
+	
+	// Identity
+	bool operator==(Vector2f v) const;
+	
+	// Vector Addition
 	void operator+=(Vector2f v);
 	void operator-=(Vector2f v);
-	Vector2f operator+(Vector2f v);
-	Vector2f operator-(Vector2f v);
+	Vector2f operator+(Vector2f v) const;
+	Vector2f operator-(Vector2f v) const;
+	
+	// Scalar Multiplication
+	void operator*=(float s);
+	void operator/=(float s);
+	Vector2f operator*(float s) const;
+	Vector2f operator/(float s) const;
 };
+
+// Other Overloaded Operators
+Vector2f operator*(float s, Vector2f);
 
 //TODO: Vector3f
 
