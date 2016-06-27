@@ -27,3 +27,30 @@ float Vector2f::normSquared(){
 	return x*x + y*y;
 }
 
+
+/*
+ * Overloaded Operators
+ */
+
+void Vector2f::operator+=(Vector2f v){
+	x += v.x;
+	y += v.y;
+}
+
+void Vector2f::operator-=(Vector2f v){
+	x -= v.x;
+	y -= v.y;
+}
+
+Vector2f Vector2f::operator+(Vector2f v){
+	Vector2f w(x + v.x, y + v.y);
+	return w;
+}
+
+Vector2f Vector2f::operator-(Vector2f v){
+	Vector2f w(x - v.x, y - v.y);
+	return w;
+}
+
+
+

@@ -16,6 +16,12 @@ public:
 	void setZero();
 	float norm();
 	float normSquared();
+	
+	// Overloaded Operators
+	void operator+=(Vector2f v);
+	void operator-=(Vector2f v);
+	Vector2f operator+(Vector2f v);
+	Vector2f operator-(Vector2f v);
 };
 
 //TODO: Vector3f

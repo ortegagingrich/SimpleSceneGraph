@@ -39,7 +39,7 @@ $(EXE): $(EXE_OBJECTS)
 	$(LINK) $^ $(LFLAGS) -o $@
 
 $(TEST_EXE): $(TEST_OBJECTS) $(LIB_OBJECTS)
-	$(LINK) $< $(LFLAGS) $(TESTFLAGS) -o $@
+	$(LINK) $^ $(LFLAGS) $(TESTFLAGS) -o $@
 
 
 .phony: exe
@@ -65,9 +65,8 @@ clobber:
 
 .phony: list
 list:
-	@echo $(LIB_SOURCES)
-	@echo $(LIB_HEADERS)
-	@echo $(EXE_OBJECTS)
+	@echo $(TEST_SOURCES)
+	@echo $(TEST_OBJECTS)
 
 
 #print number of lines
