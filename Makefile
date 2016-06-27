@@ -1,5 +1,6 @@
 CC=g++
-CFLAGS=-Wall
+CFLAGS=
+WFLAGS=-Wall
 LFLAGS=-lSDL2 -lSDL2_image
 TESTFLAGS=-lgtest -lgtest_main
 LINK=g++
@@ -25,7 +26,7 @@ TEST_OBJECTS=$(subst .cpp,.o,$(subst $(TEST_FOLDER),$(BIN_FOLDER)/test,$(TEST_SO
 
 
 $(BIN_FOLDER)/jvisu/%.o : $(SRC_FOLDER)/%.c* $(LIB_HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) $(WFLAGS) -c $< -o $@ 
 
 $(BIN_FOLDER)/test/%.o : $(TEST_FOLDER)/%.c* $(LIB_HEADERS) $(TEST_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
