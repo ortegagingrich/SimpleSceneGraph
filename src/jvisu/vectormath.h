@@ -32,6 +32,7 @@ public:
 	void rotateDegrees(float deg){ rotate(deg * DEG_2_RAD); };
 	void scale(float s);
 	void scale(float sx, float sy);
+	void scale(Vector2f sv);
 	
 	float norm() const;
 	float normSquared() const;

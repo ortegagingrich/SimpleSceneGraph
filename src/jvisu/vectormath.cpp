@@ -38,6 +38,10 @@ void Vector2f::scale(float sx, float sy){
 	y *= sy;
 }
 
+void Vector2f::scale(Vector2f sv){
+	scale(sv.x, sv.y);
+}
+
 float Vector2f::norm() const {
 	/**
 	 * Calculates and returns the Euclidean norm of the vector.
@@ -97,6 +101,7 @@ Vector2f Vector2f::operator-(Vector2f v) const {
 	Vector2f w(x - v.x, y - v.y);
 	return w;
 }
+
 
 // Scalar Multiplication
 
