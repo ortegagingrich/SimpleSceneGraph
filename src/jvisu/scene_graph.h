@@ -33,7 +33,7 @@ public:
 	Component2D();
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
-	virtual void render(std::list<Renderable*> &render_list);
+	virtual void collectRenderables(std::list<Renderable*> &render_list);
 	
 	bool isHidden(); // Depends also on the parent
 	void hide();
@@ -62,7 +62,7 @@ public:
 	Node2D();
 	virtual ~Node2D(); // Deletes all child components
 	
-	virtual void render(std::list<Renderable*> &render_list);
+	virtual void collectRenderables(std::list<Renderable*> &render_list);
 	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);
