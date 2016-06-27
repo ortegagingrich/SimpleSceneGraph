@@ -13,6 +13,31 @@ void Vector2f::setZero(){
 	y = 0;
 }
 
+void Vector2f::add(float dx, float dy){
+	x += dx;
+	y += dy;
+}
+
+void Vector2f::rotate(float rad){
+	rad = fmod(rad, 2*M_PI);
+	float cos = std::cos(rad);
+	float sin = std::sin(rad);
+	float newx = x * cos - y * sin;
+	float newy = x * sin + y * cos;
+	x = newx;
+	y = newy;
+}
+
+void Vector2f::scale(float s){
+	x *= s;
+	y *= s;
+}
+
+void Vector2f::scale(float sx, float sy){
+	x *= sx;
+	y *= sy;
+}
+
 float Vector2f::norm() const {
 	/**
 	 * Calculates and returns the Euclidean norm of the vector.
@@ -27,10 +52,23 @@ float Vector2f::normSquared() const {
 	return x*x + y*y;
 }
 
+void Vector2f::normalize() {
+	/**
+	 * Normalizes the vector.
+	 */
+	scale(1.0f / norm());
+}
+
 
 /*
  * Overloaded Operators
  */
+
+// Literal Assignment
+void Vector2f::operator=(float literal[2]){
+	x = literal[0];
+	y = literal[1];
+}
 
 // Vector Identity
 
@@ -88,42 +126,17 @@ Vector2f operator*(float scalar, Vector2f v){
 	return v * scalar;
 }
 
+// Rotation
 
+void Vector2f::operator%=(float rad){
+	rotate(rad);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Vector2f Vector2f::operator%(float rad) const {
+	Vector2f w = *this;
+	w.rotate(rad);
+	return w;
+}
 
 
 
