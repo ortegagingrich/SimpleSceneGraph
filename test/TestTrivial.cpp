@@ -6,5 +6,6 @@
 
 TEST(TrivialTest, PrintStuff){
 	printf("I am a God!\n");
+	SUCCEED();
 }
 
