@@ -10,8 +10,9 @@
  */
 
 Component2D::Component2D():
+	parent(NULL),
 	position(0,0),
-	zlevel(0),
+	zLevel(0),
 	rotation(0),
 	scale(1,1),
 	inheritPosition(true),
@@ -26,11 +27,16 @@ Component2D::~Component2D(){
 }
 
 
-void Component2D::render(std::list<Renderable*> render_list){
+void Component2D::render(std::list<Renderable*> &render_list){
 	/*
 	 * This superclass method is primarily responsible for computing the absolute
 	 * scale/rotation/position variables based on the parent values.
 	 */
+	
+	zLevelAbsolute = zLevel;
+	if(inheritZLevel && parent != NULL){
+		zLevelAbsolute += parent->zLevelAbsolute;
+	}
 	
 	scaleAbsolute = scale;
 	if(inheritScale && parent != NULL){
@@ -91,7 +97,7 @@ Node2D::~Node2D(){
 	}
 }
 
-void Node2D::render(std::list<Renderable*> render_list){
+void Node2D::render(std::list<Renderable*> &render_list){
 	// First render the node itself with the super method
 	Component2D::render(render_list);
 	

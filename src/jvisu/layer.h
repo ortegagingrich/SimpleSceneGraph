@@ -52,6 +52,7 @@ class Layer2D: public Layer {
 public:
 	Node2D *root;
 	
+	Layer2D();
 	~Layer2D();
 	
 	virtual void render(SDL_Renderer *renderer);

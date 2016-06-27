@@ -17,6 +17,8 @@ class Component2D {
 	 * Abstract base class of 2D components.
 	 */
 public:
+	Node2D *parent;
+	
 	Vector2f position;
 	float zLevel;
 	float rotation;
@@ -29,19 +31,18 @@ public:
 	bool inheritHidden;
 	
 	Component2D();
-	~Component2D(); // Detaches itself from the parent first
+	virtual ~Component2D(); // Detaches itself from the parent first
 	
-	virtual void render(list<Renderable*> &render_list);
+	virtual void render(std::list<Renderable*> &render_list);
 	
 	bool isHidden(); // Depends also on the parent
 	void hide();
 	void show();
 	
-	Node2D *getParent(){return parent;}
+	Node2D *getParent(){return parent;};
 	void detachFromParent();
 	
 protected:
-	Node2D *parent = NULL;
 	
 	Vector2f positionAbsolute;
 	float zLevelAbsolute;
@@ -59,16 +60,16 @@ class Node2D : public Component2D {
 	 */
 public:
 	Node2D();
-	~Node2D(); // Deletes all child components
+	virtual ~Node2D(); // Deletes all child components
 	
-	virtual void render(list<Renderable*> &render_list);
+	virtual void render(std::list<Renderable*> &render_list);
 	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);
-	list<Component2D*> getChildren() {return children;}
+	std::list<Component2D*> getChildren() {return children;}
 	
 private:
-	list<Component2D*> children;
+	std::list<Component2D*> children;
 };
 
 
