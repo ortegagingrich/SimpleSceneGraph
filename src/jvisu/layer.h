@@ -18,21 +18,26 @@ class Renderable;
 // Abstract base class for layers
 class Layer {
 public:
-	JWindow *window;
 	const std::string id;
 	
-	Layer(JWindow *window, std::string id);
+	Layer(std::string id);
 	virtual ~Layer();
 	
 	virtual void render(SDL_Renderer *renderer) = 0;
+	
+	JWindow *getWindow();
+	void setWindow(JWindow *window);
+
+protected:
+	JWindow *window;
 };
 
 
 class LayerBackground: public Layer {
 public:
-	LayerBackground(JWindow *window, std::string id);
-	LayerBackground(JWindow *window, std::string id, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	LayerBackground(JWindow *window, std::string id, std::string imagePath);
+	LayerBackground(std::string id);
+	LayerBackground(std::string id, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	LayerBackground(std::string id, std::string imagePath);
 	
 	virtual ~LayerBackground();
 	
@@ -53,7 +58,7 @@ class Layer2D: public Layer {
 public:
 	Node2D *rootNode;
 	
-	Layer2D(JWindow *window, std::string id);
+	Layer2D(std::string id);
 	~Layer2D();
 	
 	virtual void render(SDL_Renderer *renderer);

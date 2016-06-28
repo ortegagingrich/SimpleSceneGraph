@@ -26,7 +26,7 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	
 	// Add a background layer
 	
-	LayerBackground *background = new LayerBackground(this, "background");
+	LayerBackground *background = new LayerBackground("background");
 	background->clearBackgroundImage();
 	addLayerBottom(background);
 	
@@ -194,7 +194,7 @@ void JWindow::addLayerTop(Layer *layer){
 		printf("Cannot add NULL layer.\n");
 		return;
 	}
-	if(layer->window != this){
+	if(layer->getWindow() != this){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
 		return;
@@ -207,6 +207,7 @@ void JWindow::addLayerTop(Layer *layer){
 	}
 	
 	layers.push_back(layer);
+	layer->setWindow(this);
 }
 
 void JWindow::addLayerBottom(Layer *layer){
@@ -218,7 +219,7 @@ void JWindow::addLayerBottom(Layer *layer){
 		printf("Cannot add NULL layer.\n");
 		return;
 	}
-	if(layer->window != this){
+	if(layer->getWindow() != this){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
 		return;
@@ -231,6 +232,7 @@ void JWindow::addLayerBottom(Layer *layer){
 	}
 	
 	layers.push_front(layer);
+	layer->setWindow(this);
 }
 
 void JWindow::addLayerAt(Layer *layer, int position){
@@ -242,7 +244,7 @@ void JWindow::addLayerAt(Layer *layer, int position){
 		printf("Cannot add NULL layer.\n");
 		return;
 	}
-	if(layer->window != this){
+	if(layer->getWindow() != this){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
 		return;
@@ -263,6 +265,7 @@ void JWindow::addLayerAt(Layer *layer, int position){
 	std::list<Layer*>::iterator iter = layers.begin();
 	std::advance(iter, position);
 	layers.insert(iter, layer);
+	layer->setWindow(this);
 }
 
 void JWindow::removeLayer(Layer *layer){

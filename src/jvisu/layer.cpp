@@ -10,13 +10,29 @@
  * Source for Abstract Base Layer Class
  */
 
-Layer::Layer(JWindow *win, std::string i): window(win), id(i) {}
+Layer::Layer(std::string i): id(i), window(NULL) {}
 
 Layer::~Layer(){
+	if(window == NULL) return;
 	// Remove this layer from the window
 	window->removeLayer(this);
 }
 
+JWindow *Layer::getWindow(){
+	return window;
+}
+
+void Layer::setWindow(JWindow *win){
+	/**
+	 * Should only be called by the window.
+	 */
+	// If already in a window, remove it
+	if(window != NULL){
+		window->removeLayer(this);
+	}
+	
+	window = win;
+}
 
 
 
@@ -24,7 +40,7 @@ Layer::~Layer(){
  * Source for Layer2D
  */
 
-Layer2D::Layer2D(JWindow *win, std::string i): Layer(win, i) {
+Layer2D::Layer2D(std::string i): Layer(i) {
 	rootNode = new Node2D();
 }
 
@@ -62,34 +78,29 @@ void Layer2D::render(SDL_Renderer *renderer){
  * Source for LayerBackground
  */
 
-LayerBackground::LayerBackground(
-	JWindow *win,
-	std::string i
-):
-	Layer(win, i)
+LayerBackground::LayerBackground(std::string i):
+	Layer(i)
 {
 	setBackgroundColor(0x00, 0x00, 0x00, 0xff);
 }
 
 LayerBackground::LayerBackground(
-	JWindow *win,
 	std::string i,
 	Uint8 red,
 	Uint8 green,
 	Uint8 blue,
 	Uint8 alpha
 ):
-	Layer(win, i)
+	Layer(i)
 {
 	setBackgroundColor(red, green, blue, alpha);
 }
 
 LayerBackground::LayerBackground(
-	JWindow *win,
 	std::string i,
 	std::string imagePath
 ):
-	Layer(win, i)
+	Layer(i)
 {
 	setBackgroundColor(0x00, 0x00, 0x00, 0xff);
 	setBackgroundImage(imagePath, 0x00);
@@ -138,6 +149,10 @@ void LayerBackground::clearBackgroundImage(){
 }
 
 void LayerBackground::setBackgroundImage(std::string imagePath, Uint8 alpha){
+	if(window == NULL){
+		printf("Cannot set background image; layer not attached to a window.\n");
+		return;
+	}
 	
 	backgroundImageAlpha = alpha;
 	
