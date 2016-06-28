@@ -194,6 +194,7 @@ bool JWindow::registerLayer(Layer *layer){
 		printf("Cannot add NULL layer.\n");
 		return false;
 	}
+	//TODO: Decide if this is really necessary.
 	if(layer->getWindow() != this && layer->getWindow() != NULL){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
