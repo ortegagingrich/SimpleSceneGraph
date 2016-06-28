@@ -10,6 +10,8 @@
 #include "sdl.h"
 
 
+class JWindow;
+
 class Renderable {
 	/**
 	 * Abstract base class of renderables
@@ -18,7 +20,7 @@ public:
 	const float zLevel;
 	Renderable(float z): zLevel(z) {};
 	virtual ~Renderable();
-	virtual void render(SDL_Renderer *renderer) = 0;
+	virtual void render(SDL_Renderer *renderer, JWindow *window) = 0;
 };
 
 
