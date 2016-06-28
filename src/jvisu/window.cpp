@@ -150,15 +150,15 @@ void JWindow::processInput(){
 	// Cycle through all active events
 	while(SDL_PollEvent(&event) != 0){
 		
+		
+		// Pass the event to callbacks
+		callbackManager.processEvent(event);
+		
 		// Internal Handling of events
 		if(event.type == SDL_QUIT){
 			printf("Quitting?\n");
 			dispose();
 		}
-		
-		
-		// Pass the event to callbacks
-		callbackManager.processEvent(event);
 		
 	}
 }
