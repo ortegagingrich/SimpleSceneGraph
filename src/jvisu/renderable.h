@@ -17,6 +17,7 @@ class Renderable {
 public:
 	const float zLevel;
 	Renderable(float z): zLevel(z) {};
+	virtual ~Renderable();
 	virtual void render(SDL_Renderer *renderer) = 0;
 };
 
