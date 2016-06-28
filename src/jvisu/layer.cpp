@@ -2,6 +2,7 @@
 #include "window.h"
 #include "layer.h"
 #include "scene_graph.h"
+#include "viewport.h"
 #include "renderable.h"
 
 
@@ -50,6 +51,10 @@ Layer2D::~Layer2D(){
 
 
 void Layer2D::render(SDL_Renderer *renderer){
+	
+	// Make sure that the viewport matches the aspect ratio of the window
+	viewport.radiusX = viewport.radiusY * window->getAspectRatio();
+	
 	if(rootNode == NULL){
 		printf("Cannot Render layer \"%s\"; rootNode is NULL.\n", id.c_str());
 		return;

@@ -178,6 +178,10 @@ SDL_Surface *JWindow::createNewSurface(){
 bool JWindow::isActive(){ return active; }
 int JWindow::getScreenWidth(){ return screenWidth;}
 int JWindow::getScreenHeight(){ return screenHeight;}
+float JWindow::getAspectRatio(){
+	return (float) screenWidth / (float) screenHeight;
+}
+
 SDL_PixelFormat *JWindow::getFormat(){ return SDL_GetWindowSurface(window)->format;}
 
 

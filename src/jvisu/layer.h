@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 #include "sdl.h"
+#include "viewport.h"
 
 
 class JWindow;
@@ -27,7 +28,7 @@ public:
 	
 	JWindow *getWindow();
 	void setWindow(JWindow *window);
-
+	
 protected:
 	JWindow *window;
 };
@@ -54,8 +55,11 @@ private:
 };
 
 
+// Put Viewport Here!!! (It's a good idea, I promise.)
 class Layer2D: public Layer {
 public:
+	Viewport2D viewport;
+	
 	Node2D *rootNode;
 	
 	Layer2D(std::string id);

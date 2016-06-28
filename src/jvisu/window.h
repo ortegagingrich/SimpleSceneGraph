@@ -64,6 +64,7 @@ public:
 	bool isActive();
 	int getScreenWidth();
 	int getScreenHeight();
+	float getAspectRatio();
 	
 	
 	SDL_PixelFormat *getFormat();
