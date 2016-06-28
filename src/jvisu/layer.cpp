@@ -53,7 +53,9 @@ Layer2D::~Layer2D(){
 void Layer2D::render(SDL_Renderer *renderer){
 	
 	// Make sure that the viewport matches the aspect ratio of the window
-	viewport.radiusX = viewport.radiusY * window->getAspectRatio();
+	if(viewport.isAspectRatioLocked()){
+		viewport.forceAspectRatio(window->getAspectRatio());
+	}
 	
 	if(rootNode == NULL){
 		printf("Cannot Render layer \"%s\"; rootNode is NULL.\n", id.c_str());
@@ -72,6 +74,7 @@ void Layer2D::render(SDL_Renderer *renderer){
 		Renderable *renderable = renderables.front();
 		if(renderable != NULL){
 			renderable->render(renderer);
+			delete renderable;
 		}
 		renderables.pop_front();
 	}
