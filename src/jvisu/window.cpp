@@ -189,29 +189,36 @@ SDL_PixelFormat *JWindow::getFormat(){ return SDL_GetWindowSurface(window)->form
  * Layer Operations
  */
 
-void JWindow::addLayerTop(Layer *layer){
-	/**
-	 * Adds the provided layer to the back of the layer list.  The provided 
-	 * layer must be bound to the present window.
-	 */
+bool JWindow::registerLayer(Layer *layer){
 	if(layer == NULL){
 		printf("Cannot add NULL layer.\n");
-		return;
+		return false;
 	}
-	if(layer->getWindow() != this){
+	if(layer->getWindow() != this && layer->getWindow() != NULL){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
-		return;
+		return false;
 	}
 	// Check to make sure that there is no layer with the same id already.
 	if(getLayerById(layer->id) != NULL){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" A layer with the same ID already exists.\n");
-		return;
+		return false;
 	}
 	
-	layers.push_back(layer);
 	layer->setWindow(this);
+	return true;
+}
+
+
+void JWindow::addLayerTop(Layer *layer){
+	/**
+	 * Adds the provided layer to the back of the layer list.  The provided 
+	 * layer must be bound to the present window.
+	 */
+	if(!registerLayer(layer)) return;
+	
+	layers.push_back(layer);
 }
 
 void JWindow::addLayerBottom(Layer *layer){
@@ -219,24 +226,9 @@ void JWindow::addLayerBottom(Layer *layer){
 	 * Adds the provided layer to the front of the layer list.  The provided 
 	 * layer must be bound to the present window.
 	 */
-	if(layer == NULL){
-		printf("Cannot add NULL layer.\n");
-		return;
-	}
-	if(layer->getWindow() != this){
-		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
-		printf(" It is bound to a different window.\n");
-		return;
-	}
-	// Check to make sure that there is no layer with the same id already.
-	if(getLayerById(layer->id) != NULL){
-		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
-		printf(" A layer with the same ID already exists.\n");
-		return;
-	}
+	if(!registerLayer(layer)) return;
 	
 	layers.push_front(layer);
-	layer->setWindow(this);
 }
 
 void JWindow::addLayerAt(Layer *layer, int position){
@@ -244,21 +236,7 @@ void JWindow::addLayerAt(Layer *layer, int position){
 	 * Adds the provided layer to the layer list at the specified position.  The
 	 * provided layer must be bound to the present window.
 	 */
-	if(layer == NULL){
-		printf("Cannot add NULL layer.\n");
-		return;
-	}
-	if(layer->getWindow() != this){
-		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
-		printf(" It is bound to a different window.\n");
-		return;
-	}
-	// Check to make sure that there is no layer with the same id already.
-	if(getLayerById(layer->id) != NULL){
-		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
-		printf(" A layer with the same ID already exists.\n");
-		return;
-	}
+	if(!registerLayer(layer)) return;
 	
 	if(layers.size() == 0){
 		position = 0;
@@ -269,7 +247,6 @@ void JWindow::addLayerAt(Layer *layer, int position){
 	std::list<Layer*>::iterator iter = layers.begin();
 	std::advance(iter, position);
 	layers.insert(iter, layer);
-	layer->setWindow(this);
 }
 
 void JWindow::removeLayer(Layer *layer){

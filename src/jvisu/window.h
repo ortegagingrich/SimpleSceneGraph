@@ -89,6 +89,8 @@ private:
 	
 	SDL_Renderer *renderer = NULL;
 	
+	bool registerLayer(Layer *layer);
+	
 	void refresh();
 	void processInput();
 	
