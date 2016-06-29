@@ -41,6 +41,22 @@ void JEventCallback::precallback(InputEvent *event){
 
 
 /*
+ * Source for QuitEventCallback
+ */
+
+QuitEventCallback::QuitEventCallback(JWindow *window): JEventCallback(window){}
+QuitEventCallback::QuitEventCallback(Layer *layer): JEventCallback(layer){}
+QuitEventCallback::QuitEventCallback(ComponentInput2D *component): JEventCallback(component){}
+
+void QuitEventCallback::precallback(InputEvent *event){
+	if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
+		callback((QuitEvent*) event);
+	}
+}
+
+
+
+/*
  * Source for Callback Manager (defined in window.h)
  */
 

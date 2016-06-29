@@ -112,23 +112,19 @@ int main(int argc, char* argv[]){
 	/*
 	 * Try to make a quit callback function
 	 */
-	class QuitCallback : public JEventCallback {
+	class OnExit : public QuitEventCallback {
 	public:
-		QuitCallback(JWindow *win): JEventCallback(win), window(win) {};
-		virtual ~QuitCallback(){};
-		virtual void callback(InputEvent *jevent){
-			SDL_Event event = jevent->sdlEvent;
-			
-			if(event.type != SDL_QUIT) return;
-			printf("Disposing from Callback.\n");
+		OnExit(JWindow *win): QuitEventCallback(win), window(win) {};
+		virtual void callback(QuitEvent *event){
+			printf("Disposing from new Callback.\n");
 			window->dispose();
-			
-			jevent->consume();
+			event->consume();
 		};
 	private:
 		JWindow *window;
 	};
-	new QuitCallback(window);
+	new OnExit(window);
+	
 	
 	
 	// Main Loop

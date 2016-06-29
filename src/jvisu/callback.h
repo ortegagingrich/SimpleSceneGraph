@@ -10,6 +10,7 @@ class JWindow;
 class Layer;
 class ComponentInput2D;
 class InputEvent;
+class QuitEvent;
 
 class CallbackManager;
 
@@ -26,6 +27,19 @@ public:
 protected:
 	CallbackManager *boundManager;
 	
+	virtual void precallback(InputEvent *event);
+};
+
+
+class QuitEventCallback : public JEventCallback {
+public:
+	QuitEventCallback(JWindow *window);
+	QuitEventCallback(Layer *layer);
+	QuitEventCallback(ComponentInput2D *component);
+	
+	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
+	virtual void callback(QuitEvent *event) = 0;
+protected:
 	virtual void precallback(InputEvent *event);
 };
 
