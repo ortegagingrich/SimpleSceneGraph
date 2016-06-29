@@ -6,8 +6,11 @@
 
 #include <list>
 #include "vectormath.h"
+#include "callback.h"
+
 
 class Renderable;
+class InputEvent;
 
 
 class Node2D;
@@ -34,6 +37,7 @@ public:
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list);
+	virtual void processEvent(InputEvent *event){};
 	
 	bool isHidden(); // Depends also on the parent
 	void hide();
@@ -54,15 +58,27 @@ private:
 };
 
 
+class ComponentInput2D : public Component2D {
+	/**
+	 * 2D Components which can have input callbacks registered to them
+	 */
+public:
+	CallbackManager callbackManager;
+	
+	virtual void processEvent(InputEvent *event);
+};
+
+
 class Node2D : public Component2D {
 	/**
-	 * 2D Components which can have child components attached to it
+	 * 2D Components which can have child components attached to them
 	 */
 public:
 	Node2D();
 	virtual ~Node2D(); // Deletes all child components
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list);
+	virtual void processEvent(InputEvent *event);
 	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);

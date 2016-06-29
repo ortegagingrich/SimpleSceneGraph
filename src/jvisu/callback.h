@@ -8,7 +8,7 @@
  */
 class JWindow;
 class Layer;
-class Component2D;
+class ComponentInput2D;
 class InputEvent;
 
 class CallbackManager;
@@ -19,7 +19,7 @@ friend class CallbackManager;
 public:
 	JEventCallback(JWindow *window);
 	JEventCallback(Layer *layer);
-	JEventCallback(Component2D *component);
+	JEventCallback(ComponentInput2D *component);
 	
 	virtual ~JEventCallback();
 	virtual void callback(InputEvent *event) = 0;

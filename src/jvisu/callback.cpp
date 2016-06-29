@@ -2,6 +2,7 @@
 #include "sdl.h"
 #include "window.h"
 #include "input.h"
+#include "scene_graph.h"
 
 
 /*
@@ -16,6 +17,12 @@ JEventCallback::JEventCallback(JWindow *window):
 
 JEventCallback::JEventCallback(Layer *layer):
 	boundManager(&(layer->callbackManager))
+{
+	boundManager->registerCallback(this);
+}
+
+JEventCallback::JEventCallback(ComponentInput2D *component):
+	boundManager(&(component->callbackManager))
 {
 	boundManager->registerCallback(this);
 }

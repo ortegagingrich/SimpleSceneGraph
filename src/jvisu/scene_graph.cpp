@@ -3,6 +3,8 @@
 #include "scene_graph.h"
 #include "renderable.h"
 #include "vectormath.h"
+#include "input.h"
+#include "callback.h"
 
 
 /*
@@ -84,6 +86,16 @@ void Component2D::detachFromParent(){
 	}
 }
 
+/*
+ * ComponentInput2D
+ */
+
+void ComponentInput2D::processEvent(InputEvent *event){
+	Component2D::processEvent(event);
+	
+	callbackManager.processEvent(event);
+}
+
 
 /*
  * Node2D
@@ -106,6 +118,15 @@ void Node2D::collectRenderables(std::list<Renderable*> &render_list){
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
 		child->collectRenderables(render_list);
+	}
+}
+
+void Node2D::processEvent(InputEvent *event){
+	// The node itself does nothing; the event is passed on to children
+	std::list<Component2D*>::iterator iter;
+	for(iter = children.begin(); iter != children.end(); iter++){
+		Component2D *child = *iter;
+		child->processEvent(event);
 	}
 }
 

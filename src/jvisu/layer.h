@@ -70,6 +70,7 @@ public:
 	~Layer2D();
 	
 	virtual void render(SDL_Renderer *renderer);
+	virtual void processEvent(InputEvent *event);
 private:
 	std::list<Renderable*> renderables;
 };
