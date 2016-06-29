@@ -7,14 +7,26 @@
  * Abstract Superclass for event callbacks
  */
 class JWindow;
+class Layer;
+class Component2D;
+class InputEvent;
+
+class CallbackManager;
+
 
 class JEventCallback {
+friend class CallbackManager;
 public:
-	JWindow *boundWindow;
-	
 	JEventCallback(JWindow *window);
+	JEventCallback(Layer *layer);
+	JEventCallback(Component2D *component);
+	
 	virtual ~JEventCallback();
-	virtual void callback(SDL_Event event) = 0;
+	virtual void callback(InputEvent *event) = 0;
+protected:
+	CallbackManager *boundManager;
+	
+	virtual void precallback(InputEvent *event);
 };
 
 
@@ -29,7 +41,7 @@ public:
 	
 	void registerCallback(JEventCallback *callback);
 	void unregisterCallback(JEventCallback *callback);
-	void processEvent(SDL_Event event);
+	void processEvent(InputEvent *event);
 private:
 	// Registered Callbacks
 	std::list<JEventCallback*> registered;

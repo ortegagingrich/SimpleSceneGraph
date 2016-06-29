@@ -4,6 +4,7 @@
 #include "scene_graph.h"
 #include "viewport.h"
 #include "renderable.h"
+#include "input.h"
 
 
 
@@ -18,6 +19,12 @@ Layer::~Layer(){
 	// Remove this layer from the window
 	window->removeLayer(this);
 }
+
+
+void Layer::processEvent(InputEvent *event){
+	callbackManager.processEvent(event);
+}
+
 
 JWindow *Layer::getWindow(){
 	return window;

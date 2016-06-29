@@ -8,6 +8,8 @@
 #include "sdl.h"
 #include "window.h"
 #include "layer.h"
+#include "callback.h"
+#include "input.h"
 
 
 
@@ -145,21 +147,32 @@ void JWindow::processInput(){
 	 * Checks for and processes all SDL input events and calls the appropriate
 	 * callbacks.
 	 */
-	SDL_Event event;
+	SDL_Event sdlEvent;
 	
 	// Cycle through all active events
-	while(SDL_PollEvent(&event) != 0){
+	while(SDL_PollEvent(&sdlEvent) != 0){
+		
+		InputEvent *event = InputEvent::createInputEvent(sdlEvent);
+		
+		
+		// Pass the event on to layers for processing.
+		std::list<Layer*>::iterator iter;
+		for(iter = layers.begin(); iter != layers.end(); iter++){
+			Layer *layer = *iter;
+			layer->processEvent(event);
+		}
 		
 		
 		// Pass the event to callbacks
 		callbackManager.processEvent(event);
 		
 		// Internal Handling of events
-		if(event.type == SDL_QUIT){
+		if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
 			printf("Quitting?\n");
 			dispose();
 		}
 		
+		delete event;
 	}
 }
 
@@ -194,12 +207,14 @@ bool JWindow::registerLayer(Layer *layer){
 		printf("Cannot add NULL layer.\n");
 		return false;
 	}
+	
 	//TODO: Decide if this is really necessary.
 	if(layer->getWindow() != this && layer->getWindow() != NULL){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());
 		printf(" It is bound to a different window.\n");
 		return false;
 	}
+	
 	// Check to make sure that there is no layer with the same id already.
 	if(getLayerById(layer->id) != NULL){
 		printf("Cannot add layer \"%s\" to this window. ", layer->id.c_str());

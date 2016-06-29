@@ -37,12 +37,15 @@ int main(int argc, char* argv[]){
 	public:
 		LayerBackground *background;
 		
-		LayerController(JWindow *window, LayerBackground *bg):
-			JEventCallback(window),
+		LayerController(LayerBackground *bg):
+			JEventCallback(bg),
 			background(bg) {};
 		virtual ~LayerController(){};
 		
-		virtual void callback(SDL_Event event){
+		virtual void callback(InputEvent *jevent){
+			//Temporary Work-around:
+			SDL_Event event = jevent->sdlEvent;
+			
 			/*
 			 * Keyboard Event (space) for changing the background color
 			 */
@@ -73,7 +76,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	};
-	LayerController *lc = new LayerController(window, background);
+	LayerController *lc = new LayerController(background);
 	//delete lc;
 	
 	
@@ -90,13 +93,19 @@ int main(int argc, char* argv[]){
 	 */
 	class QuitCallback : public JEventCallback {
 	public:
-		QuitCallback(JWindow *window): JEventCallback(window) {};
+		QuitCallback(JWindow *win): JEventCallback(win), window(win) {};
 		virtual ~QuitCallback(){};
-		virtual void callback(SDL_Event event){
+		virtual void callback(InputEvent *jevent){
+			SDL_Event event = jevent->sdlEvent;
+			
 			if(event.type != SDL_QUIT) return;
 			printf("Disposing from Callback.\n");
-			boundWindow->dispose();
+			window->dispose();
+			
+			jevent->consume();
 		};
+	private:
+		JWindow *window;
 	};
 	new QuitCallback(window);
 	

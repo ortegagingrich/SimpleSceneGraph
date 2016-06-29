@@ -8,9 +8,11 @@
 #include <string>
 #include "sdl.h"
 #include "viewport.h"
+#include "callback.h"
 
 
 class JWindow;
+class InputEvent;
 class Node2D;
 class Node3D;
 class Renderable;
@@ -20,11 +22,13 @@ class Renderable;
 class Layer {
 public:
 	const std::string id;
+	CallbackManager callbackManager;
 	
 	Layer(std::string id);
 	virtual ~Layer();
 	
 	virtual void render(SDL_Renderer *renderer) = 0;
+	virtual void processEvent(InputEvent *event);
 	
 	JWindow *getWindow();
 	void setWindow(JWindow *window);
