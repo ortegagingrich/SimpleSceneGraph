@@ -13,6 +13,7 @@
 
 class CallbackManager;
 class JEventCallback;
+class Vector2f;
 
 /*
  * Main window class
@@ -35,6 +36,10 @@ public:
 	int getScreenWidth();
 	int getScreenHeight();
 	float getAspectRatio();
+	
+	// Coordinate Transformations
+	void viewportToScreen(float xin, float yin, int &xout, int &yout) const;
+	void screenToViewport(int xin, int yin, float &xout, float &yout) const;
 	
 	
 	SDL_PixelFormat *getFormat();

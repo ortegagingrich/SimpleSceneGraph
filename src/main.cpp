@@ -72,7 +72,6 @@ int main(int argc, char* argv[]){
 						background->setBackgroundImage("assets/test/cracks.png", alpha);
 					}
 				}
-				printf("MouseButtonEvent at (%d, %d).\n", button.x, button.y);
 			}
 		}
 	};
@@ -86,6 +85,28 @@ int main(int argc, char* argv[]){
 	Layer2D *layer2d = new Layer2D("2dlayer");
 	Node2D *rootNode = layer2d->rootNode;
 	window->addLayerTop(layer2d);
+	class CoordinateTest : public JEventCallback {
+	public:
+		Layer2D *layer;
+		CoordinateTest(Layer2D *l): JEventCallback(l), layer(l) {}
+		
+		virtual void callback(InputEvent *jevent){
+			// Temporary work-around
+			SDL_Event event = jevent->sdlEvent;
+			if(event.type == SDL_MOUSEBUTTONUP){
+				SDL_MouseButtonEvent button = event.button;
+				if(button.button == SDL_BUTTON_RIGHT){
+					// Compute World Coordinates
+					float wx, wy;
+					jevent->window->screenToViewport(button.x, button.y, wx, wy);
+					layer->viewport.viewportToWorld(wx, wy, wx, wy);
+					printf("Right click at: [WORLD] (%f, %f), ", wx, wy);
+					printf("[SCREEN] (%d, %d)\n", button.x, button.y);
+				}
+			}
+		}
+	};
+	new CoordinateTest(layer2d);
 	
 	
 	/*

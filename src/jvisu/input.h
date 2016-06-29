@@ -6,15 +6,18 @@
 
 #include "sdl.h"
 
+class JWindow;
+
 
 class InputEvent {
 public:
 	// Factory Method
-	static InputEvent *createInputEvent(SDL_Event event);
+	static InputEvent *createInputEvent(SDL_Event event, JWindow *win);
 	
+	const JWindow *window;
 	SDL_Event sdlEvent;
 	
-	InputEvent(SDL_Event event);
+	InputEvent(SDL_Event event, JWindow *win);
 	
 	bool isConsumed();
 	void consume();

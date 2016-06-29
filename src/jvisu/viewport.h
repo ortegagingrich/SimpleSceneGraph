@@ -18,12 +18,12 @@ public:
 	
 	Viewport2D();
 	
-	Vector2f getCenter();
-	float getRadiusX();
-	float getRadiusY();
-	float getAspectRatio();
-	bool isAspectRatioPreserved();
-	bool isAspectRatioLocked();
+	Vector2f getCenter() const;
+	float getRadiusX() const;
+	float getRadiusY() const;
+	float getAspectRatio() const;
+	bool isAspectRatioPreserved() const;
+	bool isAspectRatioLocked() const;
 	
 	
 	void setCenter(float x, float y);
@@ -40,10 +40,10 @@ public:
 	bool inViewport(float x, float y);
 	bool inViewport(Vector2f point);
 	
-	void worldToViewport(float xin, float yin, float &xout, float &yout);
-	void viewportToWorld(float xin, float yin, float &xout, float &yout);
-	Vector2f worldToViewport(Vector2f in);
-	Vector2f viewportToWorld(Vector2f in);
+	void worldToViewport(float xin, float yin, float &xout, float &yout) const;
+	void viewportToWorld(float xin, float yin, float &xout, float &yout) const;
+	Vector2f worldToViewport(Vector2f in) const;
+	Vector2f viewportToWorld(Vector2f in) const;
 
 protected:
 	void forceAspectRatio(float newRatio);

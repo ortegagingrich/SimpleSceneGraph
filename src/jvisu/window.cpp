@@ -2,6 +2,7 @@
  * Contains the implementation of jvisu windows.
  */
 #include <cstdio>
+#include <cmath>
 #include <list>
 #include <string>
 
@@ -10,6 +11,7 @@
 #include "layer.h"
 #include "callback.h"
 #include "input.h"
+#include "vectormath.h"
 
 
 
@@ -152,7 +154,7 @@ void JWindow::processInput(){
 	// Cycle through all active events
 	while(SDL_PollEvent(&sdlEvent) != 0){
 		
-		InputEvent *event = InputEvent::createInputEvent(sdlEvent);
+		InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
 		
 		
 		// Pass the event on to layers for processing.
@@ -196,6 +198,23 @@ float JWindow::getAspectRatio(){
 }
 
 SDL_PixelFormat *JWindow::getFormat(){ return SDL_GetWindowSurface(window)->format;}
+
+
+/*
+ * Coordinate Transforms
+ */
+
+void JWindow::viewportToScreen(float xin, float yin, int &xout, int &yout) const {
+	xout = std::floor(0.5f * (xin + 1) * screenWidth);
+	yout = std::floor(0.5f * (1 - yin) * screenHeight);
+	if(xout == screenWidth) xout--;
+	if(yout == screenHeight) yout--;
+}
+
+void JWindow::screenToViewport(int xin, int yin, float &xout, float &yout) const {
+	xout = 2 * ((xin + 0.5f) / (float) screenWidth) - 1;
+	yout = 1 - 2 * ((yin + 0.5f) / (float) screenHeight);
+}
 
 
 /*

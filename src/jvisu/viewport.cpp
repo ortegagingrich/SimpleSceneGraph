@@ -21,12 +21,12 @@ Viewport2D::Viewport2D():
 }
 
 
-Vector2f Viewport2D::getCenter(){return Vector2f(centerX, centerY);}
-float Viewport2D::getRadiusX(){return radiusX;}
-float Viewport2D::getRadiusY(){return radiusY;}
-float Viewport2D::getAspectRatio(){return radiusX / radiusY;}
-bool Viewport2D::isAspectRatioPreserved(){return aspectPreserved;}
-bool Viewport2D::isAspectRatioLocked(){return aspectLocked;}
+Vector2f Viewport2D::getCenter() const {return Vector2f(centerX, centerY);}
+float Viewport2D::getRadiusX() const {return radiusX;}
+float Viewport2D::getRadiusY() const {return radiusY;}
+float Viewport2D::getAspectRatio() const {return radiusX / radiusY;}
+bool Viewport2D::isAspectRatioPreserved() const {return aspectPreserved;}
+bool Viewport2D::isAspectRatioLocked() const {return aspectLocked;}
 
 
 void Viewport2D::setCenter(float x, float y){
@@ -125,28 +125,28 @@ bool Viewport2D::inViewport(float x, float y){
 }
 
 
-void Viewport2D::worldToViewport(float xin, float yin, float &xout, float &yout){
+void Viewport2D::worldToViewport(float xin, float yin, float &xout, float &yout) const {
 	Vector2f in(xin, yin);
 	Vector2f out = worldToViewport(in);
 	xout = out.x;
 	yout = out.y;
 }
 
-void Viewport2D::viewportToWorld(float xin, float yin, float &xout, float &yout){
+void Viewport2D::viewportToWorld(float xin, float yin, float &xout, float &yout) const {
 	Vector2f in(xin, yin);
 	Vector2f out = viewportToWorld(in);
 	xout = out.x;
 	yout = out.y;
 }
 
-Vector2f Viewport2D::worldToViewport(Vector2f in){
+Vector2f Viewport2D::worldToViewport(Vector2f in) const {
 	Vector2f offset = in - getCenter();
 	offset.scale(inverseRadiusX, inverseRadiusY);
 	
 	return offset;
 }
 
-Vector2f Viewport2D::viewportToWorld(Vector2f in){
+Vector2f Viewport2D::viewportToWorld(Vector2f in) const {
 	in.scale(radiusX, radiusY);
 	return in + getCenter();
 }
