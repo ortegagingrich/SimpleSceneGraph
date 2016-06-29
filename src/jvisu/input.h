@@ -8,6 +8,9 @@
 
 class JWindow;
 
+/*
+ * Base Class
+ */
 
 class InputEvent {
 public:
@@ -15,16 +18,28 @@ public:
 	static InputEvent *createInputEvent(SDL_Event event, JWindow *win);
 	
 	const JWindow *window;
-	SDL_Event sdlEvent;
-	
-	InputEvent(SDL_Event event, JWindow *win);
+	const SDL_Event sdlEvent;
 	
 	bool isConsumed();
 	void consume();
 
+protected:
+	InputEvent(SDL_Event event, JWindow *win);
 private:
 	bool consumed;
 };
+
+/*
+ * Quit Event
+ */
+
+class QuitEvent : public InputEvent {
+friend class InputEvent;
+protected:
+	QuitEvent(SDL_Event event, JWindow *win);
+};
+
+
 
 
 
