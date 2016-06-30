@@ -79,6 +79,7 @@ int main(int argc, char* argv[]){
 	//delete lc;
 	
 	
+	
 	/*
 	 * Layer2D Test
 	 */
@@ -86,33 +87,25 @@ int main(int argc, char* argv[]){
 	Node2D *rootNode = layer2d->rootNode;
 	window->addLayerTop(layer2d);
 	
-	
-	class CoordinateTest : public JEventCallback {
+	class OnClick : public MouseButtonCallback {
 	public:
 		Layer2D *layer;
-		CoordinateTest(Layer2D *l): JEventCallback(l), layer(l) {}
+		OnClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
 		
-		virtual void callback(InputEvent *jevent){
-			// Temporary work-around
-			SDL_Event event = jevent->sdlEvent;
-			if(event.type == SDL_MOUSEBUTTONUP){
-				SDL_MouseButtonEvent button = event.button;
-				if(button.button == SDL_BUTTON_RIGHT){
-					// Compute World Coordinates
-					float wx, wy;
-					jevent->window->screenToViewport(button.x, button.y, wx, wy);
-					layer->viewport.viewportToWorld(wx, wy, wx, wy);
-					printf("Right click at: [WORLD] (%f, %f), ", wx, wy);
-					printf("[SCREEN] (%d, %d)\n", button.x, button.y);
-				}
+		virtual void callback(MouseButtonEvent *event){
+			if(event->isReleased() && event->isRightButton()){
+				Vector2f wc = event->getWorldCoordinates(layer);
+				
+				printf("Right click at: [WORLD] (%f, %f), ", wc.x, wc.y);
+				printf("[SCREEN] (%d, %d)\n", event->screenX, event->screenY);
 			}
 		}
 	};
-	new CoordinateTest(layer2d);
+	new OnClick(layer2d);
 	
 	
 	/*
-	 * Try to make a quit callback function
+	 * Quit Callback
 	 */
 	class OnExit : public QuitEventCallback {
 	public:

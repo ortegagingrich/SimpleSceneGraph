@@ -10,7 +10,7 @@
 
 
 class JWindow;
-class Viewport2D;
+class Layer2D;
 
 /*
  * Base Class
@@ -52,7 +52,7 @@ public:
 	virtual std::string getType(){return "MOUSEBUTTON";};
 	
 	Vector2f getViewportCoordinates(){return viewportCoordinates;};
-	Vector2f getWorldCoordinates(const Viewport2D *viewport);
+	Vector2f getWorldCoordinates(const Layer2D *layer);
 	
 	bool isPressed();
 	bool isReleased();

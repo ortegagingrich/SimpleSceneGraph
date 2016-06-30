@@ -32,6 +32,19 @@ protected:
 };
 
 
+class MouseButtonCallback : public JEventCallback {
+public:
+	MouseButtonCallback(JWindow *window);
+	MouseButtonCallback(Layer *layer);
+	MouseButtonCallback(ComponentInput2D *component);
+	
+	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
+	virtual void callback(MouseButtonEvent *event) = 0;
+protected:
+	virtual void precallback(InputEvent *event);
+};
+
+
 class QuitEventCallback : public JEventCallback {
 public:
 	QuitEventCallback(JWindow *window);

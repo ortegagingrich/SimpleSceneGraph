@@ -48,9 +48,9 @@ MouseButtonEvent::MouseButtonEvent(SDL_Event event, JWindow *win):
 }
 
 
-Vector2f MouseButtonEvent::getWorldCoordinates(const Viewport2D *viewport){
+Vector2f MouseButtonEvent::getWorldCoordinates(const Layer2D *layer){
 	Vector2f viewportCoordinates = getViewportCoordinates();
-	return viewport->viewportToWorld(viewportCoordinates);
+	return layer->viewport.viewportToWorld(viewportCoordinates);
 }
 
 
