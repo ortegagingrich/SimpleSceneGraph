@@ -9,6 +9,7 @@
 #include "callback.h"
 
 
+class Layer2D;
 class Renderable;
 class InputEvent;
 
@@ -77,15 +78,20 @@ public:
 	Node2D();
 	virtual ~Node2D(); // Deletes all child components
 	
-	virtual void collectRenderables(std::list<Renderable*> &render_list);
-	virtual void processEvent(InputEvent *event);
-	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);
 	std::list<Component2D*> getChildren() {return children;}
-	
+
+	virtual void collectRenderables(std::list<Renderable*> &render_list);
+	virtual void processEvent(InputEvent *event);
 private:
 	std::list<Component2D*> children;
+};
+
+
+class NodeInput2D : public Node2D, public ComponentInput2D {
+public:
+	virtual void processEvent(InputEvent *event);
 };
 
 

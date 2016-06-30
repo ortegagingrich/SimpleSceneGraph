@@ -85,6 +85,8 @@ int main(int argc, char* argv[]){
 	Layer2D *layer2d = new Layer2D("2dlayer");
 	Node2D *rootNode = layer2d->rootNode;
 	window->addLayerTop(layer2d);
+	
+	
 	class CoordinateTest : public JEventCallback {
 	public:
 		Layer2D *layer;

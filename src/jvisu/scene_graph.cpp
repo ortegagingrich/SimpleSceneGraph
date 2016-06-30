@@ -158,3 +158,13 @@ void Node2D::detachChild(Component2D *child){
 }
 
 
+/*
+ * NodeInput2D
+ */
+
+void NodeInput2D::processEvent(InputEvent *event){
+	ComponentInput2D::processEvent(event);
+	Node2D::processEvent(event);
+}
+
+

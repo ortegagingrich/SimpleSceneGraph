@@ -11,6 +11,7 @@ class Layer;
 class ComponentInput2D;
 class InputEvent;
 class QuitEvent;
+class MouseButtonEvent;
 
 class CallbackManager;
 
@@ -45,7 +46,7 @@ protected:
 
 
 /*
- * Callback Manager for JWindows
+ * Base class for Callback Managers
  * (Note: implementation defined in callback.cpp)
  */
 class CallbackManager {
@@ -55,10 +56,25 @@ public:
 	
 	void registerCallback(JEventCallback *callback);
 	void unregisterCallback(JEventCallback *callback);
-	void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event);
 private:
 	// Registered Callbacks
 	std::list<JEventCallback*> registered;
+};
+
+/*
+ * Special subclass of callback manager specifically for windows.
+ * TopCallbackManager are also responsible for logging input for multi-event
+ * phenomena (like double-clicking or dragging.)
+ */
+class TopCallbackManager: public CallbackManager {
+friend class MouseButtonEvent;
+public:
+	virtual void processEvent(InputEvent *event);
+private:
+	// Variables used to log input events
+	
+	
 };
 
 

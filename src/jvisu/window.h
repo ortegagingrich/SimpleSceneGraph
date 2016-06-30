@@ -22,7 +22,7 @@ class JWindow {
 public:
 	const bool hardwareAccelerated;
 	
-	CallbackManager callbackManager;
+	TopCallbackManager callbackManager;
 	
 	JWindow(int sx, int sy, bool ha);
 	~JWindow();

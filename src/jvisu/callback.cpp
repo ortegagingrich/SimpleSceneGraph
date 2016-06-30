@@ -46,10 +46,11 @@ void JEventCallback::precallback(InputEvent *event){
 
 QuitEventCallback::QuitEventCallback(JWindow *window): JEventCallback(window){}
 QuitEventCallback::QuitEventCallback(Layer *layer): JEventCallback(layer){}
-QuitEventCallback::QuitEventCallback(ComponentInput2D *component): JEventCallback(component){}
+QuitEventCallback::QuitEventCallback(ComponentInput2D *component):
+	JEventCallback(component){}
 
 void QuitEventCallback::precallback(InputEvent *event){
-	if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
+	if(event->getType() == "QUIT" && !event->isConsumed()){
 		callback((QuitEvent*) event);
 	}
 }
@@ -57,7 +58,7 @@ void QuitEventCallback::precallback(InputEvent *event){
 
 
 /*
- * Source for Callback Manager (defined in window.h)
+ * Source for CallbackManager (defined in window.h)
  */
 
 CallbackManager::CallbackManager(){}
@@ -87,4 +88,17 @@ void CallbackManager::processEvent(InputEvent *event){
 		(*i)->precallback(event);
 	}
 }
+
+/*
+ * Souce for TopCallbackManager
+ */
+
+void TopCallbackManager::processEvent(InputEvent *event){
+	//TODO: Take care of input logging, etc. here
+	
+	// Call super method
+	CallbackManager::processEvent(event);
+}
+
+
 

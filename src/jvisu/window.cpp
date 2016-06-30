@@ -157,6 +157,10 @@ void JWindow::processInput(){
 		InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
 		
 		
+		// Pass the event to callbacks
+		callbackManager.processEvent(event);
+		
+		
 		// Pass the event on to layers for processing.
 		std::list<Layer*>::iterator iter;
 		for(iter = layers.begin(); iter != layers.end(); iter++){
@@ -165,8 +169,6 @@ void JWindow::processInput(){
 		}
 		
 		
-		// Pass the event to callbacks
-		callbackManager.processEvent(event);
 		
 		// Internal Handling of events
 		if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
