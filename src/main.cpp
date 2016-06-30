@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cmath>
 
 #ifdef __linux__
 #include <unistd.h>
@@ -33,6 +34,24 @@ int main(int argc, char* argv[]){
 	LayerBackground *background = (LayerBackground*) window->getLayerById("background");
 	background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
 	
+	class OnLeftClick : public MouseButtonCallback {
+	public:
+		LayerBackground *background;
+		
+		OnLeftClick(LayerBackground *bg): MouseButtonCallback(bg), background(bg) {}
+		
+		virtual void callback(MouseButtonEvent *event){
+			if(event->isLeftButton()){
+				Vector2f vc = event->getViewportCoordinates();
+				Uint8 alpha = (Uint8) 30 + std::abs(vc.norm() * 140);
+				background->clearBackgroundImage();
+				background->setBackgroundImage("assets/test/cracks.png", alpha);
+			}
+		}
+	};
+	new OnLeftClick(background);
+	
+	
 	class LayerController : public JEventCallback {
 	public:
 		LayerBackground *background;
@@ -60,19 +79,6 @@ int main(int argc, char* argv[]){
 				}
 				
 			}
-			/*
-			 * Mouse Event to toggle the background image
-			 */
-			if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP){
-				SDL_MouseButtonEvent button = event.button;
-				if(button.state == SDL_RELEASED || button.state == SDL_PRESSED){
-					if(button.button == SDL_BUTTON_LEFT){
-						Uint8 alpha = (Uint8) button.y % 255;
-						background->clearBackgroundImage();
-						background->setBackgroundImage("assets/test/cracks.png", alpha);
-					}
-				}
-			}
 		}
 	};
 	LayerController *lc = new LayerController(background);
@@ -87,10 +93,10 @@ int main(int argc, char* argv[]){
 	Node2D *rootNode = layer2d->rootNode;
 	window->addLayerTop(layer2d);
 	
-	class OnClick : public MouseButtonCallback {
+	class OnRightClick : public MouseButtonCallback {
 	public:
 		Layer2D *layer;
-		OnClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
+		OnRightClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
 		
 		virtual void callback(MouseButtonEvent *event){
 			if(event->isReleased() && event->isRightButton()){
@@ -101,7 +107,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	};
-	new OnClick(layer2d);
+	new OnRightClick(layer2d);
 	
 	
 	/*
