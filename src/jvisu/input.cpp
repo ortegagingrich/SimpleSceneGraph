@@ -16,10 +16,15 @@ InputEvent *InputEvent::createInputEvent(SDL_Event event, JWindow *win){
 	if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP){
 		return new MouseButtonEvent(event, win);
 	}
+	if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP){
+		return new KeyButtonEvent(event, win);
+	}
 	
 	// If all else fails, just make the generic type
 	return new InputEvent(event, win);
 }
+
+
 
 InputEvent::InputEvent(SDL_Event event, JWindow *win):
 	window(win),
@@ -33,11 +38,30 @@ void InputEvent::consume(){consumed = true;}
 
 
 /*
+ * Source for KeyButtonEvent
+ */
+
+KeyButtonEvent::KeyButtonEvent(SDL_Event event, JWindow*win):
+	ButtonEvent(event, win),
+	key(event.key.keysym.sym)
+{}
+
+
+bool KeyButtonEvent::isPressed(){
+	return sdlEvent.key.state == SDL_PRESSED;
+}
+
+bool KeyButtonEvent::isReleased(){
+	return sdlEvent.key.state == SDL_RELEASED;
+}
+
+
+/*
  * Source for MouseButtonEvent
  */
 
 MouseButtonEvent::MouseButtonEvent(SDL_Event event, JWindow *win):
-	InputEvent(event, win),
+	ButtonEvent(event, win),
 	screenX(event.button.x),
 	screenY(event.button.y)
 {

@@ -39,12 +39,42 @@ private:
 };
 
 
+/*
+ * Abstract Button Events
+ */
+
+class ButtonEvent : public InputEvent {
+public:
+	virtual bool isPressed() = 0;
+	virtual bool isReleased() = 0;
+protected:
+	ButtonEvent(SDL_Event event, JWindow *win): InputEvent(event, win) {};
+};
+
+
+/*
+ * Keyboard Events
+ */
+
+class KeyButtonEvent : public ButtonEvent {
+friend class InputEvent;
+public:
+	const SDL_Keycode key;
+	
+	virtual std::string getType(){return "KEYBUTTON";};
+	
+	virtual bool isPressed();
+	virtual bool isReleased();
+protected:
+	KeyButtonEvent(SDL_Event event, JWindow *win);
+};
+
 
 /*
  * Mouse Events
  */
 
-class MouseButtonEvent : public InputEvent {
+class MouseButtonEvent : public ButtonEvent {
 friend class InputEvent;
 public:
 	const int screenX, screenY;
@@ -54,8 +84,8 @@ public:
 	Vector2f getViewportCoordinates(){return viewportCoordinates;};
 	Vector2f getWorldCoordinates(const Layer2D *layer);
 	
-	bool isPressed();
-	bool isReleased();
+	virtual bool isPressed();
+	virtual bool isReleased();
 	
 	bool isLeftButton();
 	bool isRightButton();
