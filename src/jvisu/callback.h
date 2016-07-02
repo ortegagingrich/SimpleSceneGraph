@@ -11,6 +11,7 @@ class Layer;
 class ComponentInput2D;
 class InputEvent;
 class QuitEvent;
+class KeyButtonEvent;
 class MouseButtonEvent;
 
 class CallbackManager;
@@ -28,6 +29,19 @@ public:
 protected:
 	CallbackManager *boundManager;
 	
+	virtual void precallback(InputEvent *event);
+};
+
+
+class KeyButtonCallback : public JEventCallback {
+public:
+	KeyButtonCallback(JWindow *window);
+	KeyButtonCallback(Layer *layer);
+	KeyButtonCallback(ComponentInput2D *component);
+	
+	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
+	virtual void callback(KeyButtonEvent *event) = 0;
+protected:
 	virtual void precallback(InputEvent *event);
 };
 

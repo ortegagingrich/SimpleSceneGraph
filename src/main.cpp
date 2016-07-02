@@ -34,6 +34,7 @@ int main(int argc, char* argv[]){
 	LayerBackground *background = (LayerBackground*) window->getLayerById("background");
 	background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
 	
+	
 	class OnLeftClick : public MouseButtonCallback {
 	public:
 		LayerBackground *background;
@@ -52,37 +53,23 @@ int main(int argc, char* argv[]){
 	new OnLeftClick(background);
 	
 	
-	class LayerController : public JEventCallback {
+	class OnSpaceBar : public KeyButtonCallback {
 	public:
 		LayerBackground *background;
 		
-		LayerController(LayerBackground *bg):
-			JEventCallback(bg),
-			background(bg) {};
-		virtual ~LayerController(){};
+		OnSpaceBar(LayerBackground *bg): KeyButtonCallback(bg), background(bg) {}
 		
-		virtual void callback(InputEvent *jevent){
-			//Temporary Work-around:
-			SDL_Event event = jevent->sdlEvent;
-			
-			/*
-			 * Keyboard Event (space) for changing the background color
-			 */
-			if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP){
-				SDL_KeyboardEvent key = event.key;
-				if(key.keysym.sym == SDLK_SPACE){
-					if(key.state == SDL_PRESSED){
-						background->setBackgroundColor(0xa1, 0xaa, 0xdd, 0x00);
-					}else{
-						background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
-					}
+		virtual void callback(KeyButtonEvent *event){
+			if(event->key == SDLK_SPACE){
+				if(event->isPressed()){
+					background->setBackgroundColor(0xa1, 0xaa, 0xdd, 0x00);
+				}else{
+					background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
 				}
-				
 			}
 		}
 	};
-	LayerController *lc = new LayerController(background);
-	//delete lc;
+	new OnSpaceBar(background);
 	
 	
 	
