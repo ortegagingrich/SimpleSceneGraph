@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 
 TEST(TrivialTest, PrintStuff){
-	printf("I am a God!\n");
+	//printf("I am a God!\n");
 	SUCCEED();
 }
 
