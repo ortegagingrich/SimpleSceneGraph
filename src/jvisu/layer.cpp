@@ -92,11 +92,11 @@ void Layer2D::render(SDL_Renderer *renderer){
 }
 
 void Layer2D::processEvent(InputEvent *event){
-	// Call the super method to process the event with this layer
-	Layer::processEvent(event);
-	
 	// Pass the event down the scene graph
 	rootNode->processEvent(event);
+	
+	// Call the super method to process the event with this layer
+	Layer::processEvent(event);
 }
 
 

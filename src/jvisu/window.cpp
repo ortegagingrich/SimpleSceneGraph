@@ -164,16 +164,18 @@ void JWindow::processEvent(SDL_Event sdlEvent){
 }
 
 void JWindow::processEvent(InputEvent *event){
-	// Pass the event to callbacks
-	callbackManager.processEvent(event);
-	
 	
 	// Pass the event on to layers for processing.
-	std::list<Layer*>::iterator iter;
-	for(iter = layers.begin(); iter != layers.end(); iter++){
+	std::list<Layer*>::reverse_iterator iter;
+	// Iterate backwards (reverse order from rendering)
+	for(iter = layers.rbegin(); iter != layers.rend(); iter++){
 		Layer *layer = *iter;
 		layer->processEvent(event);
 	}
+	
+	
+	// Pass the event to callbacks
+	callbackManager.processEvent(event);
 	
 	
 	// Internal Handling of events
