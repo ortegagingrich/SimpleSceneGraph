@@ -59,7 +59,7 @@ private:
 };
 
 
-class ComponentInput2D : public Component2D {
+class ComponentInput2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have input callbacks registered to them
 	 */
@@ -70,7 +70,7 @@ public:
 };
 
 
-class Node2D : public Component2D {
+class Node2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have child components attached to them
 	 */
