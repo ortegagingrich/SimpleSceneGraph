@@ -49,7 +49,7 @@ KeyButtonCallback::KeyButtonCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
 void KeyButtonCallback::precallback(InputEvent *event){
-	if(event->getType() == "KEYBUTTON"){
+	if(event->getType() == "KEYBUTTON" && !event->isConsumed()){
 		callback((KeyButtonEvent*) event);
 	}
 }
@@ -66,7 +66,7 @@ MouseButtonCallback::MouseButtonCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
 void MouseButtonCallback::precallback(InputEvent *event){
-	if(event->getType() == "MOUSEBUTTON"){
+	if(event->getType() == "MOUSEBUTTON" && !event->isConsumed()){
 		callback((MouseButtonEvent*) event);
 	}
 }
