@@ -7,6 +7,7 @@
 
 #include "window.h"
 #include "layer.h"
+#include "scene_graph.h"
 #include "callback.h"
 #include "input.h"
 
