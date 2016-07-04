@@ -153,30 +153,33 @@ void JWindow::processInput(){
 	
 	// Cycle through all active events
 	while(SDL_PollEvent(&sdlEvent) != 0){
-		
-		InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
-		
-		
-		// Pass the event to callbacks
-		callbackManager.processEvent(event);
-		
-		
-		// Pass the event on to layers for processing.
-		std::list<Layer*>::iterator iter;
-		for(iter = layers.begin(); iter != layers.end(); iter++){
-			Layer *layer = *iter;
-			layer->processEvent(event);
-		}
-		
-		
-		
-		// Internal Handling of events
-		if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
-			printf("Quitting?\n");
-			dispose();
-		}
-		
-		delete event;
+		processEvent(sdlEvent);
+	}
+}
+
+void JWindow::processEvent(SDL_Event sdlEvent){
+	InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
+	processEvent(event);
+	delete event;
+}
+
+void JWindow::processEvent(InputEvent *event){
+	// Pass the event to callbacks
+	callbackManager.processEvent(event);
+	
+	
+	// Pass the event on to layers for processing.
+	std::list<Layer*>::iterator iter;
+	for(iter = layers.begin(); iter != layers.end(); iter++){
+		Layer *layer = *iter;
+		layer->processEvent(event);
+	}
+	
+	
+	// Internal Handling of events
+	if(event->sdlEvent.type == SDL_QUIT && !event->isConsumed()){
+		printf("Quitting?\n");
+		dispose();
 	}
 }
 

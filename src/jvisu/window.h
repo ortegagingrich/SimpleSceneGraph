@@ -52,6 +52,10 @@ public:
 	void removeLayer(Layer *layer);
 	Layer *getLayerById(std::string id);
 	std::list<Layer*> getLayers();
+	
+	// Mainly for testing purposes:
+	void processEvent(InputEvent *event);
+	void processEvent(SDL_Event event);
 
 private:
 	SDL_Window *window;
