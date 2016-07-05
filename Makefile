@@ -71,15 +71,15 @@ exe: $(EXE)
 run: $(EXE)
 	./$(EXE)
 
-demo_simple:
+demo_%:
 	make $(LIBRARY)
-	mkdir -p bin/examples/demo_simple
-	$(eval in=$(shell find examples/demo_simple -type f -iname '*.cpp'))
-	$(eval hs=$(shell find examples/demo_simple -type f -iname '*.h'))
+	mkdir -p bin/examples/$@
+	$(eval in=$(shell find examples/$@ -type f -iname '*.cpp'))
+	$(eval hs=$(shell find examples/$@ -type f -iname '*.h'))
 	$(eval out=$(subst examples,bin/examples,$(subst .cpp,.o,$(in))))
 	$(CC) -Isrc/jvisu -c $(in) -o $(out)
-	$(LINK) $(out) $(LIBRARY) $(LFLAGS) -o bin/examples/demo_simple/demo_simple
-	./bin/examples/demo_simple/demo_simple
+	$(LINK) $(out) $(LIBRARY) $(LFLAGS) -o bin/examples/$@/$@
+	./bin/examples/$@/$@
 
 .phony: test
 test: $(TEST_EXE)
