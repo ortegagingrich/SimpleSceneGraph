@@ -1,3 +1,7 @@
+/**
+ * A simple demo demonstrating some input callbacks and background layers.
+ */
+
 #include <cstdio>
 #include <cmath>
 
@@ -23,7 +27,10 @@ const bool USE_HARDWARE_ACCELERATION = true;
  * This function is the primary entry point for demo/testing purposes.
  */
 int main(int argc, char* argv[]){
-	printf("\nEntry Point for jvisu demos.\n");
+	printf("\nSimple Demo for jvisu.\n");
+	printf("\tPress Space to toggle background color.\n");
+	printf("\tLeft Click to toggle background image.\n");
+	printf("\tRight Click to print both screen and \"world\" coordinates.\n");
 	
 	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
 	

@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=
+CFLAGS=-Isrc/jvisu
 WFLAGS=-Wall
 LFLAGS=-lSDL2 -lSDL2_image
 TESTFLAGS=-lgtest -lgtest_main
@@ -9,6 +9,7 @@ AFLAGS=rcs
 
 SRC_FOLDER=src/jvisu
 TEST_FOLDER=test
+EXAMPLE_FOLDER=examples
 BIN_FOLDER=bin
 BUILD_FOLDER=build
 EXE=$(BIN_FOLDER)/exe
@@ -39,7 +40,7 @@ $(BIN_FOLDER)/jvisu/%.o : $(SRC_FOLDER)/%.c* $(LIB_HEADERS)
 $(BIN_FOLDER)/test/%.o : $(TEST_FOLDER)/%.c* $(LIB_HEADERS) $(TEST_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_FOLDER)/main.o: src/main.cpp $(LIB_HEADERS)
+$(BIN_FOLDER)/main.o: src/main.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
@@ -66,11 +67,19 @@ lib: $(LIBRARY) libinclude
 .phony: exe
 exe: $(EXE)
 
-
 .phony: run
 run: $(EXE)
 	./$(EXE)
 
+demo_simple:
+	make $(LIBRARY)
+	mkdir -p bin/examples/demo_simple
+	$(eval in=$(shell find examples/demo_simple -type f -iname '*.cpp'))
+	$(eval hs=$(shell find examples/demo_simple -type f -iname '*.h'))
+	$(eval out=$(subst examples,bin/examples,$(subst .cpp,.o,$(in))))
+	$(CC) -Isrc/jvisu -c $(in) -o $(out)
+	$(LINK) $(out) $(LIBRARY) $(LFLAGS) -o bin/examples/demo_simple/demo_simple
+	./bin/examples/demo_simple/demo_simple
 
 .phony: test
 test: $(TEST_EXE)
@@ -80,6 +89,7 @@ test: $(TEST_EXE)
 .phony: clobber
 clobber:
 	rm -f $(shell find $(BIN_FOLDER) -type f -iname '*.o')
+	rm -rf $(BIN_FOLDER)/examples/*
 	rm -f $(EXE)
 	rm -f $(TEST_EXE)
 	rm -f $(LIBRARY)
