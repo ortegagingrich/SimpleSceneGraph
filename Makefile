@@ -72,7 +72,7 @@ run: $(EXE)
 	./$(EXE)
 
 demo_%:
-	make $(LIBRARY)
+	make lib
 	mkdir -p bin/examples/$@
 	$(eval in=$(shell find examples/$@ -type f -iname '*.cpp'))
 	$(eval hs=$(shell find examples/$@ -type f -iname '*.h'))
