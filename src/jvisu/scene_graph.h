@@ -4,6 +4,8 @@
 #ifndef SCENE_GRAPH_H
 #define SCENE_GRAPH_H
 
+#include "shared_exports.h"
+
 #include <list>
 #include "vectormath.h"
 #include "callback.h"
@@ -16,7 +18,7 @@ class InputEvent;
 
 class Node2D;
 
-class Component2D {
+class SHARED_EXPORT Component2D {
 	/**
 	 * Abstract base class of 2D components.
 	 */
@@ -59,7 +61,7 @@ private:
 };
 
 
-class ComponentInput2D : virtual public Component2D {
+class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have input callbacks registered to them
 	 */
@@ -70,7 +72,7 @@ public:
 };
 
 
-class Node2D : virtual public Component2D {
+class SHARED_EXPORT Node2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have child components attached to them
 	 */
@@ -89,7 +91,7 @@ private:
 };
 
 
-class NodeInput2D : public Node2D, public ComponentInput2D {
+class SHARED_EXPORT NodeInput2D : public Node2D, public ComponentInput2D {
 public:
 	virtual void processEvent(InputEvent *event);
 };

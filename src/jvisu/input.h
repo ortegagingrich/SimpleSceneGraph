@@ -4,6 +4,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "shared_exports.h"
+
 #include <string>
 #include "sdl.h"
 #include "vectormath.h"
@@ -16,7 +18,7 @@ class Layer2D;
  * Base Class
  */
 
-class InputEvent {
+class SHARED_EXPORT InputEvent {
 public:
 	// Factory Method
 	static InputEvent *createInputEvent(SDL_Event event, JWindow *win);
@@ -43,7 +45,7 @@ private:
  * Abstract Button Events
  */
 
-class ButtonEvent : public InputEvent {
+class SHARED_EXPORT ButtonEvent : public InputEvent {
 public:
 	virtual bool isPressed() = 0;
 	virtual bool isReleased() = 0;
@@ -56,7 +58,7 @@ protected:
  * Keyboard Events
  */
 
-class KeyButtonEvent : public ButtonEvent {
+class SHARED_EXPORT KeyButtonEvent : public ButtonEvent {
 friend class InputEvent;
 public:
 	const SDL_Keycode key;
@@ -74,7 +76,7 @@ protected:
  * Mouse Events
  */
 
-class MouseButtonEvent : public ButtonEvent {
+class SHARED_EXPORT MouseButtonEvent : public ButtonEvent {
 friend class InputEvent;
 public:
 	const int screenX, screenY;
@@ -103,7 +105,7 @@ protected:
  * Quit Event
  */
 
-class QuitEvent : public InputEvent {
+class SHARED_EXPORT QuitEvent : public InputEvent {
 friend class InputEvent;
 public:
 	virtual std::string getType(){return "QUIT";};

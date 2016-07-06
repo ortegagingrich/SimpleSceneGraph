@@ -5,6 +5,8 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
+#include "shared_exports.h"
+
 #include "vectormath.h"
 
 
@@ -12,7 +14,7 @@ class Layer2D;
 
 
 //TODO: Implement all of this
-class Viewport2D {
+class SHARED_EXPORT Viewport2D {
 friend class Layer2D;
 public:
 	

@@ -5,6 +5,8 @@
 #ifndef VECTORMATH_H
 #define VECTORMATH_H
 
+#include "shared_exports.h"
+
 /*
  * Constants
  */
@@ -19,7 +21,7 @@ const double RAD_2_DEG = 180.0 / M_PI;
 /*
  * Data Structures
  */
-class Vector2f {
+class SHARED_EXPORT Vector2f {
 public:
 	float x, y;
 	
@@ -65,7 +67,7 @@ public:
 };
 
 // Other Overloaded Operators
-Vector2f operator*(float s, Vector2f);
+SHARED_EXPORT Vector2f operator*(float s, Vector2f);
 
 //TODO: Vector3f
 

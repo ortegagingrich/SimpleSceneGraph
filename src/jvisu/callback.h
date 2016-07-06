@@ -1,6 +1,8 @@
 #ifndef CALLBACK_H
 #define CALLBACK_H
 
+#include "shared_exports.h"
+
 #include "sdl.h"
 
 /*
@@ -17,7 +19,7 @@ class MouseButtonEvent;
 class CallbackManager;
 
 
-class JEventCallback {
+class SHARED_EXPORT JEventCallback {
 friend class CallbackManager;
 public:
 	JEventCallback(JWindow *window);
@@ -33,7 +35,7 @@ protected:
 };
 
 
-class KeyButtonCallback : public JEventCallback {
+class SHARED_EXPORT KeyButtonCallback : public JEventCallback {
 public:
 	KeyButtonCallback(JWindow *window);
 	KeyButtonCallback(Layer *layer);
@@ -46,7 +48,7 @@ protected:
 };
 
 
-class MouseButtonCallback : public JEventCallback {
+class SHARED_EXPORT MouseButtonCallback : public JEventCallback {
 public:
 	MouseButtonCallback(JWindow *window);
 	MouseButtonCallback(Layer *layer);
@@ -59,7 +61,7 @@ protected:
 };
 
 
-class QuitEventCallback : public JEventCallback {
+class SHARED_EXPORT QuitEventCallback : public JEventCallback {
 public:
 	QuitEventCallback(JWindow *window);
 	QuitEventCallback(Layer *layer);
@@ -76,7 +78,7 @@ protected:
  * Base class for Callback Managers
  * (Note: implementation defined in callback.cpp)
  */
-class CallbackManager {
+class SHARED_EXPORT CallbackManager {
 public:
 	CallbackManager();
 	~CallbackManager();
@@ -94,7 +96,7 @@ private:
  * TopCallbackManager are also responsible for logging input for multi-event
  * phenomena (like double-clicking or dragging.)
  */
-class TopCallbackManager: public CallbackManager {
+class SHARED_EXPORT TopCallbackManager: public CallbackManager {
 friend class MouseButtonEvent;
 public:
 	virtual void processEvent(InputEvent *event);

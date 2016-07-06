@@ -11,4 +11,8 @@
 #include "callback.h"
 #include "input.h"
 
+
+// Hopefully this can be engineered out later
+#include "sdl.h"
+
 #endif

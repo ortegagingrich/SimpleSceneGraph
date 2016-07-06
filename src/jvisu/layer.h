@@ -4,6 +4,8 @@
 #ifndef LAYER_H
 #define LAYER_H
 
+#include "shared_exports.h"
+
 #include <list>
 #include <string>
 #include "sdl.h"
@@ -19,7 +21,7 @@ class Renderable;
 
 
 // Abstract base class for layers
-class Layer {
+class SHARED_EXPORT Layer {
 public:
 	const std::string id;
 	CallbackManager callbackManager;
@@ -38,7 +40,7 @@ protected:
 };
 
 
-class LayerBackground: public Layer {
+class SHARED_EXPORT LayerBackground: public Layer {
 public:
 	LayerBackground(std::string id);
 	LayerBackground(std::string id, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
@@ -60,7 +62,7 @@ private:
 
 
 // Put Viewport Here!!! (It's a good idea, I promise.)
-class Layer2D: public Layer {
+class SHARED_EXPORT Layer2D: public Layer {
 public:
 	Viewport2D viewport;
 	

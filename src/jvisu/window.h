@@ -4,6 +4,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "shared_exports.h"
+
 #include <list>
 #include <string>
 #include "sdl.h"
@@ -18,7 +20,7 @@ class Vector2f;
 /*
  * Main window class
  */
-class JWindow {
+class SHARED_EXPORT JWindow {
 public:
 	const bool hardwareAccelerated;
 	
