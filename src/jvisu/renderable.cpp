@@ -3,6 +3,7 @@
 #include "sdl.h"
 #include "renderable.h"
 #include "window.h"
+#include "geometry.h"
 
 
 
@@ -55,7 +56,7 @@ RenderablePoint *RenderablePoint::createRenderablePoint(float x, float y,
 	                     float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
 {
 	// Make a RenderablePoint only if the provided coordinates are onscreen.
-	if(x >= -1 && x <= 1 && y >= -1 && y <= 1){
+	if(calculate_intersection(Rect2f(-1, 1, -1, 1), Vector2f(x, y))){
 		return new RenderablePoint(x, y, z, w, cr, cg, cb, ca);
 	}else{
 		return NULL;

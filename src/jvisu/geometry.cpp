@@ -84,6 +84,12 @@ bool Rect2f::operator==(Rect2f rect) const {
  * Intersection Methods
  */
 
+bool calculate_intersection(Rect2f rect, Vector2f point){
+	float x = point.x;
+	float y = point.y;
+	return x >= rect.xMin && x <= rect.xMax && y >= rect.yMin && y <= rect.yMax;
+}
+
 bool calculate_intersection(Rect2f rect, Line2f line){
 	Line2f dummy;
 	return calculate_intersection(rect, line, dummy);

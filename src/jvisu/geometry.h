@@ -46,9 +46,9 @@ public:
 bool calculate_intersection(Line2f l, Vector2f v, float tolerance); //TODO
 bool calculate_intersection(Line2f l1, Line2f l2);                  //TODO
 bool calculate_intersection(Line2f l1, Line2f l2, Vector2f &out);   //TODO
-bool calculate_intersection(Rect2f r, Vector2f v);                  //TODO
-bool calculate_intersection(Rect2f r, Line2f l);                    //TODO
-bool calculate_intersection(Rect2f r, Line2f l, Line2f &out);       //TODO
+bool calculate_intersection(Rect2f r, Vector2f v);
+bool calculate_intersection(Rect2f r, Line2f l);
+bool calculate_intersection(Rect2f r, Line2f l, Line2f &out);
 bool calculate_intersection(Rect2f r1, Rect2f r2);                  //TODO
 bool calculate_intersection(Rect2f r1, Rect2f r2, Rect2f &out);     //TODO
 
