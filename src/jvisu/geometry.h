@@ -15,6 +15,10 @@ public:
 	Line2f(float xs, float ys, float xe, float ye);
 	
 	Vector2f getMidpoint() const;
+	
+	void set(float xs, float ys, float xe, float ye);
+	
+	bool operator==(Line2f line) const;
 };
 
 
@@ -28,6 +32,10 @@ public:
 	Rect2f(Vector2f point1, Vector2f point2);
 	
 	Vector2f getCenter() const;
+	
+	void set(float minx, float maxx, float miny, float maxy);
+	
+	bool operator==(Rect2f rect) const;
 };
 
 

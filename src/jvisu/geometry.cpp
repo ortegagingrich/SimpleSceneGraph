@@ -9,6 +9,16 @@
 
 Line2f::Line2f(Vector2f s, Vector2f e): startPoint(s), endPoint(e){}
 Line2f::Line2f(float xs, float ys, float xe, float ye){
+	set(xs, ys, xe, ye);
+}
+
+
+Vector2f Line2f::getMidpoint() const {
+	return 0.5 * (startPoint + endPoint);
+}
+
+
+void Line2f::set(float xs, float ys, float xe, float ye){
 	startPoint.x = xs;
 	startPoint.y = ys;
 	endPoint.x = xe;
@@ -16,8 +26,13 @@ Line2f::Line2f(float xs, float ys, float xe, float ye){
 }
 
 
-Vector2f Line2f::getMidpoint() const {
-	return 0.5 * (startPoint + endPoint);
+bool Line2f::operator==(Line2f line) const {
+	if(startPoint == line.startPoint){
+		return endPoint == line.endPoint;
+	}else if(endPoint == line.startPoint){
+		return startPoint == line.endPoint;
+	}
+	return false;
 }
 
 
@@ -48,6 +63,19 @@ Vector2f Rect2f::getCenter() const {
 	out.x = 0.5 * (xMin + xMax);
 	out.y = 0.5 * (yMin + yMax);
 	return out;
+}
+
+
+void Rect2f::set(float minx, float maxx, float miny, float maxy){
+	xMin = minx;
+	xMax = maxx;
+	yMin = miny;
+	yMax = maxy;
+}
+
+
+bool Rect2f::operator==(Rect2f rect) const {
+	return xMax == rect.xMax && xMin == rect.xMin && yMax == rect.yMax && yMin == rect.yMin;
 }
 
 
