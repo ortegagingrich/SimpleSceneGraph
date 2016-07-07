@@ -75,7 +75,7 @@ void Layer2D::render(SDL_Renderer *renderer){
 	
 	// Construct list of rendererables by recursively traversing the scene graph
 	renderables.clear();
-	rootNode->collectRenderables(renderables);
+	rootNode->collectRenderables(renderables, viewport);
 	
 	// Sort the render list by z value
 	sort_renderables_by_z_level(renderables);

@@ -10,8 +10,17 @@
  * RenderableLine
  */
 
+RenderableLine *RenderableLine::createRenderableLine(float xi1, float yi1,
+           float xi2, float yi2, float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
+{
+	// TODO: clip viewport coordinates to the actual viewport
+	
+	return NULL;
+}
+
+
 RenderableLine::RenderableLine(float xi1, float yi1, float xi2, float yi2, float z,
-                               float w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca):
+                               int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca):
 	Renderable(z),
 	x1(xi1), x2(xi2), y1(yi1), y2(yi2),
 	width(w),
@@ -32,7 +41,7 @@ void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
 	SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
 	
 	// TODO: Actually implement this part!!!
-	printf("Pretending to draw line of width %f from (%f, %f) to (%f, %f) . . .",
+	printf("Pretending to draw line of width %d from (%f, %f) to (%f, %f) . . .",
 	       width, x1, y1, x2, y2);
 	printf("Actual Coordiantes: (%d, %d) -> (%d, %d)\n", px1, py1, px2, py2);
 }
@@ -42,13 +51,24 @@ void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
 /*
  * RenderablePoint
  */
+RenderablePoint *RenderablePoint::createRenderablePoint(float x, float y,
+	                     float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
+{
+	// Make a point only if it is in the correct range.
+	if(x >= -1 && x <= 1 && y >= -1 && y <= 1){
+		return new RenderablePoint(x, y, z, w, cr, cg, cb, ca);
+	}else{
+		return NULL;
+	}
+}
 
-RenderablePoint::RenderablePoint(float x, float y, float z, float r,
+
+RenderablePoint::RenderablePoint(float x, float y, float z, int w,
                                 Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca):
 	Renderable(z),
 	xPosition(x),
 	yPosition(y),
-	radius(r),
+	width(w),
 	colorRed(cr),
 	colorGreen(cg),
 	colorBlue(cb),
@@ -65,8 +85,8 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
 	SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
 	
 	// TODO: Actually implement this part!!!
-	printf("Pretending to draw point of radius %f at (%f, %f, %f) . . . ",
-	       radius, xPosition, yPosition, zLevel);
+	printf("Pretending to draw point of width %d at (%f, %f, %f) . . . ",
+	       width, xPosition, yPosition, zLevel);
 	printf("Actual Coordinates: (%d, %d)\n", pixelX, pixelY);
 }
 

@@ -5,6 +5,7 @@
 #include "vectormath.h"
 #include "input.h"
 #include "callback.h"
+#include "viewport.h"
 
 
 /*
@@ -29,38 +30,42 @@ Component2D::~Component2D(){
 }
 
 
-void Component2D::collectRenderables(std::list<Renderable*> &render_list){
+void Component2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	/*
 	 * This superclass method is primarily responsible for computing the absolute
 	 * scale/rotation/position variables based on the parent values.
 	 */
 	
+	computeAbsolutePosition(parent);
+}
+
+
+void Component2D::computeAbsolutePosition(Component2D *reference){
+	if(reference == NULL) return;
+	
 	zLevelAbsolute = zLevel;
-	if(inheritZLevel && parent != NULL){
-		zLevelAbsolute += parent->zLevelAbsolute;
+	if(inheritZLevel){
+		zLevelAbsolute += reference->zLevelAbsolute;
 	}
 	
 	scaleAbsolute = scale;
-	if(inheritScale && parent != NULL){
-		scaleAbsolute.scale(parent->scaleAbsolute);
+	if(inheritScale){
+		scaleAbsolute.scale(reference->scaleAbsolute);
 	}
 	
 	rotationAbsolute = rotation;
-	if(inheritRotation && parent != NULL){
-		rotationAbsolute += parent->rotationAbsolute;
+	if(inheritRotation){
+		rotationAbsolute += reference->rotationAbsolute;
 	}
 	
 	//Now for the tricky part: handling position
 	positionAbsolute = position;
-	if(parent != NULL){
-		positionAbsolute.scale(parent->scaleAbsolute); // Scale it
-		positionAbsolute.rotate(parent->rotationAbsolute);  // Rotate it
-		
-		if(inheritPosition){
-			positionAbsolute += parent->positionAbsolute;
-		}
-	}
+	positionAbsolute.scale(reference->scaleAbsolute); // Scale it
+	positionAbsolute.rotate(reference->rotationAbsolute);  // Rotate it
 	
+	if(inheritPosition){
+		positionAbsolute += reference->positionAbsolute;
+	}
 }
 
 
@@ -86,6 +91,76 @@ void Component2D::detachFromParent(){
 	}
 }
 
+
+/*
+ * ComponentPoint2D
+ */
+
+ComponentPoint2D::ComponentPoint2D():
+	colorRed(0xff),
+	colorGreen(0xff),
+	colorBlue(0xff),
+	colorAlpha(0x00)
+{}
+
+
+void ComponentPoint2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
+	Component2D::collectRenderables(render_list, v);
+	
+	// Get Viewport Coordinates
+	Vector2f vc = v.worldToViewport(positionAbsolute);
+	
+	// Create renderable
+	RenderablePoint *point = NULL;
+	point = RenderablePoint::createRenderablePoint(vc.x, vc.y, zLevelAbsolute, 1,
+	                                colorRed, colorGreen, colorBlue, colorAlpha);
+	if(point != NULL){
+		render_list.push_back(point);
+	}
+}
+
+
+/*
+ * ComponentLine2D
+ */
+
+ComponentLine2D::ComponentLine2D():
+	colorRed(0xff),
+	colorGreen(0xff),
+	colorBlue(0xff),
+	colorAlpha(0x00)
+{}
+
+
+void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
+	Component2D::collectRenderables(render_list, v);
+	
+	/*
+	 * Here, we need to compute the positions of the dummy endpoint components.
+	 */
+	start.position = startCoordinates;
+	end.position = endCoordinates;
+	start.computeAbsolutePosition(this);
+	end.computeAbsolutePosition(this);
+	
+	/*
+	 * Now we can get the viewport coordinates of the endpoints.
+	 */
+	Vector2f vc1, vc2;
+	vc1 = start.positionAbsolute;
+	vc2 = end.positionAbsolute;
+	
+	// Finally, make the renderable
+	RenderableLine *line;
+	line = RenderableLine::createRenderableLine(vc1.x, vc1.y, vc2.x, vc2.y,
+	            zLevelAbsolute, 1, colorRed, colorGreen, colorBlue, colorAlpha);
+	if(line != NULL){
+		render_list.push_back(line);
+	}
+}
+
+
+
 /*
  * ComponentInput2D
  */
@@ -109,15 +184,15 @@ Node2D::~Node2D(){
 	}
 }
 
-void Node2D::collectRenderables(std::list<Renderable*> &render_list){
+void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	// First collect renderables for the node itself with the super method
-	Component2D::collectRenderables(render_list);
+	Component2D::collectRenderables(render_list, v);
 	
 	// Collect renderables for all child components
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
-		child->collectRenderables(render_list);
+		child->collectRenderables(render_list, v);
 	}
 }
 
