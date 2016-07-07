@@ -9,11 +9,17 @@
 // Helper function
 static int computeOutcode(float x, float y, Rect2f rect){
 	
+	
+	//TODO: replace
+	return 0;
 }
 
 
-void cohen_sutherland(Vector2f &p1, Vector2f &p2, Rect2f rect){
+bool cohen_sutherland(Line2f &line, Rect2f rect){
 	
+	
+	//TODO: Replace
+	return false;
 }
 
 

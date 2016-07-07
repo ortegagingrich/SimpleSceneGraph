@@ -8,7 +8,7 @@
 #include "vectormath.h"
 
 
-void cohen_sutherland(Vector2f &p1, Vector2f &p2, Rect2f rect);
+bool cohen_sutherland(Line2f &line, Rect2f rect);
 
 
 
