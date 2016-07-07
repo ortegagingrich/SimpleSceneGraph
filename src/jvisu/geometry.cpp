@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "geometry.h"
 #include "vectormath.h"
 #include "utils.h"

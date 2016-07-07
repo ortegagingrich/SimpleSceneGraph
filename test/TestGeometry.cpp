@@ -8,6 +8,17 @@
 #include "../src/jvisu/vectormath.h"
 
 
+static void printLine(Line2f line){
+	/*
+	 * Just a quick function for debugging purposes.
+	 */
+	printf("\n\n");
+	printf("Line from (%f, %f) ", line.startPoint.x, line.startPoint.y);
+	printf("to (%f, %f)\n", line.endPoint.x, line.endPoint.y);
+	printf("\n\n");
+}
+
+
 TEST(TestGeometry, LineRectIntersect){
 	/**
 	 * TODO: write tests of Cohen-Sutherland for various cases
@@ -44,7 +55,9 @@ TEST(TestGeometry, LineRectIntersect){
 	result = calculate_intersection(rect, line, out);
 	
 	EXPECT_TRUE(result);
-	EXPECT_EQ(out, Line2f(0.005f, 0.5f, 0.f, 0.f));
+	// Need different comparison because of floating point precision
+	EXPECT_TRUE((out.startPoint - Vector2f(0, 0)).norm() < 1e-6);
+	EXPECT_TRUE((out.endPoint - Vector2f(0.005f, 0.5f)).norm() < 1e-6);
 	
 	
 	// Trial 5: Across
@@ -52,7 +65,7 @@ TEST(TestGeometry, LineRectIntersect){
 	result = calculate_intersection(rect, line, out);
 	
 	EXPECT_TRUE(result);
-	EXPECT_EQ(out, Line2f(1.f, 0.231, -1.f, -.231));
+	EXPECT_EQ(out, Line2f(1.f, 0.231, -1.f, 0.231));
 	
 	
 	// Trial 6: Corner Across
