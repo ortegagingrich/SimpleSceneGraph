@@ -65,9 +65,9 @@ public:
 	Vector2f operator%(float rad) const;
 	
 };
-
-// Other Overloaded Operators
 SHARED_EXPORT Vector2f operator*(float s, Vector2f);
+
+
 
 //TODO: Vector3f
 
