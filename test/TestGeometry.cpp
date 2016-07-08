@@ -19,10 +19,51 @@ static void printLine(Line2f line){
 }
 
 
-TEST(TestGeometry, LineRectIntersect){
+/*
+ * Point-Line Intersection
+ */
+
+TEST(TestGeometry, IntersectPointLine){
 	/**
-	 * TODO: write tests of Cohen-Sutherland for various cases
+	 * TODO: write
 	 */
+	
+	FAIL();
+}
+
+
+/*
+ * Line-Line Intersection
+ */
+
+TEST(TestGeometry, IntersectLineLine){
+	/**
+	 * TODO: write
+	 */
+	
+	FAIL();
+}
+
+
+
+/*
+ * Point-Rectangle Intersection
+ */
+
+TEST(TestGeometry, IntersectPointRect){
+	/**
+	 * TODO: write tests
+	 */
+	
+	FAIL();
+}
+
+
+/*
+ * Line-Rectangle Intersection
+ */
+
+TEST(TestGeometry, IntersectLineRect){
 	Rect2f rect(-1.0f, 1.0f, -0.5f, 0.5f);
 	Line2f line, out;
 	bool result;
@@ -78,7 +119,11 @@ TEST(TestGeometry, LineRectIntersect){
 }
 
 
-TEST(TestGeometry, RectIntersect){
+/*
+ * Rectangle-Rectangle intersection
+ */
+
+TEST(TestGeometry, IntersectRectRect){
 	/**
 	 * TODO: write tests for rectangle intersection
 	 */
