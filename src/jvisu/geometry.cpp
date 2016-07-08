@@ -108,7 +108,7 @@ bool calculate_intersection(Rect2f r1, Rect2f r2){
 	return calculate_intersection(r1, r2, dummy);
 }
 
-bool calculate_intersection(Rect2f r1, Rect2f r2, Rect2f out){
+bool calculate_intersection(Rect2f r1, Rect2f r2, Rect2f &out){
 	float newMinX, newMinY, newMaxX, newMaxY;
 	newMinX = r1.xMin > r2.xMin ? r1.xMin : r2.xMin;
 	newMaxX = r1.xMax < r2.xMax ? r1.xMax : r2.xMax;

@@ -178,10 +178,7 @@ void ComponentInput2D::processEvent(InputEvent *event){
 
 Node2D::Node2D(): Component2D() {}
 Node2D::~Node2D(){
-	// Delete (and thereby detach) all child components
-	while(!children.empty()){
-		delete children.front();
-	}
+	deleteAllChildren();
 }
 
 void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
@@ -230,6 +227,15 @@ void Node2D::detachChild(Component2D *child){
 	
 	children.remove(child);
 	child->parent = NULL;
+}
+
+void Node2D::deleteAllChildren(){
+	/**
+	 * Not only detaches, but also deletes all child components.
+	 */
+	while(!children.empty()){
+		delete children.front();
+	}
 }
 
 

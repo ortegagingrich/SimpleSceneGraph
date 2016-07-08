@@ -122,6 +122,7 @@ public:
 	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);
+	void deleteAllChildren();
 	std::list<Component2D*> getChildren() {return children;}
 
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
