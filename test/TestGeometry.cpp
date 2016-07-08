@@ -68,7 +68,7 @@ TEST(TestGeometry, IntersectLineRect){
 	Line2f line, out;
 	bool result;
 	
-	// Trial 1: Contained completely inside
+	// Trial 1: Completely Within
 	line.set(-0.7f, 0.2f, 0.1f, -0.4f);
 	result = calculate_intersection(rect, line, out);
 	
@@ -76,7 +76,7 @@ TEST(TestGeometry, IntersectLineRect){
 	EXPECT_EQ(line, out);
 	
 	
-	// Trial 2: Completely without
+	// Trial 2: Completely Without
 	line.set(-47, 3.14f, 42, 2.7f);
 	result = calculate_intersection(rect, line);
 	
@@ -124,10 +124,42 @@ TEST(TestGeometry, IntersectLineRect){
  */
 
 TEST(TestGeometry, IntersectRectRect){
-	/**
-	 * TODO: write tests for rectangle intersection
-	 */
+	Rect2f r1, r2, out;
+	bool result;
 	
-	FAIL();
+	// Trial 1: No Overlap
+	r1.set(-2, -1, -1, 1);
+	r2.set(1, 2, -1, 1);
+	result = calculate_intersection(r1, r2);
+	
+	EXPECT_FALSE(result);
+	
+	
+	// Trial 2: One Inside
+	r1.set(-2, 2, -2, 2);
+	r2.set(-1, 1, -1, 1);
+	result = calculate_intersection(r1, r2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, r2);
+	
+	
+	// Trial 3: Cross Intersection
+	r1.set(-2, 2, -1, 1);
+	r2.set(-1, 1, -2, 2);
+	result = calculate_intersection(r1, r2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, Rect2f(-1, 1, -1, 1));
+	
+	
+	// Trial 4: Corner Intersection
+	r1.set(-2, 0, 0, 2);
+	r2.set(-1, 1, -1, 1);
+	result = calculate_intersection(r1, r2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, Rect2f(-1, 0, 0, 1));
+	
 }
 
