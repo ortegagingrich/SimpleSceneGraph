@@ -103,6 +103,27 @@ bool calculate_intersection(Rect2f rect, Line2f line, Line2f &out){
 	return false;
 }
 
+bool calculate_intersection(Rect2f r1, Rect2f r2){
+	Rect2f dummy;
+	return calculate_intersection(r1, r2, dummy);
+}
+
+bool calculate_intersection(Rect2f r1, Rect2f r2, Rect2f out){
+	float newMinX, newMinY, newMaxX, newMaxY;
+	newMinX = r1.xMin > r2.xMin ? r1.xMin : r2.xMin;
+	newMaxX = r1.xMax < r2.xMax ? r1.xMax : r2.xMax;
+	newMinY = r1.yMin > r2.yMin ? r1.yMin : r2.yMin;
+	newMaxY = r1.yMax < r2.yMax ? r1.yMax : r2.yMax;
+	
+	// Check for consistency
+	if(newMinX > newMaxX || newMinY > newMaxY) return false;
+	
+	out.xMin = newMinX;
+	out.xMax = newMaxX;
+	out.yMin = newMinY;
+	out.yMax = newMaxY;
+	return true;
+}
 
 
 
