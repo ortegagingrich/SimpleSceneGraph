@@ -51,10 +51,12 @@ void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
 	// Draw Color
 	SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
 	
+	SDL_RenderDrawLine(renderer, px1, py1, px2, py2);
+	
 	// TODO: Actually implement this part!!!
-	printf("Pretending to draw line of width %d from (%f, %f) to (%f, %f) . . .",
+	/*printf("Pretending to draw line of width %d from (%f, %f) to (%f, %f) . . .",
 	       width, x1, y1, x2, y2);
-	printf("Actual Coordinates: (%d, %d) -> (%d, %d)\n", px1, py1, px2, py2);
+	printf("Actual Coordinates: (%d, %d) -> (%d, %d)\n", px1, py1, px2, py2);*/
 }
 
 
@@ -93,12 +95,15 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
 	window->viewportToScreen(xPosition, yPosition, pixelX, pixelY);
 	
 	// Set render draw color
-	SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
+	SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
+	//SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
+	
+	SDL_RenderDrawPoint(renderer, pixelX, pixelY);
 	
 	// TODO: Actually implement this part!!!
-	printf("Pretending to draw point of width %d at (%f, %f, %f) . . . ",
+	/*printf("Pretending to draw point of width %d at (%f, %f, %f) . . . ",
 	       width, xPosition, yPosition, zLevel);
-	printf("Actual Coordinates: (%d, %d)\n", pixelX, pixelY);
+	printf("Actual Coordinates: (%d, %d)\n", pixelX, pixelY);*/
 }
 
 

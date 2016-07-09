@@ -57,8 +57,6 @@ public:
 	{}
 	virtual void callback(MouseMotionEvent *event){
 		if(event->leftButtonPressed()){
-			printf("Dragging... [%d, %d]\n", event->screenX, event->screenY);
-			
 			Vector2f wc = event->getWorldCoordinates(drawer->layer);
 			drawer->previewLine->endCoordinates = wc;
 		}
@@ -80,25 +78,28 @@ public:
 				Vector2f wc = event->getWorldCoordinates(drawer->layer);
 				drawer->downPoint->position = wc;
 				drawer->previewLine->startCoordinates = wc;
+				drawer->previewLine->endCoordinates = wc;
 				
 				
 				Vector2f dp = drawer->downPoint->position;
-				printf("(%f, %f)\n", dp.x, dp.y);
 				
 				
 				drawer->previewNode->show();
 			}else{
-				printf("UP\n");
 				
 				// Draw results here
 				ComponentPoint2D *sp, *ep;
 				sp = new ComponentPoint2D();
 				ep = new ComponentPoint2D();
-				sp->colorRed = 0xff;
-				ep->colorRed = 0xff;
+				sp->colorBlue = 0x00;
+				sp->colorGreen = 0x00;
+				ep->colorBlue = 0x00;
+				ep->colorGreen = 0x00;
 				
 				sp->position = drawer->downPoint->position;
 				ep->position = event->getWorldCoordinates(drawer->layer);
+				sp->zLevel = 1;
+				ep->zLevel = 1;
 				
 				drawer->mainNode->attachChild(sp);
 				drawer->mainNode->attachChild(ep);
@@ -107,7 +108,8 @@ public:
 				l = new ComponentLine2D();
 				l->startCoordinates = sp->position;
 				l->endCoordinates = ep->position;
-				l->colorBlue = 0xff;
+				l->colorRed = 0x00;
+				l->colorGreen = 0x00;
 				drawer->mainNode->attachChild(l);
 				
 				
@@ -133,6 +135,7 @@ LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	 */
 	
 	previewNode = new Node2D();
+	previewNode->zLevel = 2;
 	previewNode->hide();
 	
 	downPoint = new ComponentPoint2D();
