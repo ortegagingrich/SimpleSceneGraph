@@ -117,10 +117,10 @@ void Viewport2D::lockAspectRatio(){aspectLocked = true;}
 void Viewport2D::unlockAspectRatio(){aspectLocked = false;}
 
 
-bool Viewport2D::inViewport(Vector2f point){
+bool Viewport2D::inViewport(Vector2f point) const {
 	return inViewport(point.x, point.y);
 }
-bool Viewport2D::inViewport(float x, float y){
+bool Viewport2D::inViewport(float x, float y) const {
 	return x >= minX && x <= maxX && y >= minY && y <= maxY;
 }
 

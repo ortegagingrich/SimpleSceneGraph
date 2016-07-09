@@ -55,7 +55,10 @@ public:
 	Layer *getLayerById(std::string id);
 	std::list<Layer*> getLayers();
 	
-	// Mainly for testing purposes:
+	// Input
+	bool isKeyPressed(SDL_Keycode keycode);
+	
+	// Mainly public for testing purposes:
 	void processEvent(InputEvent *event);
 	void processEvent(SDL_Event event);
 

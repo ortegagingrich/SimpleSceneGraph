@@ -13,7 +13,6 @@
 class Layer2D;
 
 
-//TODO: Implement all of this
 class SHARED_EXPORT Viewport2D {
 friend class Layer2D;
 public:
@@ -39,8 +38,8 @@ public:
 	void unlockAspectRatio();
 	
 	
-	bool inViewport(float x, float y);
-	bool inViewport(Vector2f point);
+	bool inViewport(float x, float y) const;
+	bool inViewport(Vector2f point) const;
 	
 	void worldToViewport(float xin, float yin, float &xout, float &yout) const;
 	void viewportToWorld(float xin, float yin, float &xout, float &yout) const;

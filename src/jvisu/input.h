@@ -11,6 +11,10 @@
 #include "vectormath.h"
 
 
+/*
+ * Event-Based Input
+ */
+
 class JWindow;
 class Layer2D;
 

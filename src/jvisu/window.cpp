@@ -333,3 +333,11 @@ std::list<Layer*> JWindow::getLayers(){
 	return layers;
 }
 
+
+bool JWindow::isKeyPressed(SDL_Keycode keycode){
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+	SDL_Scancode scancode = SDL_GetScancodeFromKey(keycode);
+	return keystate[scancode] != 0;
+}
+
+

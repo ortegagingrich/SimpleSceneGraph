@@ -192,42 +192,50 @@ int main(int argc, char* argv[]){
 	/*
 	 * Callback for moving the viewport
 	 */
-	class PanViewport : public KeyButtonCallback {
+	class ViewportController {
 	public:
 		const float panSpeed = 0.01;
 		const float zoomFactor = 1.05;
+		JWindow *window;
 		Layer2D *layer;
-		PanViewport(Layer2D *l): KeyButtonCallback(l), layer(l) {}
+		ViewportController(JWindow *win, Layer2D *l): window(win), layer(l) {}
 		
-		virtual void callback(KeyButtonEvent *event){
-			if(event->isPressed()){
-				Vector2f newCenter = layer->viewport.getCenter();
-				float vdiff = panSpeed * layer->viewport.getRadiusY();
-				float hdiff = panSpeed * layer->viewport.getRadiusX();
-				
-				if(event->key == SDLK_w){
-					newCenter.y += vdiff;
-				}else if(event->key == SDLK_s){
-					newCenter.y -= vdiff;
-				}else if(event->key == SDLK_a){
-					newCenter.x -= hdiff;
-				}else if(event->key == SDLK_d){
-					newCenter.x += hdiff;
-				}else if(event->key == SDLK_p){
-					float ry = layer->viewport.getRadiusY();
-					ry /= zoomFactor;
-					layer->viewport.setRadiusY(ry);
-				}else if(event->key == SDLK_m){
-					float ry = layer->viewport.getRadiusY();
-					ry *= zoomFactor;
-					layer->viewport.setRadiusY(ry);
-				}
-				
-				layer->viewport.setCenter(newCenter);
+		void update(){
+			Vector2f newCenter = layer->viewport.getCenter();
+			float vdiff = panSpeed * layer->viewport.getRadiusY();
+			float hdiff = panSpeed * layer->viewport.getRadiusX();
+			
+			// Panning
+			
+			if(window->isKeyPressed(SDLK_w)){
+				newCenter.y += vdiff;
+			}
+			if(window->isKeyPressed(SDLK_s)){
+				newCenter.y -= vdiff;
+			}
+			if(window->isKeyPressed(SDLK_a)){
+				newCenter.x -= hdiff;
+			}
+			if(window->isKeyPressed(SDLK_d)){
+				newCenter.x += hdiff;
+			}
+			layer->viewport.setCenter(newCenter);
+			
+			// Zooming
+			
+			if(window->isKeyPressed(SDLK_p)){
+				float ry = layer->viewport.getRadiusY();
+				ry /= zoomFactor;
+				layer->viewport.setRadiusY(ry);
+			}
+			if(window->isKeyPressed(SDLK_m)){
+				float ry = layer->viewport.getRadiusY();
+				ry *= zoomFactor;
+				layer->viewport.setRadiusY(ry);
 			}
 		}
 	};
-	new PanViewport(layer2d);
+	ViewportController viewportController(window, layer2d);
 	
 	
 	
@@ -257,6 +265,8 @@ int main(int argc, char* argv[]){
 	while(window->isActive()){
 		
 		window->update();
+		
+		viewportController.update();
 		
 		//Sleep the appropriate amount of time for the frame
 #ifdef __linux__
