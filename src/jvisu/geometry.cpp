@@ -84,6 +84,51 @@ bool Rect2f::operator==(Rect2f rect) const {
  * Intersection Methods
  */
 
+bool calculate_intersection(Line2f l1, Line2f l2){
+	/**
+	 * Checks to see if the two line segments intersect at a SINGLE point.  If
+	 * the line segments are collinear, false is always returned!
+	 */
+	Vector2f dummy;
+	return calculate_intersection(l1, l2, dummy);
+}
+
+bool calculate_intersection(Line2f l1, Line2f l2, Vector2f &out){
+	/**
+	 * Checks to see if the two line segments intersect at a SINGLE point.  If
+	 * the line segments are collinear, false is always returned!  If a single
+	 * unique point of intersection exists, the provided vector is overwritten
+	 * with its coordinates, regardless of whether that point is on both segments
+	 * or beyond their ranges.
+	 */
+	Vector2f p, q, r, s;
+	p = l1.startPoint;
+	q = l2.startPoint;
+	r = l1.endPoint - p;
+	s = l2.endPoint - q;
+	
+	// Some intermediate quantities
+	Vector2f diff = q - p;
+	float rxs = r.cross(s);
+	
+	// Parallel if rxs is zero
+	if(rxs == 0) return false;
+	
+	// Scalars t, u so that p + t*r = q + u*s
+	float t = diff.cross(s) / rxs;
+	float u = diff.cross(r) / rxs;
+	
+	// Point of intersection
+	out = p + t * r;
+	
+	// Check to see if the point of intersection is in the proper range
+	if(t >= 0 && t <= 1 && u >= 0 && u <= 1){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 bool calculate_intersection(Rect2f rect, Vector2f point){
 	float x = point.x;
 	float y = point.y;

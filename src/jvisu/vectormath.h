@@ -29,6 +29,7 @@ public:
 	Vector2f(float x, float y);
 	
 	void setZero();
+	void set(float xin, float yin);
 	void add(float dx, float dy);
 	void rotate(float rad);
 	void rotateDegrees(float deg){ rotate(deg * DEG_2_RAD); };
@@ -39,6 +40,9 @@ public:
 	float norm() const;
 	float normSquared() const;
 	void normalize();
+	
+	float dot(Vector2f v) const;
+	float cross(Vector2f v) const;
 	
 	// Overloaded Operators
 	

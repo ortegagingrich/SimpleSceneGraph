@@ -14,6 +14,11 @@ void Vector2f::setZero(){
 	y = 0;
 }
 
+void Vector2f::set(float xin, float yin){
+	x = xin;
+	y = yin;
+}
+
 void Vector2f::add(float dx, float dy){
 	x += dx;
 	y += dy;
@@ -62,6 +67,14 @@ void Vector2f::normalize() {
 	 * Normalizes the vector.
 	 */
 	scale(1.0f / norm());
+}
+
+float Vector2f::dot(Vector2f v) const {
+	return x * v.x + y * v.y;
+}
+
+float Vector2f::cross(Vector2f v) const {
+	return x * v.y - y * v.x;
 }
 
 

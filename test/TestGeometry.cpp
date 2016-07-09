@@ -19,29 +19,62 @@ static void printLine(Line2f line){
 }
 
 
-/*
- * Point-Line Intersection
- */
-
-TEST(TestGeometry, IntersectPointLine){
-	/**
-	 * TODO: write
-	 */
-	
-	FAIL();
-}
-
 
 /*
  * Line-Line Intersection
  */
 
 TEST(TestGeometry, IntersectLineLine){
-	/**
-	 * TODO: write
-	 */
+	Line2f l1, l2;
+	Vector2f out;
+	bool result;
 	
-	FAIL();
+	// Trial 1: Parallel
+	out.set(3.14159, 2.71828);
+	l1.set(-1, 0, -1, 42);
+	l2.set(47, 0, 47, 42);
+	result = calculate_intersection(l1, l2, out);
+	
+	EXPECT_FALSE(result);
+	EXPECT_EQ(out, Vector2f(3.14159, 2.71828));
+	
+	
+	// Trial 2: Collinear
+	out.set(3.14159, 2.71828);
+	l1.set(-1, 3.14159, -1, 42);
+	l2.set(-1, 0, -1, 47);
+	result = calculate_intersection(l1, l2, out);
+	
+	EXPECT_FALSE(result);
+	EXPECT_EQ(out, Vector2f(3.14159, 2.71828));
+	
+	
+	// Trial 3: Regular Intersection
+	l1.set(-1, -2, 2, 4);
+	l2.set(3, 0, 0, 3);
+	result = calculate_intersection(l1, l2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, Vector2f(1, 2));
+	
+	
+	// Trial 4: T intersection
+	l1.set(-47, -42, 0, 0);
+	l2.set(-51, -43, -43, -41);
+	result = calculate_intersection(l1, l2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, Vector2f(-47, -42));
+	
+	
+	// Trial 5: Intersection Outside of Range
+	l1.set(11, 8, 12, 9);
+	l2.set(9, 9, 8, 11);
+	result = calculate_intersection(l1, l2, out);
+	
+	EXPECT_FALSE(result);
+	EXPECT_EQ(out, Vector2f(10, 7));
+	
 }
 
 
@@ -51,11 +84,51 @@ TEST(TestGeometry, IntersectLineLine){
  */
 
 TEST(TestGeometry, IntersectPointRect){
-	/**
-	 * TODO: write tests
-	 */
+	Rect2f rect(3.14159, 4, -47, 42);
+	Vector2f point;
+	bool result;
 	
-	FAIL();
+	// Trial 1: Inside
+	point.set(3.5, 1.2);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_TRUE(result);
+	
+	
+	// Trial 2: Outside Horizontally
+	point.set(0, 1.2);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_FALSE(result);
+	
+	
+	// Trial 3: Outside Vertically
+	point.set(3.5, 47);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_FALSE(result);
+	
+	
+	// Trial 4: Completely Outside
+	point.set(-666, -555);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_FALSE(result);
+	
+	
+	// Trial 5: Edge
+	point.set(3.14159, 2.71828);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_TRUE(result);
+	
+	
+	// Trial 6: Corner
+	point.set(3.14159, 42);
+	result = calculate_intersection(rect, point);
+	
+	EXPECT_TRUE(result);
+	
 }
 
 
@@ -139,6 +212,12 @@ TEST(TestGeometry, IntersectRectRect){
 	r1.set(-2, 2, -2, 2);
 	r2.set(-1, 1, -1, 1);
 	result = calculate_intersection(r1, r2, out);
+	
+	EXPECT_TRUE(result);
+	EXPECT_EQ(out, r2);
+	
+	// Trial 2.5: Reversed
+	result = calculate_intersection(r2, r1, out);
 	
 	EXPECT_TRUE(result);
 	EXPECT_EQ(out, r2);
