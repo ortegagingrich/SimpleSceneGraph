@@ -189,8 +189,51 @@ int main(int argc, char* argv[]){
 	
 	
 	
+	/*
+	 * Callback for moving the viewport
+	 */
+	class PanViewport : public KeyButtonCallback {
+	public:
+		const float panSpeed = 0.01;
+		const float zoomFactor = 1.05;
+		Layer2D *layer;
+		PanViewport(Layer2D *l): KeyButtonCallback(l), layer(l) {}
+		
+		virtual void callback(KeyButtonEvent *event){
+			if(event->isPressed()){
+				Vector2f newCenter = layer->viewport.getCenter();
+				float vdiff = panSpeed * layer->viewport.getRadiusY();
+				float hdiff = panSpeed * layer->viewport.getRadiusX();
+				
+				if(event->key == SDLK_w){
+					newCenter.y += vdiff;
+				}else if(event->key == SDLK_s){
+					newCenter.y -= vdiff;
+				}else if(event->key == SDLK_a){
+					newCenter.x -= hdiff;
+				}else if(event->key == SDLK_d){
+					newCenter.x += hdiff;
+				}else if(event->key == SDLK_p){
+					float ry = layer->viewport.getRadiusY();
+					ry /= zoomFactor;
+					layer->viewport.setRadiusY(ry);
+				}else if(event->key == SDLK_m){
+					float ry = layer->viewport.getRadiusY();
+					ry *= zoomFactor;
+					layer->viewport.setRadiusY(ry);
+				}
+				
+				layer->viewport.setCenter(newCenter);
+			}
+		}
+	};
+	new PanViewport(layer2d);
 	
 	
+	
+	/*
+	 * Debug Coordinate-obtaining callback
+	 */
 	
 	class OnRightClick : public MouseButtonCallback {
 	public:
