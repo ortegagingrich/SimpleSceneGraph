@@ -15,6 +15,7 @@ class InputEvent;
 class QuitEvent;
 class KeyButtonEvent;
 class MouseButtonEvent;
+class MouseMotionEvent;
 
 class CallbackManager;
 
@@ -56,6 +57,19 @@ public:
 	
 	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
 	virtual void callback(MouseButtonEvent *event) = 0;
+protected:
+	virtual void precallback(InputEvent *event);
+};
+
+
+class SHARED_EXPORT MouseMotionCallback : public JEventCallback {
+public:
+	MouseMotionCallback(JWindow *window);
+	MouseMotionCallback(Layer *layer);
+	MouseMotionCallback(ComponentInput2D *component);
+	
+	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
+	virtual void callback(MouseMotionEvent *event) = 0;
 protected:
 	virtual void precallback(InputEvent *event);
 };

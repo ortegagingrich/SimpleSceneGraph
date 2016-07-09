@@ -60,10 +60,10 @@ void Component2D::computeAbsolutePosition(Component2D *reference){
 	
 	//Now for the tricky part: handling position
 	positionAbsolute = position;
-	positionAbsolute.scale(reference->scaleAbsolute); // Scale it
-	positionAbsolute.rotate(reference->rotationAbsolute);  // Rotate it
 	
-	if(inheritPosition){
+	if(inheritPosition && false){
+		positionAbsolute.scale(reference->scaleAbsolute); // Scale it
+		positionAbsolute.rotate(reference->rotationAbsolute);  // Rotate it
 		positionAbsolute += reference->positionAbsolute;
 	}
 }
@@ -106,6 +106,7 @@ ComponentPoint2D::ComponentPoint2D():
 
 void ComponentPoint2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	Component2D::collectRenderables(render_list, v);
+	if(isHidden()) return;
 	
 	// Get Viewport Coordinates
 	Vector2f vc = v.worldToViewport(positionAbsolute);
@@ -134,6 +135,7 @@ ComponentLine2D::ComponentLine2D():
 
 void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	Component2D::collectRenderables(render_list, v);
+	if(isHidden()) return;
 	
 	/*
 	 * Here, we need to compute the positions of the dummy endpoint components.

@@ -74,6 +74,23 @@ void MouseButtonCallback::precallback(InputEvent *event){
 
 
 /*
+ * Source for MouseMotionCallback
+ */
+
+MouseMotionCallback::MouseMotionCallback(JWindow *window): JEventCallback(window){}
+MouseMotionCallback::MouseMotionCallback(Layer *layer): JEventCallback(layer){}
+MouseMotionCallback::MouseMotionCallback(ComponentInput2D *component):
+	JEventCallback(component){}
+
+void MouseMotionCallback::precallback(InputEvent *event){
+	if(event->getType() == "MOUSEMOTION" && !event->isConsumed()){
+		callback((MouseMotionEvent*) event);
+	}
+}
+
+
+
+/*
  * Source for QuitEventCallback
  */
 

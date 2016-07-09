@@ -54,7 +54,7 @@ void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
 	// TODO: Actually implement this part!!!
 	printf("Pretending to draw line of width %d from (%f, %f) to (%f, %f) . . .",
 	       width, x1, y1, x2, y2);
-	printf("Actual Coordiantes: (%d, %d) -> (%d, %d)\n", px1, py1, px2, py2);
+	printf("Actual Coordinates: (%d, %d) -> (%d, %d)\n", px1, py1, px2, py2);
 }
 
 
