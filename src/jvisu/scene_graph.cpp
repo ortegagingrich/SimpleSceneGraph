@@ -147,8 +147,8 @@ void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Vi
 	 * Now we can get the viewport coordinates of the endpoints.
 	 */
 	Vector2f vc1, vc2;
-	vc1 = start.positionAbsolute;
-	vc2 = end.positionAbsolute;
+	vc1 = v.worldToViewport(start.positionAbsolute);
+	vc2 = v.worldToViewport(end.positionAbsolute);
 	
 	// Finally, make the renderable
 	RenderableLine *line;

@@ -14,9 +14,19 @@
 RenderableLine *RenderableLine::createRenderableLine(float xi1, float yi1,
            float xi2, float yi2, float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
 {
-	// TODO: clip viewport coordinates to the actual viewport
+	// clip viewport coordinates to the actual viewport
+	Rect2f rect(-1, 1, -1, 1);
+	Line2f line(xi1, yi1, xi2, yi2);
 	
-	return NULL;
+	if(calculate_intersection(rect, line, line)){
+		xi1 = line.startPoint.x;
+		yi1 = line.startPoint.y;
+		xi2 = line.endPoint.x;
+		yi2 = line.endPoint.y;
+		return new RenderableLine(xi1, yi1, xi2, yi2, z, w, cr, cg, cb, ca);
+	}else{
+		return NULL;
+	}
 }
 
 
