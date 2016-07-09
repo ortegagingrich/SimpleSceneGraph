@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <list>
 
 #include "scene_graph.h"
@@ -23,6 +24,10 @@ Component2D::Component2D():
 	inheritRotation(true),
 	inheritScale(true),
 	inheritHidden(true),
+	positionAbsolute(0,0),
+	zLevelAbsolute(0),
+	rotationAbsolute(0),
+	scaleAbsolute(1,1),
 	hidden(false){}
 
 Component2D::~Component2D(){
@@ -61,7 +66,7 @@ void Component2D::computeAbsolutePosition(Component2D *reference){
 	//Now for the tricky part: handling position
 	positionAbsolute = position;
 	
-	if(inheritPosition && false){
+	if(inheritPosition){
 		positionAbsolute.scale(reference->scaleAbsolute); // Scale it
 		positionAbsolute.rotate(reference->rotationAbsolute);  // Rotate it
 		positionAbsolute += reference->positionAbsolute;
