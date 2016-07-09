@@ -99,6 +99,26 @@ protected:
 };
 
 
+class SHARED_EXPORT MouseMotionEvent : public InputEvent {
+friend class InputEvent;
+public:
+	const int screenX, screenY;
+	const int deltaX, deltaY;
+	
+	virtual std::string getType(){return "MOUSEMOTION";};
+	
+	Vector2f getViewportCoordinates(){return viewportCoordinates;};
+	Vector2f getWorldCoordinates(const Layer2D *layer);
+	
+	bool leftButtonPressed();
+	bool rightButtonPressed();
+	bool middleButtonPressed();
+protected:
+	MouseMotionEvent(SDL_Event event, JWindow *win);
+	
+	Vector2f viewportCoordinates;
+};
+
 
 
 /*

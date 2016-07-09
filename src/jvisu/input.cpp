@@ -13,6 +13,9 @@ InputEvent *InputEvent::createInputEvent(SDL_Event event, JWindow *win){
 	 * Factory method to produce an event of the appropriate sub-type
 	 */
 	if(event.type == SDL_QUIT) return new QuitEvent(event, win);
+	if(event.type == SDL_MOUSEMOTION){
+		return new MouseMotionEvent(event, win);
+	}
 	if(event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP){
 		return new MouseButtonEvent(event, win);
 	}
@@ -98,6 +101,42 @@ bool MouseButtonEvent::isRightButton(){
 	return sdlEvent.button.button == SDL_BUTTON_RIGHT;
 }
 
+
+/*
+ * Source for MouseMotionEvent
+ */
+
+MouseMotionEvent::MouseMotionEvent(SDL_Event event, JWindow *win):
+	InputEvent(event, win),
+	screenX(event.motion.x),
+	screenY(event.motion.y),
+	deltaX(event.motion.xrel),
+	deltaY(event.motion.yrel)
+{
+	// Compute viewport coordinates
+	float vx, vy;
+	window->screenToViewport(screenX, screenY, vx, vy);
+	viewportCoordinates = Vector2f(vx, vy);
+}
+
+
+Vector2f MouseMotionEvent::getWorldCoordinates(const Layer2D *layer){
+	Vector2f viewportCoordinates = getViewportCoordinates();
+	return layer->viewport.viewportToWorld(viewportCoordinates);
+}
+
+
+bool MouseMotionEvent::leftButtonPressed(){
+	return (sdlEvent.motion.state & SDL_BUTTON_LMASK) != 0;
+}
+
+bool MouseMotionEvent::rightButtonPressed(){
+	return (sdlEvent.motion.state & SDL_BUTTON_RMASK) != 0;
+}
+
+bool MouseMotionEvent::middleButtonPressed(){
+	return (sdlEvent.motion.state & SDL_BUTTON_MMASK) != 0;
+}
 
 
 /*
