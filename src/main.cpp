@@ -130,6 +130,15 @@ LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	rootNode->attachChild(mainNode);
 	//mainNode->hide();
 	
+	// Reference Line
+	ComponentLine2D *refLine = new ComponentLine2D();
+	refLine->colorBlue = 0x00;
+	refLine->colorGreen = 0x00;
+	refLine->startCoordinates = Vector2f(0, 0);
+	refLine->endCoordinates = Vector2f(0, 100);
+	mainNode->attachChild(refLine);
+	
+	
 	/*
 	 * Preview Components
 	 */
@@ -194,7 +203,8 @@ int main(int argc, char* argv[]){
 	 */
 	class ViewportController {
 	public:
-		const float panSpeed = 0.01;
+		const float panSpeed = 0.025;
+		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
 		JWindow *window;
 		Layer2D *layer;
@@ -220,6 +230,14 @@ int main(int argc, char* argv[]){
 				newCenter.x += hdiff;
 			}
 			layer->viewport.setCenter(newCenter);
+			
+			// Rotating
+			if(window->isKeyPressed(SDLK_q)){
+				layer->rootNode->rotation += rotSpeed;
+			}
+			if(window->isKeyPressed(SDLK_e)){
+				layer->rootNode->rotation -= rotSpeed;
+			}
 			
 			// Zooming
 			

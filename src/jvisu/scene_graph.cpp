@@ -46,26 +46,27 @@ void Component2D::collectRenderables(std::list<Renderable*> &render_list, Viewpo
 
 
 void Component2D::computeAbsolutePosition(Component2D *reference){
+	// Set default values
+	zLevelAbsolute = zLevel;
+	scaleAbsolute = scale;
+	rotationAbsolute = rotation;
+	positionAbsolute = position;
+	
 	if(reference == NULL) return;
 	
-	zLevelAbsolute = zLevel;
 	if(inheritZLevel){
 		zLevelAbsolute += reference->zLevelAbsolute;
 	}
 	
-	scaleAbsolute = scale;
 	if(inheritScale){
 		scaleAbsolute.scale(reference->scaleAbsolute);
 	}
 	
-	rotationAbsolute = rotation;
 	if(inheritRotation){
 		rotationAbsolute += reference->rotationAbsolute;
 	}
 	
 	//Now for the tricky part: handling position
-	positionAbsolute = position;
-	
 	if(inheritPosition){
 		positionAbsolute.scale(reference->scaleAbsolute); // Scale it
 		positionAbsolute.rotate(reference->rotationAbsolute);  // Rotate it
