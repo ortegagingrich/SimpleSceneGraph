@@ -139,7 +139,16 @@ LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	refLine->colorGreen = 0x00;
 	refLine->startCoordinates = Vector2f(0, 0);
 	refLine->endCoordinates = Vector2f(0, 100);
-	mainNode->attachChild(refLine);
+	rootNode->attachChild(refLine);
+	
+	// Main Node Rotation Line
+	ComponentLine2D *rotLine = new ComponentLine2D();
+	rotLine->colorGreen = 0x00;
+	rotLine->colorRed = 0x88;
+	rotLine->zLevel = -50;
+	rotLine->startCoordinates = Vector2f(0, 0);
+	rotLine->endCoordinates = Vector2f(0, 100);
+	mainNode->attachChild(rotLine);
 	
 	
 	/*
