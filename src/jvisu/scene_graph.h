@@ -6,6 +6,7 @@
 
 #include "shared_exports.h"
 
+#include <string>
 #include <list>
 #include "vectormath.h"
 #include "callback.h"
@@ -98,6 +99,20 @@ public:
 private:
 	// For internal use only; these are not really components
 	ComponentPoint2D start, end;
+};
+
+
+
+class SHARED_EXPORT ComponentText2D : virtual public Component2D {
+	/**
+	 * 2D component for a text box
+	 */
+public:
+	int fontSize;
+	std::string fontName;
+	std::string text;
+	
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 };
 
 

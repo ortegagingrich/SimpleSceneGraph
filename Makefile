@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-Isrc/jvisu
 WFLAGS=-Wall
-LFLAGS=-lSDL2 -lSDL2_image
+LFLAGS=-lSDL2 -lSDL2_image -lSDL_ttf
 TESTFLAGS=-lgtest -lgtest_main
 LINK=g++
 ARCHIVE=ar

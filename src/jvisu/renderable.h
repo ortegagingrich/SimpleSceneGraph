@@ -15,6 +15,7 @@
 #ifndef RENDERABLE_H
 #define RENDERABLE_H
 
+#include <string>
 #include <list>
 #include "sdl.h"
 
@@ -73,6 +74,21 @@ public:
 protected:
 	RenderablePoint(float x, float y, float z, int w,
 	                Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca);
+};
+
+
+class RenderableText : public Renderable {
+	/**
+	 * Class of text-box renderables
+	 */
+public:
+	static RenderableText *createRenderableText();
+	
+	
+	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	
+protected:
+	RenderableText();
 };
 
 
