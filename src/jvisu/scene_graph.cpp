@@ -97,6 +97,28 @@ void Component2D::detachFromParent(){
 	}
 }
 
+Vector2f Component2D::computeRelativePosition(Vector2f worldCoordinates){
+	/**
+	 * Computes the position of the provided coordinates relative to this
+	 * component.  Note that this assumes that this component has non-zero
+	 * absolute scale factors.  If that is not so, the result may contain non-
+	 * numerical values.
+	 */
+	// Just to make sure everything is up to date
+	computeAbsolutePosition(parent);
+	
+	// Translate
+	Vector2f relativeCoordinates = worldCoordinates - positionAbsolute;
+	
+	// Rotate
+	relativeCoordinates %= -rotationAbsolute;
+	
+	// Scale
+	relativeCoordinates.scale(1.0 / scaleAbsolute.x, 1.0 / scaleAbsolute.y);
+	
+	return relativeCoordinates;
+}
+
 
 /*
  * ComponentPoint2D

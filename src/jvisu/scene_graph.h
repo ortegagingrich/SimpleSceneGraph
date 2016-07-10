@@ -52,6 +52,8 @@ public:
 	Node2D *getParent(){return parent;};
 	void detachFromParent();
 	
+	Vector2f computeRelativePosition(Vector2f worldCoordinates);
+	
 protected:
 	Vector2f positionAbsolute;
 	float zLevelAbsolute;

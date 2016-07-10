@@ -33,11 +33,12 @@ class LineDrawer {
 friend class LineDrawerDragCallback;
 friend class LineDrawerClickCallback;
 public:
-	LineDrawer(JWindow *win, Layer2D *lay);
-private:
 	JWindow *window;
 	Layer2D *layer;
 	Node2D *rootNode, *mainNode, *previewNode;
+	
+	LineDrawer(JWindow *win, Layer2D *lay);
+private:
 	
 	ComponentPoint2D *downPoint;
 	ComponentLine2D *previewLine;
@@ -97,7 +98,9 @@ public:
 				ep->colorGreen = 0x00;
 				
 				sp->position = drawer->downPoint->position;
+				sp->position = drawer->mainNode->computeRelativePosition(sp->position);
 				ep->position = event->getWorldCoordinates(drawer->layer);
+				ep->position = drawer->mainNode->computeRelativePosition(ep->position);
 				sp->zLevel = 1;
 				ep->zLevel = 1;
 				
@@ -208,7 +211,13 @@ int main(int argc, char* argv[]){
 		const float zoomFactor = 1.05;
 		JWindow *window;
 		Layer2D *layer;
-		ViewportController(JWindow *win, Layer2D *l): window(win), layer(l) {}
+		Node2D *mainNode;
+		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
+			window(win),
+			layer(l),
+			mainNode(m)
+		{}
+		
 		
 		void update(){
 			Vector2f newCenter = layer->viewport.getCenter();
@@ -233,10 +242,10 @@ int main(int argc, char* argv[]){
 			
 			// Rotating
 			if(window->isKeyPressed(SDLK_q)){
-				layer->rootNode->rotation += rotSpeed;
+				mainNode->rotation += rotSpeed;
 			}
 			if(window->isKeyPressed(SDLK_e)){
-				layer->rootNode->rotation -= rotSpeed;
+				mainNode->rotation -= rotSpeed;
 			}
 			
 			// Zooming
@@ -253,7 +262,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	};
-	ViewportController viewportController(window, layer2d);
+	ViewportController viewportController(window, layer2d, drawer.mainNode);
 	
 	
 	
