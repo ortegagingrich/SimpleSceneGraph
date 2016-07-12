@@ -120,6 +120,7 @@ RenderableText::RenderableText(float xp, float yp, float z, float xo, float yo,
 	Renderable(z),
 	text(t),
 	font(f),
+	fontSize(24),
 	xPosition(xp),
 	yPosition(yp),
 	xOffset(xo),
@@ -131,8 +132,25 @@ RenderableText::RenderableText(float xp, float yp, float z, float xo, float yo,
 
 
 void RenderableText::render(SDL_Renderer *renderer, JWindow *window){
-	// TODO: Implement this
-	printf("Pretending to render text: %s\n", text.c_str());
+	// TODO: Do this all a lot better
+	TTF_Font *ttfFont = TTF_OpenFont(font.c_str(), fontSize);
+	SDL_Color white = {255, 255, 255};
+	SDL_Surface *surface = TTF_RenderText_Solid(ttfFont, text.c_str(), white);
+	
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+	
+	SDL_Rect textRect;
+	textRect.x = 0;
+	textRect.y = 0;
+	textRect.w = window->getScreenWidth();
+	textRect.h = window->getScreenHeight();
+	
+	SDL_RenderCopy(renderer, texture, NULL, &textRect);
+	
+	
+	TTF_CloseFont(ttfFont);
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(surface);
 }
 	
 

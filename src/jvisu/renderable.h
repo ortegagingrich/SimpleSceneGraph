@@ -87,6 +87,7 @@ public:
 	
 	const std::string text;
 	const std::string font;
+	const int fontSize;
 	
 	// All of these are in Viewport Coordinates.
 	const float xPosition, yPosition;  // Position of center of Rotations
