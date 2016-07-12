@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <string>
 
 #include "sdl.h"
 #include "renderable.h"
@@ -99,13 +100,41 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
 	//SDL_SetRenderDrawColor(renderer, colorRed, colorGreen, colorBlue, colorAlpha);
 	
 	SDL_RenderDrawPoint(renderer, pixelX, pixelY);
-	
-	// TODO: Actually implement this part!!!
-	/*printf("Pretending to draw point of width %d at (%f, %f, %f) . . . ",
-	       width, xPosition, yPosition, zLevel);
-	printf("Actual Coordinates: (%d, %d)\n", pixelX, pixelY);*/
 }
 
+
+/*
+ * RenderableText
+ */
+
+RenderableText *RenderableText::createRenderableText(float xp, float yp, float z,
+                                float xo, float yo, float r, float th, float ar,
+                                          std::string t, std::string f){
+	// TODO: Insert checks to see if it really is in the viewport
+	return new RenderableText(xp, yp, z, xo, yo, r, th, ar, t, f);
+}
+
+
+RenderableText::RenderableText(float xp, float yp, float z, float xo, float yo,
+                    float r, float th, float ar, std::string t, std::string f):
+	Renderable(z),
+	text(t),
+	font(f),
+	xPosition(xp),
+	yPosition(yp),
+	xOffset(xo),
+	yOffset(yo),
+	rotation(r),
+	textHeight(th),
+	aspectRatio(ar)
+{}
+
+
+void RenderableText::render(SDL_Renderer *renderer, JWindow *window){
+	// TODO: Implement this
+	printf("Pretending to render text: %s\n", text.c_str());
+}
+	
 
 
 /*
