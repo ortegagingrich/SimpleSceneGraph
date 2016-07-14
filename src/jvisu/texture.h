@@ -28,15 +28,83 @@
 #include <string>
 #include <list>
 
+#include "shared_exports.h"
+#include "sdl.h"
+
+
+
+class TextureOwner;
+
+
+
+class SHARED_EXPORT Texture {
+public:
+	static Texture *createSolidColor(int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	static Texture *loadFromBmp(std::string filepath);
+	static Texture *loadFromPng(std::string filepath);
+	
+	
+	const int width, height;
+	
+	virtual ~Texture();
+	
+	virtual void load() = 0;
+	virtual void unload();
+	bool isLoaded();
+	
+	void addOwner(TextureOwner *owner);
+	void removeOwner(TextureOwner *owner);
+	
+	SDL_Texture *getSdlTexture();
+	
+protected:
+	bool loaded;
+	SDL_Texture *sdlTexture;
+	
+	Texture(int w, int h);
+
+private:
+	std::list<TextureOwner*> owners;
+};
 
 
 
 
-
-
-
+class SHARED_EXPORT TextureOwner {
+friend class Texture;
+public:
+	virtual ~TextureOwner(); // Must have destructor which deletes all textures
+protected:
+	virtual void removeTexture(Texture *texture) = 0;
+};
 
 
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
