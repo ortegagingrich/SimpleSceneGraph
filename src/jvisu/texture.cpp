@@ -7,6 +7,11 @@
  * Texture Factory Methods
  */
 
+Texture *Texture::createSolidColor(int w, int h, JWindow *win,
+                                   Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+	if(win == NULL) return NULL;
+	return new TextureSolid(w, h, win, r, g, b, a);
+}
 
 
 
