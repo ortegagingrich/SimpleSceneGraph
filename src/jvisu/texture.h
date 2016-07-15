@@ -50,12 +50,12 @@ public:
 	
 	virtual void load() = 0;
 	virtual void unload();
-	bool isLoaded();
+	bool isLoaded() const;
 	
 	void addOwner(TextureOwner *owner);
 	void removeOwner(TextureOwner *owner);
 	
-	SDL_Texture *getSdlTexture();
+	SDL_Texture *getSdlTexture() const;
 	
 protected:
 	bool loaded;

@@ -1,10 +1,13 @@
+#include <cmath>
 #include <cstdio>
 #include <string>
 
 #include "sdl.h"
 #include "renderable.h"
 #include "window.h"
+#include "vectormath.h"
 #include "geometry.h"
+#include "texture.h"
 
 
 
@@ -104,6 +107,66 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
 
 
 /*
+ * RenderableSprite
+ */
+
+RenderableSprite *RenderableSprite::createRenderableSprite(float x, float y,
+                           float w, float h, float z, float r, Texture *tex){
+	if(tex == NULL) return NULL;
+	if(!tex->isLoaded()) return NULL;
+	
+	// Quick check to make sure the sprite is onscreen
+	Rect2f checkRect;
+	if(r == 0){
+		// No rotation, so use the actual sprite rectangle
+		checkRect.set(x, x + w, y, y + h);
+	}else{
+		// There is rotation, so do a conservative heuristic rectangle
+		float maxdist = Vector2f(w, h).norm();
+		checkRect.set(x - maxdist, x + maxdist, y - maxdist, y + maxdist);
+	}
+	
+	// If there is no intersection, do not make a renderable
+	if(!calculate_intersection(checkRect, Rect2f(-1, 1, -1, 1))) return NULL;
+	
+	// Otherwise, make the renderable
+	return new RenderableSprite(x, y, w, h, z, r, tex);
+}
+
+
+RenderableSprite::RenderableSprite(float x, float y, float w, float h, float z,
+float r, Texture *tex):
+	Renderable(z),
+	xPosition(x),
+	yPosition(y),
+	width(w),
+	height(h),
+	rotation(r),
+	texture(tex)
+{}
+
+
+void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
+	
+	SDL_Texture *sdlTexture = texture->getSdlTexture();
+	float deg = rotation * RAD_2_DEG;
+	SDL_Point center;
+	center.x = 0;
+	center.y = 0;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	
+	SDL_Rect dstrect;
+	window->viewportToScreen(xPosition, yPosition, dstrect.x, dstrect.y);
+	dstrect.w = round(0.5 * window->getScreenWidth() / width);
+	dstrect.h = round(0.5 * window->getScreenHeight() / height); 
+	
+	
+	SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, deg, &center, flip);
+}
+
+
+
+/*
  * RenderableText
  */
 
@@ -169,3 +232,4 @@ void sort_renderables_by_z_level(std::list<Renderable*> &renderables){
 	 */
 	renderables.sort(compare_zlevel);
 }
+

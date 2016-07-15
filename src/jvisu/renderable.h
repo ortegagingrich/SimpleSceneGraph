@@ -21,6 +21,8 @@
 
 
 class JWindow;
+class Texture;
+
 
 class Renderable {
 	/**
@@ -75,6 +77,31 @@ protected:
 	RenderablePoint(float x, float y, float z, int w,
 	                Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca);
 };
+
+
+
+class RenderableSprite : public Renderable {
+	/**
+	 * Class of renderable images.
+	 */
+public:
+	static RenderableSprite *createRenderableSprite(float xp, float yp, float w,
+	                                    float h, float z, float r, Texture *tex);
+	
+	
+	const float xPosition, yPosition;
+	const float width, height;
+	const float rotation;
+	
+	const Texture *texture;
+	
+	virtual void render(SDL_Renderer *renderer, JWindow *window);
+
+protected:
+	RenderableSprite(float xp, float yp, float w, float h, float z, float r,
+	                 Texture *tex);
+};
+
 
 
 class RenderableText : public Renderable {

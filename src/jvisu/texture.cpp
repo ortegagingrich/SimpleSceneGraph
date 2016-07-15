@@ -22,7 +22,7 @@ Texture::~Texture(){
 }
 
 
-bool Texture::isLoaded(){return sdlTexture != NULL;}
+bool Texture::isLoaded() const {return sdlTexture != NULL;}
 
 void Texture::unload(){
 	if(isLoaded()){
@@ -43,8 +43,6 @@ void Texture::removeOwner(TextureOwner *owner){
 }
 
 
-SDL_Texture *getSdlTexture(){
-	return sdlTexture;
-}
+SDL_Texture *Texture::getSdlTexture() const {return sdlTexture;}
 
 
