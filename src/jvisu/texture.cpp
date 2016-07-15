@@ -1,12 +1,71 @@
 #include "sdl.h"
+#include "window.h"
 #include "texture.h"
 
 
-Texture::Texture(int w, int h):
+/*
+ * Texture Factory Methods
+ */
+
+
+
+
+/*
+ * Texture Solid
+ */
+
+TextureSolid::TextureSolid(int w, int h, JWindow *win,
+                           Uint8 r, Uint8 g, Uint8 b, Uint8 a):
+	Texture(w, h, win),
+	colorRed(r),
+	colorGreen(g),
+	colorBlue(b),
+	colorAlpha(a)
+{}
+
+
+void TextureSolid::load(){
+	unload(); // just in case it is already loaded
+	
+	SDL_PixelFormat *pixelFormat = window->getFormat();
+	
+	// Create and fill a surface with the correct color
+	SDL_Surface *surface = SDL_CreateRGBSurface(
+		0,
+		width,
+		height,
+		pixelFormat->BitsPerPixel,
+		pixelFormat->Rmask,
+		pixelFormat->Gmask,
+		pixelFormat->Bmask,
+		pixelFormat->Amask
+	);
+	Uint32 color = SDL_MapRGBA(pixelFormat, colorRed, colorGreen, colorBlue, colorAlpha);
+	SDL_FillRect(surface, NULL, color);
+	
+	// Make a texture from the surface
+	sdlTexture = SDL_CreateTextureFromSurface(window->getRenderer(), surface);
+		
+	// Clean Up
+	SDL_FreeSurface(surface);
+}
+
+
+
+/*
+ * Texture Class Member Functions
+ */
+
+Texture::Texture(int w, int h, JWindow *win):
+	window(win),
 	width(w),
 	height(h),
 	sdlTexture(NULL)
-{}
+{
+	init();
+}
+
+void Texture::init(){load();}
 
 
 Texture::~Texture(){

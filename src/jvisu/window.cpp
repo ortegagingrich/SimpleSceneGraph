@@ -204,7 +204,10 @@ float JWindow::getAspectRatio(){
 	return (float) screenWidth / (float) screenHeight;
 }
 
-SDL_PixelFormat *JWindow::getFormat(){ return SDL_GetWindowSurface(window)->format;}
+SDL_PixelFormat *JWindow::getFormat() const {
+	return SDL_GetWindowSurface(window)->format;
+}
+SDL_Renderer *JWindow::getRenderer() const {return renderer;}
 
 
 /*

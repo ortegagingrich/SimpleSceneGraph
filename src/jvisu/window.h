@@ -44,7 +44,8 @@ public:
 	void screenToViewport(int xin, int yin, float &xout, float &yout) const;
 	
 	
-	SDL_PixelFormat *getFormat();
+	SDL_PixelFormat *getFormat() const;
+	SDL_Renderer *getRenderer() const;
 	SDL_Surface *createNewSurface();
 	
 	

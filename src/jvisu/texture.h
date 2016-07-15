@@ -32,18 +32,20 @@
 #include "sdl.h"
 
 
-
+class JWindow;
 class TextureOwner;
 
 
 
 class SHARED_EXPORT Texture {
 public:
-	static Texture *createSolidColor(int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	static Texture *loadFromBmp(std::string filepath);
-	static Texture *loadFromPng(std::string filepath);
+	static Texture *createSolidColor(int w, int h, JWindow *win,
+	                                 Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	static Texture *loadFromBmp(std::string filepath, JWindow *win);
+	static Texture *loadFromPng(std::string filepath, JWindow *win);
 	
 	
+	const JWindow *window;
 	const int width, height;
 	
 	virtual ~Texture();
@@ -55,16 +57,30 @@ public:
 	void addOwner(TextureOwner *owner);
 	void removeOwner(TextureOwner *owner);
 	
-	SDL_Texture *getSdlTexture() const;
+	SDL_Texture *getSdlTexture() const; // returns NULL if not loaded
 	
 protected:
 	bool loaded;
 	SDL_Texture *sdlTexture;
 	
-	Texture(int w, int h);
+	Texture(int w, int h, JWindow *win);
 
 private:
+	void init();
 	std::list<TextureOwner*> owners;
+};
+
+
+
+
+class SHARED_EXPORT TextureSolid : public Texture {
+public:
+	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+	
+	virtual void load();
+	
+protected:
+	TextureSolid(int w, int h, JWindow *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
 
 
