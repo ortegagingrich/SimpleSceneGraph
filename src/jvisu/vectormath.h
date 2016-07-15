@@ -52,6 +52,9 @@ public:
 	// Identity
 	bool operator==(Vector2f v) const;
 	
+	// Negation
+	Vector2f operator-() const;
+	
 	// Vector Addition
 	void operator+=(Vector2f v);
 	void operator-=(Vector2f v);

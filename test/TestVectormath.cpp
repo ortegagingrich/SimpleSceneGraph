@@ -17,6 +17,15 @@ TEST(TestVectormath, Vector2fIdentity){
 }
 
 
+TEST(TestVectormath, Vector2fNegation){
+	Vector2f v1(42.0, -47);
+	Vector2f v2 = -v1;
+	EXPECT_EQ(v2, Vector2f(-42.0, 47));
+	EXPECT_EQ(v1, -v2);
+	EXPECT_EQ(-v1, v2);
+}
+
+
 TEST(TestVectormath, Vector2fLiteralAssignment){
 	Vector2f v1;
 	v1 = {42.0, -47};

@@ -94,6 +94,13 @@ bool Vector2f::operator==(Vector2f v) const {
 	return (x == v.x) && (y == v.y);
 }
 
+// Negation
+
+Vector2f Vector2f::operator-() const {
+	Vector2f w(-x, -y);
+	return w;
+}
+
 // Vector Addition
 
 void Vector2f::operator+=(Vector2f v){
