@@ -8,6 +8,7 @@
 
 #include <string>
 #include <list>
+#include "texture.h"
 #include "vectormath.h"
 #include "callback.h"
 #include "sdl.h"
@@ -99,6 +100,32 @@ public:
 private:
 	// For internal use only; these are not really components
 	ComponentPoint2D start, end;
+};
+
+
+
+class SHARED_EXPORT ComponentSpriteSimple2D:
+	virtual public Component2D,
+	public TextureOwner
+{
+public:
+	
+	// Offset of the center of rotation from the upper-left corner of the vector.
+	Vector2f centerOffset;
+	
+	ComponentSpriteSimple2D();
+	ComponentSpriteSimple2D(Texture *tex);
+	virtual ~ComponentSpriteSimple2D();
+	
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	
+	Texture *getTexture() const;
+	void setTexture(Texture *tex);
+	
+protected:
+	virtual void removeTexture(Texture *tex);
+private:
+	Texture *texture;
 };
 
 

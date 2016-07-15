@@ -74,6 +74,7 @@ private:
 
 
 class SHARED_EXPORT TextureSolid : public Texture {
+friend class Texture;
 public:
 	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
@@ -89,7 +90,7 @@ protected:
 class SHARED_EXPORT TextureOwner {
 friend class Texture;
 public:
-	virtual ~TextureOwner(); // Must have destructor which deletes all textures
+	virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
 protected:
 	virtual void removeTexture(Texture *texture) = 0;
 };

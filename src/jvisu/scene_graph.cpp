@@ -3,6 +3,7 @@
 
 #include "scene_graph.h"
 #include "renderable.h"
+#include "texture.h"
 #include "vectormath.h"
 #include "input.h"
 #include "callback.h"
@@ -189,6 +190,51 @@ void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Vi
 	}
 }
 
+
+
+/*
+ * ComponentSpriteSimple2D
+ */
+
+ComponentSpriteSimple2D::ComponentSpriteSimple2D():
+	centerOffset(0, 0),
+	texture(NULL)
+{}
+
+
+ComponentSpriteSimple2D::ComponentSpriteSimple2D(Texture *tex):
+	centerOffset(0, 0),
+	texture(tex)
+{}
+
+
+ComponentSpriteSimple2D::~ComponentSpriteSimple2D(){
+	if(texture != NULL){
+		texture->removeOwner(this);
+	}
+}
+
+
+void ComponentSpriteSimple2D::collectRenderables(
+	std::list<Renderable*> &render_list,
+	Viewport2D &viewport
+){
+	// TODO: The last link
+}
+
+
+Texture *ComponentSpriteSimple2D::getTexture() const {return texture;}
+
+void ComponentSpriteSimple2D::setTexture(Texture *tex){
+	if(texture != NULL) texture->removeOwner(this);
+	if(tex != NULL) tex->addOwner(this);
+	texture = tex;
+}
+
+// Internal Use Only!  Called when a texture is manually deleted on its owners
+void ComponentSpriteSimple2D::removeTexture(Texture *tex){
+	if(texture == tex) texture = NULL;
+}
 
 
 /*
