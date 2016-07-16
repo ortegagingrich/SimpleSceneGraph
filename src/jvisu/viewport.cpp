@@ -141,14 +141,30 @@ void Viewport2D::viewportToWorld(float xin, float yin, float &xout, float &yout)
 
 Vector2f Viewport2D::worldToViewport(Vector2f in) const {
 	Vector2f offset = in - getCenter();
-	offset.scale(inverseRadiusX, inverseRadiusY);
+	offset.scale(inverseRadiusY);
 	
 	return offset;
 }
 
 Vector2f Viewport2D::viewportToWorld(Vector2f in) const {
-	in.scale(radiusX, radiusY);
+	in.scale(radiusY);
 	return in + getCenter();
+}
+
+
+Rect2f Viewport2D::getWorldRect() const {
+	Rect2f worldRect;
+	worldRect.xMin = centerX - radiusX;
+	worldRect.xMax = centerX + radiusX;
+	worldRect.yMin = centerY - radiusY;
+	worldRect.yMax = centerY + radiusY;
+	return worldRect;
+}
+
+Rect2f Viewport2D::getViewportRect() const {
+	float ar = getAspectRatio();
+	Rect2f viewportRect(-ar, ar, -1, 1);
+	return viewportRect;
 }
 
 

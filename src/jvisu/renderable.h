@@ -18,6 +18,7 @@
 #include <string>
 #include <list>
 #include "sdl.h"
+#include "geometry.h"
 
 
 class JWindow;
@@ -44,8 +45,19 @@ class RenderableLine : public Renderable {
 	 * Class of renderable lines
 	 */
 public:
-	static RenderableLine *createRenderableLine(float xi1, float yi1, float xi2,
-	       float yi2, float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca);
+	static RenderableLine *createRenderableLine(
+		float xi1,
+		float yi1,
+		float xi2,
+		float yi2,
+		float z,
+		int w,
+		Uint8 cr,
+		Uint8 cg,
+		Uint8 cb,
+		Uint8 ca,
+		Rect2f cullRect
+	);
 	
 	const float x1, x2, y1, y2;
 	const int width;
@@ -64,8 +76,17 @@ class RenderablePoint : public Renderable {
 	 * Class of renderable points
 	 */
 public:
-	static RenderablePoint *createRenderablePoint(float x, float y, float z,
-	                          int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca);
+	static RenderablePoint *createRenderablePoint(
+		float x,
+		float y,
+		float z,
+		int w,
+		Uint8 cr,
+		Uint8 cg,
+		Uint8 cb,
+		Uint8 ca,
+		Rect2f cullRect
+	);
 	
 	const float xPosition, yPosition;
 	const int width;
@@ -85,8 +106,16 @@ class RenderableSprite : public Renderable {
 	 * Class of renderable images.
 	 */
 public:
-	static RenderableSprite *createRenderableSprite(float xp, float yp, float w,
-	                                    float h, float z, float r, Texture *tex);
+	static RenderableSprite *createRenderableSprite(
+		float xp,
+		float yp,
+		float w,
+		float h,
+		float z,
+		float r,
+		Texture *tex,
+		Rect2f cullRect
+	);
 	
 	
 	const float xPosition, yPosition;
@@ -109,8 +138,19 @@ class RenderableText : public Renderable {
 	 * Class of text-box renderables
 	 */
 public:
-	static RenderableText *createRenderableText(float xp, float yp, float z, float xo,
-	       float yo, float r, float th, float ar, std::string t, std::string f);
+	static RenderableText *createRenderableText(
+		float xp,
+		float yp,
+		float z,
+		float xo,
+		float yo,
+		float r,
+		float th,
+		float ar,
+		std::string t,
+		std::string f,
+		Rect2f cullRect
+	);
 	
 	const std::string text;
 	const std::string font;

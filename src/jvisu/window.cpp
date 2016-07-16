@@ -197,10 +197,10 @@ SDL_Surface *JWindow::createNewSurface(){
 /*
  * Property Methods
  */
-bool JWindow::isActive(){ return active; }
-int JWindow::getScreenWidth(){ return screenWidth;}
-int JWindow::getScreenHeight(){ return screenHeight;}
-float JWindow::getAspectRatio(){
+bool JWindow::isActive() const { return active; }
+int JWindow::getScreenWidth() const { return screenWidth;}
+int JWindow::getScreenHeight() const { return screenHeight;}
+float JWindow::getAspectRatio() const {
 	return (float) screenWidth / (float) screenHeight;
 }
 
@@ -215,14 +215,19 @@ SDL_Renderer *JWindow::getRenderer() const {return renderer;}
  */
 
 void JWindow::viewportToScreen(float xin, float yin, int &xout, int &yout) const {
-	xout = std::floor(0.5f * (xin + 1) * screenWidth);
+	float ar = getAspectRatio();
+	xout = std::floor(0.5f * (xin + ar) * screenWidth / ar);
 	yout = std::floor(0.5f * (1 - yin) * screenHeight);
-	if(xout == screenWidth) xout--;
-	if(yout == screenHeight) yout--;
+	
+	// Just a bit of protection
+	/*while(xout < 0) xout++;
+	while(yout < 0) yout++;
+	while(xout >= screenWidth) xout--;
+	while(yout >= screenHeight) yout--;*/
 }
 
 void JWindow::screenToViewport(int xin, int yin, float &xout, float &yout) const {
-	xout = 2 * ((xin + 0.5f) / (float) screenWidth) - 1;
+	xout = (2 * ((xin + 0.5f) / (float) screenWidth) - 1) * getAspectRatio();
 	yout = 1 - 2 * ((yin + 0.5f) / (float) screenHeight);
 }
 

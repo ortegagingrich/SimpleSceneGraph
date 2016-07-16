@@ -34,10 +34,10 @@ public:
 	void update();
 	
 	
-	bool isActive();
-	int getScreenWidth();
-	int getScreenHeight();
-	float getAspectRatio();
+	bool isActive() const;
+	int getScreenWidth() const;
+	int getScreenHeight() const;
+	float getAspectRatio() const;
 	
 	// Coordinate Transformations
 	void viewportToScreen(float xin, float yin, int &xout, int &yout) const;

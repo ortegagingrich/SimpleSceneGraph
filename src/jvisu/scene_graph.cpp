@@ -142,8 +142,17 @@ void ComponentPoint2D::collectRenderables(std::list<Renderable*> &render_list, V
 	
 	// Create renderable
 	RenderablePoint *point = NULL;
-	point = RenderablePoint::createRenderablePoint(vc.x, vc.y, zLevelAbsolute, 1,
-	                                colorRed, colorGreen, colorBlue, colorAlpha);
+	point = RenderablePoint::createRenderablePoint(
+		vc.x,
+		vc.y,
+		zLevelAbsolute,
+		1,
+		colorRed,
+		colorGreen,
+		colorBlue,
+		colorAlpha,
+		v.getViewportRect()
+	);
 	if(point != NULL){
 		render_list.push_back(point);
 	}
@@ -183,8 +192,19 @@ void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Vi
 	
 	// Finally, make the renderable
 	RenderableLine *line;
-	line = RenderableLine::createRenderableLine(vc1.x, vc1.y, vc2.x, vc2.y,
-	            zLevelAbsolute, 1, colorRed, colorGreen, colorBlue, colorAlpha);
+	line = RenderableLine::createRenderableLine(
+		vc1.x,
+		vc1.y,
+		vc2.x,
+		vc2.y,
+		zLevelAbsolute,
+		1,
+		colorRed,
+		colorGreen,
+		colorBlue,
+		colorAlpha,
+		v.getViewportRect()
+	);
 	if(line != NULL){
 		render_list.push_back(line);
 	}
@@ -237,8 +257,16 @@ void ComponentSpriteSimple2D::collectRenderables(
 	
 	// Finally make the renderable
 	RenderableSprite *sprite;
-	sprite = RenderableSprite::createRenderableSprite(vc.x, vc.y, width, height,
-	                                            zLevel, rotationAbsolute, texture);
+	sprite = RenderableSprite::createRenderableSprite(
+		vc.x,
+		vc.y,
+		width,
+		height,
+		zLevel,
+		rotationAbsolute,
+		texture,
+		viewport.getViewportRect()
+	);
 	//sprite = RenderableSprite::createRenderableSprite(0, 0, 0.5, 0.5, 100, 0.2, texture);
 	if(sprite != NULL){
 		render_list.push_back(sprite);

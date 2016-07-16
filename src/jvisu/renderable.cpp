@@ -15,14 +15,23 @@
  * RenderableLine
  */
 
-RenderableLine *RenderableLine::createRenderableLine(float xi1, float yi1,
-           float xi2, float yi2, float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
-{
+RenderableLine *RenderableLine::createRenderableLine(
+	float xi1,
+	float yi1,
+	float xi2,
+	float yi2,
+	float z,
+	int w,
+	Uint8 cr,
+	Uint8 cg,
+	Uint8 cb,
+	Uint8 ca,
+	Rect2f cullRect
+){
 	// clip viewport coordinates to the actual viewport
-	Rect2f rect(-1, 1, -1, 1);
 	Line2f line(xi1, yi1, xi2, yi2);
 	
-	if(calculate_intersection(rect, line, line)){
+	if(calculate_intersection(cullRect, line, line)){
 		xi1 = line.startPoint.x;
 		yi1 = line.startPoint.y;
 		xi2 = line.endPoint.x;
@@ -68,11 +77,19 @@ void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
 /*
  * RenderablePoint
  */
-RenderablePoint *RenderablePoint::createRenderablePoint(float x, float y,
-	                     float z, int w, Uint8 cr, Uint8 cg, Uint8 cb, Uint8 ca)
-{
+RenderablePoint *RenderablePoint::createRenderablePoint(
+	float x,
+	float y,
+	float z,
+	int w,
+	Uint8 cr,
+	Uint8 cg,
+	Uint8 cb,
+	Uint8 ca,
+	Rect2f cullRect
+){
 	// Make a RenderablePoint only if the provided coordinates are onscreen.
-	if(calculate_intersection(Rect2f(-1, 1, -1, 1), Vector2f(x, y))){
+	if(calculate_intersection(cullRect, Vector2f(x, y))){
 		return new RenderablePoint(x, y, z, w, cr, cg, cb, ca);
 	}else{
 		return NULL;
@@ -110,14 +127,22 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
  * RenderableSprite
  */
 
-RenderableSprite *RenderableSprite::createRenderableSprite(float x, float y,
-                           float w, float h, float z, float r, Texture *tex){
+RenderableSprite *RenderableSprite::createRenderableSprite(
+	float x,
+	float y,
+	float w,
+	float h,
+	float z,
+	float r,
+	Texture *tex,
+	Rect2f cullRect
+){
 	if(tex == NULL) return NULL;
 	if(!tex->isLoaded()) return NULL;
 	
 	// Quick check to make sure the sprite is onscreen
 	Rect2f checkRect;
-	if(r == 0){
+	if(r == 0 && true){ // TEMPORARY:
 		// No rotation, so use the actual sprite rectangle
 		checkRect.set(x, x + w, y, y + h);
 	}else{
@@ -127,7 +152,7 @@ RenderableSprite *RenderableSprite::createRenderableSprite(float x, float y,
 	}
 	
 	// If there is no intersection, do not make a renderable
-	if(!calculate_intersection(checkRect, Rect2f(-1, 1, -1, 1))) return NULL;
+	if(!calculate_intersection(checkRect, cullRect)) return NULL;
 	
 	// Otherwise, make the renderable
 	return new RenderableSprite(x, y, w, h, z, r, tex);
@@ -174,9 +199,19 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
  * RenderableText
  */
 
-RenderableText *RenderableText::createRenderableText(float xp, float yp, float z,
-                                float xo, float yo, float r, float th, float ar,
-                                          std::string t, std::string f){
+RenderableText *RenderableText::createRenderableText(
+	float xp,
+	float yp,
+	float z,
+	float xo,
+	float yo,
+	float r,
+	float th,
+	float ar,
+	std::string t,
+	std::string f,
+	Rect2f cullRect
+){
 	// TODO: Insert checks to see if it really is in the viewport
 	return new RenderableText(xp, yp, z, xo, yo, r, th, ar, t, f);
 }

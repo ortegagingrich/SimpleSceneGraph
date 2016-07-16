@@ -8,6 +8,7 @@
 #include "shared_exports.h"
 
 #include "vectormath.h"
+#include "geometry.h"
 
 
 class Layer2D;
@@ -45,6 +46,9 @@ public:
 	void viewportToWorld(float xin, float yin, float &xout, float &yout) const;
 	Vector2f worldToViewport(Vector2f in) const;
 	Vector2f viewportToWorld(Vector2f in) const;
+	
+	Rect2f getWorldRect() const;
+	Rect2f getViewportRect() const;
 
 protected:
 	void forceAspectRatio(float newRatio);
