@@ -60,7 +60,7 @@ TEST(CoordinateTransform2D, viewportToWorld){
 	yin = -0.35;
 	viewport.viewportToWorld(xin, yin, xout, yout);
 	EXPECT_EQ(xout, xin * 2);
-	EXPECT_EQ(yout, yin);
+	EXPECT_EQ(yout, yin * 2);
 }
 
 
@@ -117,7 +117,7 @@ TEST(CoordinateTransform2D, worldToViewport){
 	yin = -0.35;
 	viewport.worldToViewport(xin, yin, xout, yout);
 	EXPECT_EQ(xout, xin * 0.5f);
-	EXPECT_EQ(yout, yin);
+	EXPECT_EQ(yout, yin * 0.5f);
 }
 
 
