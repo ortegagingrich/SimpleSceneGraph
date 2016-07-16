@@ -197,15 +197,21 @@ void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Vi
  */
 
 ComponentSpriteSimple2D::ComponentSpriteSimple2D():
+	width(0.1),
+	height(0.1),
 	centerOffset(0, 0),
 	texture(NULL)
 {}
 
 
 ComponentSpriteSimple2D::ComponentSpriteSimple2D(Texture *tex):
+	width(0.1),
+	height(0.1),
 	centerOffset(0, 0),
-	texture(tex)
-{}
+	texture(NULL)
+{
+	setTexture(tex);
+}
 
 
 ComponentSpriteSimple2D::~ComponentSpriteSimple2D(){
@@ -219,7 +225,24 @@ void ComponentSpriteSimple2D::collectRenderables(
 	std::list<Renderable*> &render_list,
 	Viewport2D &viewport
 ){
-	// TODO: The last link
+	Component2D::collectRenderables(render_list, viewport);
+	if(isHidden()) return;
+	
+	// get coordinates of the corner
+	corner.position.set(-centerOffset.x, centerOffset.y);
+	corner.computeAbsolutePosition(this);
+	
+	// get the viewport coordinates of the corner
+	Vector2f vc = viewport.worldToViewport(corner.positionAbsolute);
+	
+	// Finally make the renderable
+	RenderableSprite *sprite;
+	sprite = RenderableSprite::createRenderableSprite(vc.x, vc.y, width, height,
+	                                            zLevel, rotationAbsolute, texture);
+	//sprite = RenderableSprite::createRenderableSprite(0, 0, 0.5, 0.5, 100, 0.2, texture);
+	if(sprite != NULL){
+		render_list.push_back(sprite);
+	}
 }
 
 

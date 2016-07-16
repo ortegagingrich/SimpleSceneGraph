@@ -25,108 +25,63 @@ const bool USE_HARDWARE_ACCELERATION = true;
  */
 
 
-class LineDrawerDragCallback;
-class LineDrawerClickCallback;
+class RectDrawerClickCallback;
 
 
-class LineDrawer {
-friend class LineDrawerDragCallback;
-friend class LineDrawerClickCallback;
+class RectDrawer {
+friend class RectDrawerClickCallback;
 public:
 	JWindow *window;
 	Layer2D *layer;
-	Node2D *rootNode, *mainNode, *previewNode;
+	Node2D *rootNode, *mainNode;
 	
-	LineDrawer(JWindow *win, Layer2D *lay);
+	RectDrawer(JWindow *win, Layer2D *lay);
 private:
 	
-	ComponentPoint2D *downPoint;
-	ComponentLine2D *previewLine;
 	
 	// Callbacks
-	LineDrawerDragCallback *dragCallback;
-	LineDrawerClickCallback *clickCallback;
+	RectDrawerClickCallback *clickCallback;
 };
 
 
 
-class LineDrawerDragCallback : public MouseMotionCallback {
+class RectDrawerClickCallback : public MouseButtonCallback {
 public:
-	LineDrawerDragCallback(LineDrawer *dr, Layer2D *layer):
-		MouseMotionCallback(layer),
-		drawer(dr)
-	{}
-	virtual void callback(MouseMotionEvent *event){
-		if(event->leftButtonPressed()){
-			Vector2f wc = event->getWorldCoordinates(drawer->layer);
-			drawer->previewLine->endCoordinates = wc;
-		}
-	}
-private:
-	LineDrawer *drawer;
-};
-
-
-class LineDrawerClickCallback : public MouseButtonCallback {
-public:
-	LineDrawerClickCallback(LineDrawer *dr, Layer2D *layer):
+	RectDrawerClickCallback(RectDrawer *dr, Layer2D *layer):
 		MouseButtonCallback(layer),
 		drawer(dr)
 	{}
 	virtual void callback(MouseButtonEvent *event){
 		if(event->isLeftButton()){
-			if(event->isPressed()){
+			if(event->isReleased()){
+				// Add new Rectangle Here
+				printf("Adding new sprite at world coordinates: ");
 				Vector2f wc = event->getWorldCoordinates(drawer->layer);
-				drawer->downPoint->position = wc;
-				drawer->previewLine->startCoordinates = wc;
-				drawer->previewLine->endCoordinates = wc;
+				printf("(%f, %f)\n", wc.x, wc.y);
 				
+				Uint8 r, g, b, a;
+				r = (int) 200 * wc.x;
+				b = (int) 200 * wc.y;
+				g = 0x00;
+				a = 0x00;
+				Texture *texture = Texture::createSolidColor(40, 25,
+				                                  drawer->window, r, g, b, a); 
 				
-				Vector2f dp = drawer->downPoint->position;
-				
-				
-				drawer->previewNode->show();
-			}else{
-				
-				// Draw results here
-				ComponentPoint2D *sp, *ep;
-				sp = new ComponentPoint2D();
-				ep = new ComponentPoint2D();
-				sp->colorBlue = 0x00;
-				sp->colorGreen = 0x00;
-				ep->colorBlue = 0x00;
-				ep->colorGreen = 0x00;
-				
-				sp->position = drawer->downPoint->position;
-				sp->position = drawer->mainNode->computeRelativePosition(sp->position);
-				ep->position = event->getWorldCoordinates(drawer->layer);
-				ep->position = drawer->mainNode->computeRelativePosition(ep->position);
-				sp->zLevel = 1;
-				ep->zLevel = 1;
-				
-				drawer->mainNode->attachChild(sp);
-				drawer->mainNode->attachChild(ep);
-				
-				ComponentLine2D *l;
-				l = new ComponentLine2D();
-				l->startCoordinates = sp->position;
-				l->endCoordinates = ep->position;
-				l->colorRed = 0x00;
-				l->colorGreen = 0x00;
-				drawer->mainNode->attachChild(l);
-				
-				
-				drawer->previewNode->hide();
+				ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
+				newrect->position = drawer->mainNode->computeRelativePosition(wc);
+				newrect->width = 0.5;
+				newrect->height = 0.2;
+				drawer->mainNode->attachChild(newrect);
 			}
 		}
 	}
 private:
-	LineDrawer *drawer;
+	RectDrawer *drawer;
 };
 
 
 
-LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
+RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	rootNode = layer->rootNode;
 	
 	mainNode = new Node2D();
@@ -155,30 +110,9 @@ LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	 * Preview Components
 	 */
 	
-	previewNode = new Node2D();
-	previewNode->zLevel = 2;
-	previewNode->hide();
-	
-	downPoint = new ComponentPoint2D();
-	downPoint->colorRed = 0xff;
-	downPoint->colorBlue = 0xff;
-	downPoint->colorGreen = 0xff;
-	previewNode->attachChild(downPoint);
-	
-	previewLine = new ComponentLine2D();
-	previewLine->colorRed = 0xff;
-	previewLine->colorBlue = 0xff;
-	previewLine->colorGreen = 0xff;
-	previewNode->attachChild(previewLine);
-	
-	rootNode->attachChild(previewNode);
-	
-	
 	
 	// Callbacks
-	
-	dragCallback = new LineDrawerDragCallback(this, layer);
-	clickCallback = new LineDrawerClickCallback(this, layer);
+	clickCallback = new RectDrawerClickCallback(this, layer);
 }
 
 
@@ -206,7 +140,7 @@ int main(int argc, char* argv[]){
 	window->addLayerTop(layer2d);
 	
 	
-	LineDrawer drawer(window, layer2d);
+	RectDrawer drawer(window, layer2d);
 	
 	
 	

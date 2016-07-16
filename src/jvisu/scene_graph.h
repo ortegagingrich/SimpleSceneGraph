@@ -24,6 +24,7 @@ class Node2D;
 
 class SHARED_EXPORT Component2D {
 friend class ComponentLine2D;
+friend class ComponentSpriteSimple2D;
 	/**
 	 * Abstract base class of 2D components.
 	 */
@@ -104,6 +105,7 @@ private:
 
 
 
+
 class SHARED_EXPORT ComponentSpriteSimple2D:
 	virtual public Component2D,
 	public TextureOwner
@@ -111,6 +113,7 @@ class SHARED_EXPORT ComponentSpriteSimple2D:
 public:
 	
 	// Offset of the center of rotation from the upper-left corner of the vector.
+	float width, height;
 	Vector2f centerOffset;
 	
 	ComponentSpriteSimple2D();
@@ -126,6 +129,8 @@ protected:
 	virtual void removeTexture(Texture *tex);
 private:
 	Texture *texture;
+	// For internal use
+	ComponentPoint2D corner;
 };
 
 

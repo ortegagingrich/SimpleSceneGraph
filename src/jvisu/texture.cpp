@@ -10,7 +10,9 @@
 Texture *Texture::createSolidColor(int w, int h, JWindow *win,
                                    Uint8 r, Uint8 g, Uint8 b, Uint8 a){
 	if(win == NULL) return NULL;
-	return new TextureSolid(w, h, win, r, g, b, a);
+	TextureSolid *texture = new TextureSolid(w, h, win, r, g, b, a);
+	texture->load();
+	return texture;
 }
 
 
@@ -66,11 +68,7 @@ Texture::Texture(int w, int h, JWindow *win):
 	width(w),
 	height(h),
 	sdlTexture(NULL)
-{
-	init();
-}
-
-void Texture::init(){load();}
+{}
 
 
 Texture::~Texture(){
