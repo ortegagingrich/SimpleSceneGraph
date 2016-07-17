@@ -175,6 +175,9 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
 	
 	SDL_Texture *sdlTexture = texture->getSdlTexture();
 	float deg = rotation * RAD_2_DEG;
+	SDL_Point center;
+	center.x = 0;
+	center.y = 0;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	
 	SDL_Rect dstrect;
@@ -187,7 +190,7 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
 	
 	
 	//SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);
-	SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, -deg, NULL, flip);
+	SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, -deg, &center, flip);
 }
 
 
