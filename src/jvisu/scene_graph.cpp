@@ -217,6 +217,7 @@ void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Vi
  */
 
 ComponentSpriteSimple2D::ComponentSpriteSimple2D():
+	fixedSize(false),
 	width(0.1),
 	height(0.1),
 	centerOffset(0, 0),
@@ -225,6 +226,7 @@ ComponentSpriteSimple2D::ComponentSpriteSimple2D():
 
 
 ComponentSpriteSimple2D::ComponentSpriteSimple2D(Texture *tex):
+	fixedSize(false),
 	width(0.1),
 	height(0.1),
 	centerOffset(0, 0),
@@ -248,6 +250,8 @@ void ComponentSpriteSimple2D::collectRenderables(
 	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
+	// TODO: fixed size
+	
 	// get coordinates of the corner
 	corner.position.set(-centerOffset.x, centerOffset.y);
 	corner.computeAbsolutePosition(this);
@@ -255,13 +259,16 @@ void ComponentSpriteSimple2D::collectRenderables(
 	// get the viewport coordinates of the corner
 	Vector2f vc = viewport.worldToViewport(corner.positionAbsolute);
 	
+	// factor for scaling rectangle
+	float scaleFactor = 1.0 / viewport.getRadiusY();
+	
 	// Finally make the renderable
 	RenderableSprite *sprite;
 	sprite = RenderableSprite::createRenderableSprite(
 		vc.x,
 		vc.y,
-		width,
-		height,
+		scaleFactor * width,
+		scaleFactor * height,
 		zLevel,
 		rotationAbsolute,
 		texture,

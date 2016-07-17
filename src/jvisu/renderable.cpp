@@ -182,11 +182,11 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
 	
 	SDL_Rect dstrect;
 	window->viewportToScreen(xPosition, yPosition, dstrect.x, dstrect.y);
-	dstrect.w = round(0.5 * window->getScreenWidth() / width);
-	dstrect.h = round(0.5 * window->getScreenHeight() / height); 
+	dstrect.w = round(0.5 * window->getScreenHeight() * width);
+	dstrect.h = round(0.5 * window->getScreenHeight() * height); 
 	
-	dstrect.w = 50;
-	dstrect.h = 50;
+	//dstrect.w = 50;
+	//dstrect.h = 50;
 	
 	
 	//SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);

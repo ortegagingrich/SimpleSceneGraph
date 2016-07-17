@@ -118,8 +118,8 @@ public:
 	);
 	
 	
-	const float xPosition, yPosition;
-	const float width, height;
+	const float xPosition, yPosition; // Viewport Coordinates
+	const float width, height;  // Viewport Coordinates
 	const float rotation;
 	
 	const Texture *texture;

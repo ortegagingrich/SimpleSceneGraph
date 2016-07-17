@@ -111,9 +111,10 @@ class SHARED_EXPORT ComponentSpriteSimple2D:
 	public TextureOwner
 {
 public:
+	bool fixedSize;
 	
-	// Offset of the center of rotation from the upper-left corner of the vector.
-	float width, height;
+	float width, height;  // Either world or viewport, depending on fixedSize
+	// Offset of the center of rotation from the upper-left corner of the rectangle.
 	Vector2f centerOffset;
 	
 	ComponentSpriteSimple2D();
