@@ -34,9 +34,9 @@ public:
 	void setRadiusY(float ry);
 	void setAspectRatio(float newRatio);
 	
-	void setAspectRatioPreserved(bool preserved);
-	void lockAspectRatio();
-	void unlockAspectRatio();
+	void setAspectRatioPreserved(bool preserved);  // Deprecated - should always be preserved
+	void lockAspectRatio();  // Deprecated
+	void unlockAspectRatio(); // Deprecated - should always be locked
 	
 	
 	bool inViewport(float x, float y) const;

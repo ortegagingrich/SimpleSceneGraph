@@ -13,7 +13,7 @@
 Viewport2D::Viewport2D():
 	centerX(0.0f),
 	centerY(0.0f),
-	aspectPreserved(false),
+	aspectPreserved(true),
 	aspectLocked(true),
 	scaleY(false)
 {
