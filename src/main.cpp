@@ -194,8 +194,11 @@ int main(int argc, char* argv[]){
 			// Zooming
 			
 			if(window->isKeyPressed(SDLK_p)){
+				const float minZoom = 0.0;
+				
 				float ry = layer->viewport.getRadiusY();
 				ry /= zoomFactor;
+				if(ry < minZoom) ry = minZoom;
 				layer->viewport.setRadiusY(ry);
 			}
 			if(window->isKeyPressed(SDLK_m)){
@@ -234,9 +237,8 @@ int main(int argc, char* argv[]){
 	// Main Loop
 	while(window->isActive()){
 		
-		window->update();
-		
 		viewportController.update();
+		window->update();
 		
 		//Sleep the appropriate amount of time for the frame
 #ifdef __linux__
