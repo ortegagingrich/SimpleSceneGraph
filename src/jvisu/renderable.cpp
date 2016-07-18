@@ -146,7 +146,7 @@ RenderableSprite *RenderableSprite::createRenderableSprite(
 	
 	// Quick check to make sure the sprite is onscreen
 	Rect2f checkRect;
-	if(r == 0 && true){ // TEMPORARY:
+	if(r == 0 && false){ // TEMPORARY:
 		// No rotation, so use the actual sprite rectangle
 		checkRect.set(x, x + w, y, y + h);
 	}else{

@@ -106,8 +106,10 @@ public:
 			ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
 			newrect->position = drawer->mainNode->computeRelativePosition(wc);
 			newrect->width = 0.1;
-			newrect->height = 0.0785;
-			newrect->centerOffset.set(0.05, 0.03725);
+			newrect->height = 0.1;
+			//newrect->height = 0.0785;
+			newrect->centerOffset.set(0.05, 0.05);
+			//newrect->centerOffset.set(0.05, 0.03725);
 			newrect->fixedSize = fixed;
 			drawer->mainNode->attachChild(newrect);
 		}
@@ -203,7 +205,7 @@ int main(int argc, char* argv[]){
 		void update(){
 			Vector2f newCenter = layer->viewport.getCenter();
 			float vdiff = panSpeed * layer->viewport.getRadiusY();
-			float hdiff = panSpeed * layer->viewport.getRadiusX();
+			float hdiff = panSpeed * layer->viewport.getRadiusY();
 			
 			// Panning
 			

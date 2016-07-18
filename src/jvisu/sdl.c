@@ -63,6 +63,10 @@ void remove_SDL_window(SDL_Window *window){
 	/**
 	 * Destroys the provided SDL window and shuts down SDL if there are no windows left.
 	 */
+	if(window == NULL){
+		printf("[Error] Cannot destroy NULL window.\n");
+		return;
+	}
 	SDL_DestroyWindow(window);
 	WINDOWS_ACTIVE--;
 	if(WINDOWS_ACTIVE <= 0) SDL_Quit();
