@@ -72,7 +72,7 @@ private:
 	
 	std::list<Layer*> layers;
 	
-	SDL_Renderer *renderer = NULL;
+	SDL_Renderer *renderer;
 	
 	bool registerLayer(Layer *layer);
 	

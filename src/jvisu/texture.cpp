@@ -64,6 +64,12 @@ TextureSolid::TextureSolid(int w, int h, JWindow *win,
 bool TextureSolid::load(){
 	if(isLoaded()) return true;
 	
+	SDL_Renderer *renderer = window->getRenderer();
+	if(renderer == NULL){
+		printf("Cannot load Texture; Window has no active renderer.\n");
+		return false;
+	}
+	
 	SDL_PixelFormat *pixelFormat = window->getFormat();
 	
 	// Create and fill a surface with the correct color
@@ -81,7 +87,7 @@ bool TextureSolid::load(){
 	SDL_FillRect(surface, NULL, color);
 	
 	// Make a texture from the surface
-	sdlTexture = SDL_CreateTextureFromSurface(window->getRenderer(), surface);
+	sdlTexture = SDL_CreateTextureFromSurface(renderer, surface);
 		
 	// Clean Up
 	SDL_FreeSurface(surface);
@@ -104,8 +110,15 @@ TextureImage::TextureImage(int w, int h, JWindow *win, std::string path):
 bool TextureImage::load(){
 	if(isLoaded()) return true;
 	
-	SDL_Surface *loadedImage, *convertedImage;
 	
+	SDL_Renderer *renderer = window->getRenderer();
+	if(renderer == NULL){
+		printf("Cannot load Texture; Window has no active renderer.\n");
+		return false;
+	}
+	
+	
+	SDL_Surface *loadedImage, *convertedImage;
 	
 	loadedImage = IMG_Load(filePath.c_str());
 	if(loadedImage == NULL){
@@ -115,7 +128,7 @@ bool TextureImage::load(){
 	
 	convertedImage = SDL_ConvertSurface(loadedImage, window->getFormat(), 0);
 	
-	sdlTexture = SDL_CreateTextureFromSurface(window->getRenderer(), convertedImage);
+	sdlTexture = SDL_CreateTextureFromSurface(renderer, convertedImage);
 	
 	
 	

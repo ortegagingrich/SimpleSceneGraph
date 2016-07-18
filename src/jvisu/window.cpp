@@ -23,7 +23,8 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	hardwareAccelerated(ha),
 	screenWidth(sx),
 	screenHeight(sy),
-	active(false)
+	active(false),
+	renderer(NULL) // until activation
 {
 
 	windowName = "jvisu";
@@ -48,8 +49,9 @@ int JWindow::activate(){
 	}
 	
 	int result = create_SDL_window(&window, windowName.c_str(), screenWidth, screenHeight);
+	renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
 	
-	if(result < 0) return -1;
+	if(result < 0 || renderer == NULL) return -1;
 	
 	active = true;
 	return 0;
@@ -124,10 +126,6 @@ void JWindow::refresh(){
 	 * when it is needed, in practice, this method is generally called every frame.
 	 */
 	
-	// Reset or Create renderer
-	if(renderer == NULL){
-		renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
-	}
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(renderer);
 	
@@ -209,9 +207,6 @@ SDL_PixelFormat *JWindow::getFormat() const {
 	return SDL_GetWindowSurface(window)->format;
 }
 SDL_Renderer *JWindow::getRenderer() {
-	if(renderer == NULL){
-		renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
-	}
 	return renderer;
 }
 
