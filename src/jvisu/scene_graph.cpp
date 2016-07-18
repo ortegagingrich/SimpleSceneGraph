@@ -250,17 +250,29 @@ void ComponentSpriteSimple2D::collectRenderables(
 	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
-	// TODO: fixed size
-	
 	// get coordinates of the corner
 	corner.position.set(-centerOffset.x, centerOffset.y);
 	corner.computeAbsolutePosition(this);
 	
-	// get the viewport coordinates of the corner
-	Vector2f vc = viewport.worldToViewport(corner.positionAbsolute);
+	// factor for scaling the sprite rectangle
+	float scaleFactor;
 	
-	// factor for scaling rectangle
-	float scaleFactor = 1.0 / viewport.getRadiusY();
+	// get the viewport coordinates of the corner
+	Vector2f vc;
+	if(!fixedSize){
+		vc = viewport.worldToViewport(corner.positionAbsolute);
+		scaleFactor = 1.0 / viewport.getRadiusY();
+	}else{
+		vc = viewport.worldToViewport(positionAbsolute);
+		Vector2f out = viewport.worldToViewport(corner.positionAbsolute);
+		out -= vc;
+		out.normalize();
+		out.scale(centerOffset.norm());
+		vc += out;
+		
+		scaleFactor = 1;
+	}
+	
 	
 	// Finally make the renderable
 	RenderableSprite *sprite;

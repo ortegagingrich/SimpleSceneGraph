@@ -45,36 +45,73 @@ private:
 
 
 
-class RectDrawerClickCallback : public MouseButtonCallback {
+class RectDrawerClickCallback : public MouseButtonCallback, public TextureOwner {
 public:
+	
+	Texture *landTexture;
+	
 	RectDrawerClickCallback(RectDrawer *dr, Layer2D *layer):
 		MouseButtonCallback(layer),
 		drawer(dr)
-	{}
-	virtual void callback(MouseButtonEvent *event){
-		if(event->isLeftButton()){
-			if(event->isReleased()){
-				// Add new Rectangle Here
-				printf("Adding new sprite at world coordinates: ");
-				Vector2f wc = event->getWorldCoordinates(drawer->layer);
-				printf("(%f, %f)\n", wc.x, wc.y);
-				
-				Uint8 r, g, b, a;
-				r = (int) 200 * wc.x;
-				b = (int) 200 * wc.y;
-				g = 0x00;
-				a = 0x00;
-				Texture *texture = Texture::createSolidColor(40, 25,
-				                                  drawer->window, r, g, b, a); 
-				
-				ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
-				newrect->position = drawer->mainNode->computeRelativePosition(wc);
-				newrect->width = 0.5;
-				newrect->height = 0.2;
-				drawer->mainNode->attachChild(newrect);
-			}
+	{
+		landTexture = Texture::createFromFile("assets/test/land.png", drawer->window);
+		//landTexture = Texture::createSolidColor(20, 20, drawer->window, 0xff, 0xff, 0, 0);
+		
+		if(landTexture != NULL) landTexture->addOwner(this);
+	};
+	
+	virtual ~RectDrawerClickCallback(){
+		if(landTexture != NULL){
+			landTexture->removeOwner(this);
+		}
+	};
+	
+	virtual void removeTexture(Texture *tex){
+		if(tex == landTexture){
+			landTexture = NULL;
 		}
 	}
+	
+	virtual void callback(MouseButtonEvent *event){
+		bool fixed, useLand;
+		if(event->isLeftButton()){
+			fixed = false;
+			useLand = true;
+		}else{
+			fixed = true;
+			useLand = false;
+		}
+		if(landTexture == NULL) useLand = false;
+		
+		if(event->isReleased()){
+			// Add new Rectangle Here
+			printf("Adding new sprite at world coordinates: ");
+			Vector2f wc = event->getWorldCoordinates(drawer->layer);
+			printf("(%f, %f)\n", wc.x, wc.y);
+			
+			Uint8 r, g, b, a;
+			r = (int) 200 * wc.x;
+			b = (int) 200 * wc.y;
+			g = 0x00;
+			a = 0x00;
+			Texture *texture;
+			if(useLand){
+				//texture = Texture::createFromFile("assets/test/land.png", drawer->window);
+				texture = landTexture;
+				//texture->load();
+			}else{
+				texture = Texture::createSolidColor(40, 25,drawer->window, r, g, b, a); 
+			}
+			
+			ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
+			newrect->position = drawer->mainNode->computeRelativePosition(wc);
+			newrect->width = 0.1;
+			newrect->height = 0.0785;
+			newrect->centerOffset.set(0.05, 0.03725);
+			newrect->fixedSize = fixed;
+			drawer->mainNode->attachChild(newrect);
+		}
+	};
 private:
 	RectDrawer *drawer;
 };
@@ -123,7 +160,8 @@ RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	//JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	JWindow *window = new JWindow(1280, 720, false);
 	
 	
 	/*
@@ -210,27 +248,6 @@ int main(int argc, char* argv[]){
 	};
 	ViewportController viewportController(window, layer2d, drawer.mainNode);
 	
-	
-	
-	/*
-	 * Debug Coordinate-obtaining callback
-	 */
-	
-	class OnRightClick : public MouseButtonCallback {
-	public:
-		Layer2D *layer;
-		OnRightClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
-		
-		virtual void callback(MouseButtonEvent *event){
-			if(event->isReleased() && event->isRightButton()){
-				Vector2f wc = event->getWorldCoordinates(layer);
-				
-				printf("Right click at: [WORLD] (%f, %f), ", wc.x, wc.y);
-				printf("[SCREEN] (%d, %d)\n", event->screenX, event->screenY);
-			}
-		}
-	};
-	new OnRightClick(layer2d);
 	
 	
 	

@@ -1,3 +1,6 @@
+#include <cstdio>
+#include <string>
+
 #include "sdl.h"
 #include "window.h"
 #include "texture.h"
@@ -9,12 +12,39 @@
 
 Texture *Texture::createSolidColor(int w, int h, JWindow *win,
                                    Uint8 r, Uint8 g, Uint8 b, Uint8 a){
-	if(win == NULL) return NULL;
+	if(win == NULL || w < 1 || h < 1) return NULL;
+	
 	TextureSolid *texture = new TextureSolid(w, h, win, r, g, b, a);
 	texture->load();
 	return texture;
 }
 
+
+Texture *Texture::createFromFile(std::string path, JWindow *win){
+	if(win == NULL) return NULL;
+	
+	// Crude, but necessary: we need to determin the dimensions of the texture.
+	SDL_Surface *test = IMG_Load(path.c_str());
+	if(test == NULL){
+		printf("Unable to load texture from \"%s\"\n", path.c_str());
+		return NULL;
+	}
+	int w = test->w;
+	int h = test->h;
+	SDL_FreeSurface(test);
+	
+	
+	TextureImage *texture = new TextureImage(w, h, win, path);
+	
+	// Make sure the texture loads (i.e. image path is valid)
+	if(texture->load()){
+		return texture;
+	}else{
+		delete texture;
+		return NULL;
+	}
+	
+}
 
 
 /*
@@ -31,8 +61,8 @@ TextureSolid::TextureSolid(int w, int h, JWindow *win,
 {}
 
 
-void TextureSolid::load(){
-	unload(); // just in case it is already loaded
+bool TextureSolid::load(){
+	if(isLoaded()) return true;
 	
 	SDL_PixelFormat *pixelFormat = window->getFormat();
 	
@@ -55,7 +85,47 @@ void TextureSolid::load(){
 		
 	// Clean Up
 	SDL_FreeSurface(surface);
+	
+	return isLoaded();
 }
+
+
+
+/*
+ * TextureImage
+ */
+
+TextureImage::TextureImage(int w, int h, JWindow *win, std::string path):
+	Texture(w, h, win),
+	filePath(path)
+{}
+
+
+bool TextureImage::load(){
+	if(isLoaded()) return true;
+	
+	SDL_Surface *loadedImage, *convertedImage;
+	
+	
+	loadedImage = IMG_Load(filePath.c_str());
+	if(loadedImage == NULL){
+		printf("Unable to load texture from \"%s\"\n", filePath.c_str());
+		return false;
+	}
+	
+	convertedImage = SDL_ConvertSurface(loadedImage, window->getFormat(), 0);
+	
+	sdlTexture = SDL_CreateTextureFromSurface(window->getRenderer(), convertedImage);
+	
+	
+	
+	// Clean Up
+	SDL_FreeSurface(loadedImage);
+	SDL_FreeSurface(convertedImage);
+	
+	return isLoaded();
+}
+
 
 
 
@@ -91,6 +161,11 @@ void Texture::unload(){
 		SDL_DestroyTexture(sdlTexture);
 		sdlTexture = NULL;
 	}
+}
+
+bool Texture::reload(){
+	unload();
+	return load();
 }
 
 

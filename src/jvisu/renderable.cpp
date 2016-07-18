@@ -137,8 +137,12 @@ RenderableSprite *RenderableSprite::createRenderableSprite(
 	Texture *tex,
 	Rect2f cullRect
 ){
-	if(tex == NULL) return NULL;
-	if(!tex->isLoaded()) return NULL;
+	if(tex == NULL){
+		return NULL;	
+	}
+	if(!tex->isLoaded()){
+		return NULL;
+	}
 	
 	// Quick check to make sure the sprite is onscreen
 	Rect2f checkRect;

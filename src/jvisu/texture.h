@@ -41,16 +41,16 @@ class SHARED_EXPORT Texture {
 public:
 	static Texture *createSolidColor(int w, int h, JWindow *win,
 	                                 Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	static Texture *loadFromBmp(std::string filepath, JWindow *win);
-	static Texture *loadFromPng(std::string filepath, JWindow *win);
+	static Texture *createFromFile(std::string filepath, JWindow *win);
 	
 	
-	const JWindow *window;
+	JWindow* const window;
 	const int width, height;
 	
 	virtual ~Texture();
 	
-	virtual void load() = 0;
+	virtual bool load() = 0;
+	virtual bool reload();
 	virtual void unload();
 	bool isLoaded() const;
 	
@@ -78,10 +78,24 @@ friend class Texture;
 public:
 	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
-	virtual void load();
+	virtual bool load();
 	
 protected:
 	TextureSolid(int w, int h, JWindow *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+};
+
+
+
+
+class SHARED_EXPORT TextureImage : public Texture {
+friend class Texture;
+public:
+	const std::string filePath;
+	
+	virtual bool load();
+	
+protected:
+	TextureImage(int w, int h, JWindow *win, std::string path);
 };
 
 

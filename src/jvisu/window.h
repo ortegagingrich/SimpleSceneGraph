@@ -45,7 +45,7 @@ public:
 	
 	
 	SDL_PixelFormat *getFormat() const;
-	SDL_Renderer *getRenderer() const;
+	SDL_Renderer *getRenderer();
 	SDL_Surface *createNewSurface();
 	
 	

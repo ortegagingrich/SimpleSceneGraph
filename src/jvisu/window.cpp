@@ -23,7 +23,8 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	hardwareAccelerated(ha),
 	screenWidth(sx),
 	screenHeight(sy),
-	active(false) {
+	active(false)
+{
 
 	windowName = "jvisu";
 	activate();
@@ -207,7 +208,12 @@ float JWindow::getAspectRatio() const {
 SDL_PixelFormat *JWindow::getFormat() const {
 	return SDL_GetWindowSurface(window)->format;
 }
-SDL_Renderer *JWindow::getRenderer() const {return renderer;}
+SDL_Renderer *JWindow::getRenderer() {
+	if(renderer == NULL){
+		renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
+	}
+	return renderer;
+}
 
 
 /*
