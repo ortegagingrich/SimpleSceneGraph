@@ -104,8 +104,13 @@ static void refresh(){
 		rect.w = (int) TARGET_W * FACTOR_X;
 		rect.h = (int) TARGET_H * FACTOR_Y;
 		
+		SDL_Point center;
+		center.x = 0;
+		center.y = 0;
+		
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		SDL_RenderCopyEx(RENDERER, TEXTURE, NULL, &rect, -ANGLE, NULL, flip);
+		
+		SDL_RenderCopyEx(RENDERER, TEXTURE, NULL, &rect, -ANGLE, &center, flip);
 	}
 	
 	SDL_RenderPresent(RENDERER);
