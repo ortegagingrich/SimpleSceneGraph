@@ -1,6 +1,8 @@
 /**
  * Some tests/prototyping using raw SDL (not jvisu)
  */
+#include <time.h>
+
 #ifdef __linux__
 #include <unistd.h>
 #endif
@@ -31,11 +33,11 @@ int SCREEN_WIDTH = 800;
 int SCREEN_HEIGHT = 600;
 
 float ANGLE = 0;
-float DELTA_ANGLE = 1;
+float DELTA_ANGLE = 90;
 
 float OFFSET_X = 0;
 float OFFSET_Y = 0;
-float OFFSET_DELTA = 10;
+float OFFSET_DELTA = 300;
 
 float FACTOR_X = 1;
 float FACTOR_Y = 1;
@@ -94,7 +96,7 @@ static bool key_pressed(SDL_Keycode keycode){
 }
 
 
-static void refresh(){
+static void refresh(float tpf){
 	clear_screen();
 	
 	if(!key_pressed(SDLK_SPACE)){
@@ -104,13 +106,9 @@ static void refresh(){
 		rect.w = (int) TARGET_W * FACTOR_X;
 		rect.h = (int) TARGET_H * FACTOR_Y;
 		
-		SDL_Point center;
-		center.x = 0;
-		center.y = 0;
-		
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		
-		SDL_RenderCopyEx(RENDERER, TEXTURE, NULL, &rect, -ANGLE, &center, flip);
+		for(int i = 0; i < 1; i++){
+			render_copy_clip(RENDERER, TEXTURE, NULL, &rect, -ANGLE);
+		}
 	}
 	
 	SDL_RenderPresent(RENDERER);
@@ -120,20 +118,20 @@ static void refresh(){
 
 
 
-static void update_input(){
+static void update_input(float tpf){
 	SDL_PumpEvents();
 	
 	if(key_pressed(SDLK_w)){
-		OFFSET_Y += OFFSET_DELTA;
+		OFFSET_Y += OFFSET_DELTA * tpf;
 	}
 	if(key_pressed(SDLK_s)){
-		OFFSET_Y -= OFFSET_DELTA;
+		OFFSET_Y -= OFFSET_DELTA * tpf;
 	}
 	if(key_pressed(SDLK_a)){
-		OFFSET_X += OFFSET_DELTA;
+		OFFSET_X += OFFSET_DELTA * tpf;
 	}
 	if(key_pressed(SDLK_d)){
-		OFFSET_X -= OFFSET_DELTA;
+		OFFSET_X -= OFFSET_DELTA * tpf;
 	}
 	if(key_pressed(SDLK_p)){
 		FACTOR_X *= FACTOR_FACTOR;
@@ -144,10 +142,10 @@ static void update_input(){
 		FACTOR_Y /= FACTOR_FACTOR;
 	}
 	if(key_pressed(SDLK_q)){
-		ANGLE += DELTA_ANGLE;
+		ANGLE += DELTA_ANGLE * tpf;
 	}
 	if(key_pressed(SDLK_e)){
-		ANGLE -= DELTA_ANGLE;
+		ANGLE -= DELTA_ANGLE * tpf;
 	}
 	
 	if(key_pressed(SDLK_ESCAPE)){
@@ -156,14 +154,84 @@ static void update_input(){
 }
 
 
+long FRAMECOUNT = 0;
+float FPS[60];
+const int TARGET_FPS = 999;
+const float TARGET_TPF = 1.0 / TARGET_FPS;
+long LAST_TIME;
 
-static void tick(){
+
+
+long time_ms();
+
+#ifdef _WIN32
+
+#include <windows.h>
+
+long time_ms(){
+	return timeGetTime();
+}
+
+#else
+
+#include <sys/time.h>
+
+long time_ms(){
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return (long) tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+#endif
+
+
+static float tick(){
+	
+	FRAMECOUNT++;
+	
+	
+	float tpf = 1.0 / 60.0; // DEFAULT VALUE
+	
+	long current_time = time_ms();
+	if(FRAMECOUNT > 0){
+		tpf = (current_time - LAST_TIME) / 1000.0;
+		LAST_TIME = current_time;
+	}
+	
+	
+	float diff = TARGET_TPF - tpf;
+	if(diff > 0){
+		tpf = TARGET_TPF;
 #ifdef __linux__
-	usleep(16*1000);
+		usleep((int) (diff * 1000 * 1000));
 #endif
 #ifdef _WIN32
-	Sleep(16);
-#endif
+		Sleep((int) (diff * 1000));
+#endif		
+	}
+	
+
+	
+	
+	float framerate = 1.0 / tpf; 
+	
+	FPS[FRAMECOUNT % 60] = framerate;
+	
+	
+	if(FRAMECOUNT % 60 == 0){
+		float average_fps = 0;
+		
+		for(int i = 0; i < 60; i++){
+			average_fps += FPS[i];
+		}
+		
+		average_fps /= 60;
+		
+		printf("FPS: %f\n", average_fps);
+	}
+	
+	
+	return tpf;
 }
 
 
@@ -177,9 +245,9 @@ int main(){
 	
 	// Main Loop
 	while(ACTIVE){
-		refresh();
-		update_input();
-		tick();
+		float tpf = tick();
+		refresh(tpf);
+		update_input(tpf);
 	}
 	
 	

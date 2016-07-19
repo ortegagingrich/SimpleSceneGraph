@@ -11,6 +11,11 @@ static int WINDOWS_ACTIVE = 0;
 static bool SDL_ACTIVE = false;
 
 
+/*
+ * Setup/Takedown Methods
+ */
+
+
 static int init(){
 	/**
 	 * Initializes SDL and returns the result;
@@ -23,6 +28,7 @@ static int init(){
 	
 	return 0;
 }
+
 
 
 int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy){
@@ -80,6 +86,74 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 	Uint32 flags = hardware_accelerated ? SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
 	return SDL_CreateRenderer(window, -1, flags);
 }
+
+
+
+/*
+ * SDL Wrapper methods
+ */
+
+int render_copy_clip(
+	SDL_Renderer *renderer,
+	SDL_Texture *texture,
+	const SDL_Rect *srcrect,
+	const SDL_Rect *dstrect,
+	double angle
+){
+	/*
+	 * First, determine if clipping is really necessary
+	 */
+	
+	SDL_Rect drect;
+	drect.x = 0;
+	drect.y = 0;
+	drect.w = 1000;
+	drect.h = 1000;
+	drect = *dstrect;
+	
+	/*
+	 * No Clipping necessary, so just use the SDL function
+	 */
+	SDL_Point center;
+	center.x = 0;
+	center.y = 0;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	
+	return SDL_RenderCopyEx(renderer, texture, srcrect, &drect, angle, &center, flip);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void print_SDL_error(){

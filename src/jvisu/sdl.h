@@ -21,6 +21,14 @@ void remove_SDL_window(SDL_Window *window);
 
 SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated);
 
+int render_copy_clip(
+	SDL_Renderer * renderer,
+	SDL_Texture *texture,
+	const SDL_Rect *srcrect,
+	const SDL_Rect *dstrect,
+	double angle
+);
+
 void print_SDL_error();
 
 #endif
