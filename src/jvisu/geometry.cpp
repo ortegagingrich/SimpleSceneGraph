@@ -41,6 +41,29 @@ bool Line2f::operator==(Line2f line) const {
  * Rect2f
  */
 
+Rect2f Rect2f::boundPoints(Vector2f points[], int point_count){
+	/**
+	 * Constructs and returns a rectangle bounding all of the provided points.
+	 */
+	Rect2f bound;
+	
+	if(point_count < 1) return bound;
+	
+	bound.set(points[0].x, points[0].x, points[0].y, points[0].y);
+	for(int i = 0; i < point_count; i++){
+		Vector2f p = points[i];
+		
+		bound.xMin = p.x < bound.xMin ? p.x : bound.xMin;
+		bound.xMax = p.x > bound.xMax ? p.x : bound.xMax;
+		bound.yMin = p.y < bound.yMin ? p.y : bound.yMin;
+		bound.yMax = p.y > bound.yMax ? p.y : bound.yMax;
+	}
+	
+	
+	return bound;
+}
+
+
 Rect2f::Rect2f(): xMin(0), xMax(0), yMin(0), yMax(0) {}
 
 
@@ -64,6 +87,14 @@ Vector2f Rect2f::getCenter() const {
 	out.x = 0.5 * (xMin + xMax);
 	out.y = 0.5 * (yMin + yMax);
 	return out;
+}
+
+float Rect2f::getHeight() const {
+	return xMax - xMin;
+}
+
+float Rect2f::getWidth() const {
+	return yMax - yMin;
 }
 
 

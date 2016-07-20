@@ -24,6 +24,8 @@ public:
 
 class SHARED_EXPORT Rect2f {
 public:
+	static Rect2f boundPoints(Vector2f points[], int point_count);
+	
 	float xMin, xMax;
 	float yMin, yMax;
 	
@@ -32,6 +34,8 @@ public:
 	Rect2f(Vector2f point1, Vector2f point2);
 	
 	Vector2f getCenter() const;
+	float getHeight() const;
+	float getWidth() const;
 	
 	void set(float minx, float maxx, float miny, float maxy);
 	

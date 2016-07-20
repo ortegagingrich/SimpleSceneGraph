@@ -3,6 +3,8 @@
  */
 #include <stdio.h>
 #include "sdl.h"
+#include "vectormath.h"
+#include "geometry.h"
 
 
 // To keep track of how many windows are active.  If this drops to 0, SDL shuts down.
@@ -96,20 +98,65 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 int render_copy_clip(
 	SDL_Renderer *renderer,
 	SDL_Texture *texture,
-	const SDL_Rect *srcrect,
-	const SDL_Rect *dstrect,
+	const SDL_Rect *srcrect_in,
+	const SDL_Rect *dstrect_in,
 	double angle
 ){
-	/*
-	 * First, determine if clipping is really necessary
-	 */
+	int view_w, view_h, tex_w, tex_h;
+	SDL_GetRendererOutputSize(renderer, &view_w, &view_h);
+	SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
 	
-	SDL_Rect drect;
-	drect.x = 0;
-	drect.y = 0;
-	drect.w = 1000;
-	drect.h = 1000;
-	drect = *dstrect;
+	
+	SDL_Rect srcrect, dstrect;
+	if(srcrect_in != NULL){
+		srcrect = *srcrect_in;
+	}else{
+		srcrect.x = 0;
+		srcrect.y = 0;
+		srcrect.w = tex_w;
+		srcrect.h = tex_h;
+	}
+	if(dstrect_in != NULL){
+		dstrect = *dstrect_in;
+	}else{
+		dstrect.x = 0;
+		dstrect.y = 0;
+		dstrect.w = view_w;
+		dstrect.h = view_h;
+	}
+	
+	
+	
+	// Step 1: Rotate View Rectangle
+	Vector2f orig_corner(dstrect.x, dstrect.y);
+	Vector2f view_corners[4];
+	for(int i = 0; i < 4; i++){
+		Vector2f c(0, 0);
+		c.add((i / 2) * view_w, (i % 2) * view_h);
+		
+		c -= orig_corner;
+		c %= -angle * DEG_2_RAD;
+		c += orig_corner;
+		
+		view_corners[i] = c;
+	}
+	
+	// Step 2: Compute bounding rectangle
+	Rect2f bound = Rect2f::boundPoints(view_corners, 4);
+	
+	
+	// Step 3: Check to see if dstrect is inside the bounding rect
+	Rect2f drect(dstrect.x, dstrect.x + dstrect.w, dstrect.y, dstrect.y + dstrect.h);
+	Rect2f out;
+	calculate_intersection(bound, drect, out);
+	bool needs_clipping = true;
+	if(out == drect) needs_clipping = false;
+	
+	
+	if(needs_clipping){
+		printf("Clipping Here\n");
+	}
+	
 	
 	/*
 	 * No Clipping necessary, so just use the SDL function
@@ -119,7 +166,8 @@ int render_copy_clip(
 	center.y = 0;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	
-	return SDL_RenderCopyEx(renderer, texture, srcrect, &drect, angle, &center, flip);
+	
+	return SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, angle, &center, flip);
 }
 
 
