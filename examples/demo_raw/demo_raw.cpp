@@ -222,7 +222,7 @@ static float tick(){
 	FPS[FRAMECOUNT % 60] = framerate;
 	
 	
-	if(FRAMECOUNT % 600 == 0){
+	if(FRAMECOUNT % 100 == 0){
 		float average_fps = 0;
 		
 		for(int i = 0; i < 60; i++){

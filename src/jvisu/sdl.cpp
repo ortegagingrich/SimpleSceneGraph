@@ -95,7 +95,7 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 /*
  * SDL Wrapper methods
  */
-int COUNT = 0;
+
 int render_copy_clip(
 	SDL_Renderer *renderer,
 	SDL_Texture *texture,
@@ -134,11 +134,8 @@ int render_copy_clip(
 	
 	
 	for(int i = 0; i < 4; i++){
-		//Vector2f c(0, 0);
-		//c.add((i / 2) * view_w, (i % 2) * view_h);
-		//TODO: TEMP
-		Vector2f c(300, 300);
-		c.add((i / 2) * 200, (i % 2) * 200);
+		Vector2f c(0, 0);
+		c.add((i / 2) * view_w, (i % 2) * view_h);
 		
 		c -= orig_corner;
 		c %= -angle * DEG_2_RAD;
@@ -174,15 +171,6 @@ int render_copy_clip(
 		xm = std::ceil((bound.xMax - dstrect.x) * wrat) + src_orig_x;
 		ym = std::ceil((bound.yMax - dstrect.y) * hrat) + src_orig_y;
 		
-		//TODO: TEMP
-		COUNT++;
-		if(COUNT % 300 == 0){
-			printf("srcrect: [%d, %d]", srcrect.x, srcrect.x + srcrect.w);
-			printf(" x [%d, %d]\n", srcrect.y, srcrect.y + srcrect.h);
-			printf("pre-int: [%d, %d]", prex, xm);
-			printf(" x [%d, %d]\n", prey, ym);
-		}
-		
 		
 		// Step 5: Intersect pre-image with original srcrect
 		prex = prex > srcrect.x ? prex : srcrect.x;
@@ -190,7 +178,6 @@ int render_copy_clip(
 		xm = xm < srcrect.x + srcrect.w ? xm : srcrect.x + srcrect.w;
 		ym = ym < srcrect.y + srcrect.h ? ym : srcrect.y + srcrect.h;
 		
-		if(prex < 0 || prey < 0) printf("DISASTER!!!!\n");
 		
 		prew = xm - prex;
 		preh = ym - prey;
@@ -198,9 +185,6 @@ int render_copy_clip(
 		// If no intersection, then nothing to draw
 		if(prew <= 0 || preh <= 0) return 0;
 		
-		//TODO: TEMP
-		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
-		SDL_RenderCopyEx(renderer, texture, NULL, &srcrect, 0.0, NULL, SDL_FLIP_NONE);
 		
 		// Define new srcrect
 		srcrect.x = prex;
@@ -208,9 +192,6 @@ int render_copy_clip(
 		srcrect.w = prew;
 		srcrect.h = preh;
 		
-		//TODO:TEMP
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x99);
-		SDL_RenderFillRect(renderer, &srcrect);
 		
 		
 		// Step 6: Compute the image of the new srcrect
@@ -243,20 +224,8 @@ int render_copy_clip(
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	
 	
-	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
-	int result = SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, angle, &center, flip);
-	
-	// TODO: TEMP
-	SDL_Rect testport;
-	testport.x = 300;
-	testport.y = 300;
-	testport.w = 200;
-	testport.h = 200;
-	SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x99);
-	SDL_RenderFillRect(renderer, &testport);
-	
-	
-	return result;
+	//SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+	return SDL_RenderCopyEx(renderer, texture, &srcrect, &dstrect, angle, &center, flip);
 }
 
 
