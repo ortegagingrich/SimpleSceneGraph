@@ -226,8 +226,10 @@ static float tick(){
 		}
 		
 		average_fps /= 60;
+		float area = TARGET_W * TARGET_H * FACTOR_X * FACTOR_Y;
+		float regression = 1000000 * tpf / area;
 		
-		printf("FPS: %f\n", average_fps);
+		printf("FPS: %f, Area: %f, Time per Unit Area: %f\n", average_fps, area, regression);
 	}
 	
 	
