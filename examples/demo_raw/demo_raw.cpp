@@ -51,7 +51,7 @@ int TARGET_H = 256;
 
 
 static void clear_screen(){
-	SDL_SetRenderDrawColor(RENDERER, 0x00, 0x00, 0x00, 0x00);
+	SDL_SetRenderDrawColor(RENDERER, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderFillRect(RENDERER, NULL);
 }
 
@@ -67,11 +67,15 @@ static void setup(){
 	// Create Renderer
 	Uint32 rflags = HARDWARE_ACCELERATION ? SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
 	RENDERER = SDL_CreateRenderer(WINDOW, -1, rflags);
+	if(SDL_SetRenderDrawBlendMode(RENDERER, SDL_BLENDMODE_BLEND) < 0){
+		print_SDL_error();
+	}
 	
 	
 	//Create Texture
 	SDL_Surface *loaded = IMG_Load("assets/test/land.png");
 	TEXTURE = SDL_CreateTextureFromSurface(RENDERER, loaded);
+	SDL_SetTextureBlendMode(TEXTURE, SDL_BLENDMODE_BLEND);
 	SDL_FreeSurface(loaded);
 	
 	
@@ -156,7 +160,7 @@ static void update_input(float tpf){
 
 long FRAMECOUNT = 0;
 float FPS[60];
-const int TARGET_FPS = 999;
+const int TARGET_FPS = 60;
 const float TARGET_TPF = 1.0 / TARGET_FPS;
 long LAST_TIME;
 
@@ -218,7 +222,7 @@ static float tick(){
 	FPS[FRAMECOUNT % 60] = framerate;
 	
 	
-	if(FRAMECOUNT % 60 == 0){
+	if(FRAMECOUNT % 600 == 0){
 		float average_fps = 0;
 		
 		for(int i = 0; i < 60; i++){
