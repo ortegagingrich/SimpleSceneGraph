@@ -87,7 +87,9 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 	 * Attempts to create an SDL renderer.
 	 */
 	Uint32 flags = hardware_accelerated ? SDL_RENDERER_ACCELERATED : SDL_RENDERER_SOFTWARE;
-	return SDL_CreateRenderer(window, -1, flags);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, flags);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	return renderer;
 }
 
 

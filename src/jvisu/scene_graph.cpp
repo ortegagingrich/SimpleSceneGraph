@@ -129,7 +129,7 @@ ComponentPoint2D::ComponentPoint2D():
 	colorRed(0xff),
 	colorGreen(0xff),
 	colorBlue(0xff),
-	colorAlpha(0x00)
+	colorAlpha(0xff)
 {}
 
 
@@ -167,7 +167,7 @@ ComponentLine2D::ComponentLine2D():
 	colorRed(0xff),
 	colorGreen(0xff),
 	colorBlue(0xff),
-	colorAlpha(0x00)
+	colorAlpha(0xff)
 {}
 
 
