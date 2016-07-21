@@ -13,7 +13,7 @@ const static int DOWN = 4;
 const static int UP = 8;
 
 // Helper function
-static int computeOutcode(float x, float y, Rect2f rect){
+static int computeOutcode(float x, float y, const Rect2f &rect){
 	
 	int code = 0;
 	
