@@ -193,8 +193,9 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
 	//dstrect.h = 50;
 	
 	
+	render_copy_clip(renderer, sdlTexture, NULL, &dstrect, -deg);
 	//SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);
-	SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, -deg, &center, flip);
+	//SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, -deg, &center, flip);
 }
 
 
