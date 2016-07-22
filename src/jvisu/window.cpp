@@ -6,6 +6,7 @@
 #include <list>
 #include <string>
 
+#include "tick.h"
 #include "sdl.h"
 #include "window.h"
 #include "layer.h"
@@ -24,7 +25,8 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	screenWidth(sx),
 	screenHeight(sy),
 	active(false),
-	renderer(NULL) // until activation
+	renderer(NULL), // until activation
+	tickRecord(NULL)
 {
 
 	windowName = "jvisu";
@@ -52,6 +54,8 @@ int JWindow::activate(){
 	renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
 	
 	if(result < 0 || renderer == NULL) return -1;
+	
+	tickRecord = create_tick_record(10);
 	
 	active = true;
 	return 0;
@@ -90,6 +94,11 @@ int JWindow::dispose(){
 		renderer = NULL;
 	}
 	
+	if(tickRecord != NULL){
+		delete_tick_record(tickRecord);
+		tickRecord = NULL;
+	}
+	
 	remove_SDL_window(window);
 	active = false;
 	
@@ -100,7 +109,7 @@ int JWindow::dispose(){
 /*
  * Main Update Methods
  */
-void JWindow::update(){
+void JWindow::update(float tpf){
 	/**
 	 * This method should be called once per frame.
 	 */
@@ -116,7 +125,23 @@ void JWindow::update(){
 	
 	// Note: Processing of input should be the final step of the update cycle,
 	//       as this may result in the end of the event.
-	processInput();
+	processInput(tpf);
+}
+
+
+float JWindow::tick(int target_fps){
+	/**
+	 * Optional Method to handle frame-rate advancement, measurement, stabilization, etc.
+	 */
+	return ::tick(target_fps, tickRecord);
+}
+
+float JWindow::getFPS() const {
+	/**
+	 * Measures the FPS of the window tick cycle.  Note:  this only works if the
+	 * user is calling tick() on this window every cycle.
+	 */
+	return compute_tick_record_fps(tickRecord);
 }
 
 
@@ -143,7 +168,7 @@ void JWindow::refresh(){
 }
 
 
-void JWindow::processInput(){
+void JWindow::processInput(float tpf){
 	/**
 	 * Checks for and processes all SDL input events and calls the appropriate
 	 * callbacks.
@@ -152,29 +177,29 @@ void JWindow::processInput(){
 	
 	// Cycle through all active events
 	while(SDL_PollEvent(&sdlEvent) != 0){
-		processEvent(sdlEvent);
+		processEvent(sdlEvent, tpf);
 	}
 }
 
-void JWindow::processEvent(SDL_Event sdlEvent){
+void JWindow::processEvent(SDL_Event sdlEvent, float tpf){
 	InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
-	processEvent(event);
+	processEvent(event, tpf);
 	delete event;
 }
 
-void JWindow::processEvent(InputEvent *event){
+void JWindow::processEvent(InputEvent *event, float tpf){
 	
 	// Pass the event on to layers for processing.
 	std::list<Layer*>::reverse_iterator iter;
 	// Iterate backwards (reverse order from rendering)
 	for(iter = layers.rbegin(); iter != layers.rend(); iter++){
 		Layer *layer = *iter;
-		layer->processEvent(event);
+		layer->processEvent(event, tpf);
 	}
 	
 	
 	// Pass the event to callbacks
-	callbackManager.processEvent(event);
+	callbackManager.processEvent(event, tpf);
 	
 	
 	// Internal Handling of events

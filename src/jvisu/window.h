@@ -13,6 +13,7 @@
 #include "callback.h"
 
 
+struct TickRecord;
 class CallbackManager;
 class JEventCallback;
 class Vector2f;
@@ -31,7 +32,10 @@ public:
 	int activate();
 	int dispose();
 	
-	void update();
+	
+	void update(float tpf);
+	float tick(int target_fps);
+	float getFPS() const; // Only works if tick is being used.
 	
 	
 	bool isActive() const;
@@ -60,8 +64,8 @@ public:
 	bool isKeyPressed(SDL_Keycode keycode);
 	
 	// Mainly public for testing purposes:
-	void processEvent(InputEvent *event);
-	void processEvent(SDL_Event event);
+	void processEvent(InputEvent *event, float tpf);
+	void processEvent(SDL_Event event, float tpf);
 
 private:
 	SDL_Window *window;
@@ -74,10 +78,13 @@ private:
 	
 	SDL_Renderer *renderer;
 	
+	struct TickRecord *tickRecord;
+	
+	
 	bool registerLayer(Layer *layer);
 	
 	void refresh();
-	void processInput();
+	void processInput(float tpf);
 	
 };
 

@@ -33,9 +33,9 @@ JEventCallback::~JEventCallback(){
 }
 
 //Default pre-callback just checks to make sure the event is not consumed
-void JEventCallback::precallback(InputEvent *event){
+void JEventCallback::precallback(InputEvent *event, float tpf){
 	if(!event->isConsumed()){
-		callback(event);
+		callback(event, tpf);
 	}
 }
 
@@ -48,9 +48,9 @@ KeyButtonCallback::KeyButtonCallback(Layer *layer): JEventCallback(layer){}
 KeyButtonCallback::KeyButtonCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
-void KeyButtonCallback::precallback(InputEvent *event){
+void KeyButtonCallback::precallback(InputEvent *event, float tpf){
 	if(event->getType() == "KEYBUTTON" && !event->isConsumed()){
-		callback((KeyButtonEvent*) event);
+		callback((KeyButtonEvent*) event, tpf);
 	}
 }
 
@@ -65,9 +65,9 @@ MouseButtonCallback::MouseButtonCallback(Layer *layer): JEventCallback(layer){}
 MouseButtonCallback::MouseButtonCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
-void MouseButtonCallback::precallback(InputEvent *event){
+void MouseButtonCallback::precallback(InputEvent *event, float tpf){
 	if(event->getType() == "MOUSEBUTTON" && !event->isConsumed()){
-		callback((MouseButtonEvent*) event);
+		callback((MouseButtonEvent*) event, tpf);
 	}
 }
 
@@ -82,9 +82,9 @@ MouseMotionCallback::MouseMotionCallback(Layer *layer): JEventCallback(layer){}
 MouseMotionCallback::MouseMotionCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
-void MouseMotionCallback::precallback(InputEvent *event){
+void MouseMotionCallback::precallback(InputEvent *event, float tpf){
 	if(event->getType() == "MOUSEMOTION" && !event->isConsumed()){
-		callback((MouseMotionEvent*) event);
+		callback((MouseMotionEvent*) event, tpf);
 	}
 }
 
@@ -99,9 +99,9 @@ QuitEventCallback::QuitEventCallback(Layer *layer): JEventCallback(layer){}
 QuitEventCallback::QuitEventCallback(ComponentInput2D *component):
 	JEventCallback(component){}
 
-void QuitEventCallback::precallback(InputEvent *event){
+void QuitEventCallback::precallback(InputEvent *event, float tpf){
 	if(event->getType() == "QUIT" && !event->isConsumed()){
-		callback((QuitEvent*) event);
+		callback((QuitEvent*) event, tpf);
 	}
 }
 
@@ -129,13 +129,13 @@ void CallbackManager::unregisterCallback(JEventCallback *callback){
 }
 
 
-void CallbackManager::processEvent(InputEvent *event){
+void CallbackManager::processEvent(InputEvent *event, float tpf){
 	/**
 	 * Just passes the provided SDL_Event on to every registered callback.
 	 */
 	std::list<JEventCallback*>::const_iterator i;
 	for(i = registered.begin(); i != registered.end(); i++){
-		(*i)->precallback(event);
+		(*i)->precallback(event, tpf);
 	}
 }
 
@@ -143,11 +143,11 @@ void CallbackManager::processEvent(InputEvent *event){
  * Souce for TopCallbackManager
  */
 
-void TopCallbackManager::processEvent(InputEvent *event){
+void TopCallbackManager::processEvent(InputEvent *event, float tpf){
 	//TODO: Take care of input logging, etc. here
 	
 	// Call super method
-	CallbackManager::processEvent(event);
+	CallbackManager::processEvent(event, tpf);
 }
 
 

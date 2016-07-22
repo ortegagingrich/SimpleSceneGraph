@@ -28,11 +28,11 @@ public:
 	JEventCallback(ComponentInput2D *component);
 	
 	virtual ~JEventCallback();
-	virtual void callback(InputEvent *event) = 0;
+	virtual void callback(InputEvent *event, float tpf) = 0;
 protected:
 	CallbackManager *boundManager;
 	
-	virtual void precallback(InputEvent *event);
+	virtual void precallback(InputEvent *event, float tpf);
 };
 
 
@@ -42,10 +42,11 @@ public:
 	KeyButtonCallback(Layer *layer);
 	KeyButtonCallback(ComponentInput2D *component);
 	
-	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
-	virtual void callback(KeyButtonEvent *event) = 0;
+	// Dummy Method; should never be called
+	virtual void callback(InputEvent *event, float tpf){};
+	virtual void callback(KeyButtonEvent *event, float tpf) = 0;
 protected:
-	virtual void precallback(InputEvent *event);
+	virtual void precallback(InputEvent *event, float tpf);
 };
 
 
@@ -55,10 +56,11 @@ public:
 	MouseButtonCallback(Layer *layer);
 	MouseButtonCallback(ComponentInput2D *component);
 	
-	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
-	virtual void callback(MouseButtonEvent *event) = 0;
+	// Dummy Method; should never be called
+	virtual void callback(InputEvent *event, float tpf){};
+	virtual void callback(MouseButtonEvent *event, float tpf) = 0;
 protected:
-	virtual void precallback(InputEvent *event);
+	virtual void precallback(InputEvent *event, float tpf);
 };
 
 
@@ -68,10 +70,11 @@ public:
 	MouseMotionCallback(Layer *layer);
 	MouseMotionCallback(ComponentInput2D *component);
 	
-	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
-	virtual void callback(MouseMotionEvent *event) = 0;
+	// Dummy Method; should never be called
+	virtual void callback(InputEvent *event, float tpf){};
+	virtual void callback(MouseMotionEvent *event, float tpf) = 0;
 protected:
-	virtual void precallback(InputEvent *event);
+	virtual void precallback(InputEvent *event, float tpf);
 };
 
 
@@ -81,10 +84,11 @@ public:
 	QuitEventCallback(Layer *layer);
 	QuitEventCallback(ComponentInput2D *component);
 	
-	virtual void callback(InputEvent *event){}; // Dummy Method; should never be called
-	virtual void callback(QuitEvent *event) = 0;
+	// Dummy Method; should never be called
+	virtual void callback(InputEvent *event, float tpf){};
+	virtual void callback(QuitEvent *event, float tpf) = 0;
 protected:
-	virtual void precallback(InputEvent *event);
+	virtual void precallback(InputEvent *event, float tpf);
 };
 
 
@@ -99,7 +103,7 @@ public:
 	
 	void registerCallback(JEventCallback *callback);
 	void unregisterCallback(JEventCallback *callback);
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 private:
 	// Registered Callbacks
 	std::list<JEventCallback*> registered;
@@ -113,7 +117,7 @@ private:
 class SHARED_EXPORT TopCallbackManager: public CallbackManager {
 friend class MouseButtonEvent;
 public:
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 private:
 	// Variables used to log input events
 	

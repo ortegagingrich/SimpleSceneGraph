@@ -21,8 +21,8 @@ Layer::~Layer(){
 }
 
 
-void Layer::processEvent(InputEvent *event){
-	callbackManager.processEvent(event);
+void Layer::processEvent(InputEvent *event, float tpf){
+	callbackManager.processEvent(event, tpf);
 }
 
 
@@ -91,12 +91,12 @@ void Layer2D::render(SDL_Renderer *renderer){
 	}
 }
 
-void Layer2D::processEvent(InputEvent *event){
+void Layer2D::processEvent(InputEvent *event, float tpf){
 	// Pass the event down the scene graph
-	rootNode->processEvent(event);
+	rootNode->processEvent(event, tpf);
 	
 	// Call the super method to process the event with this layer
-	Layer::processEvent(event);
+	Layer::processEvent(event, tpf);
 }
 
 

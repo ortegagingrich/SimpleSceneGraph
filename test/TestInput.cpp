@@ -32,12 +32,12 @@ TEST(Input, MultipleButtonCallbacks){
 		
 		void reset(){activated = false;};
 		
-		virtual void callback(MouseButtonEvent *event){
+		virtual void callback(MouseButtonEvent *event, float tpf){
 			if(event->isLeftButton()) activated = true;
 		};
 		
 		// If this method is called for any reason, automatic failure
-		virtual void callback(InputEvent *event){
+		virtual void callback(InputEvent *event, float tpf){
 			FAIL();
 		};
 	};
@@ -49,12 +49,12 @@ TEST(Input, MultipleButtonCallbacks){
 		
 		void reset(){activated = false;};
 		
-		virtual void callback(MouseButtonEvent *event){
+		virtual void callback(MouseButtonEvent *event, float tpf){
 			if(event->isRightButton()) activated = true;
 		};
 		
 		// If this method is called for any reason, automatic failure
-		virtual void callback(InputEvent *event){
+		virtual void callback(InputEvent *event, float tpf){
 			FAIL();
 		};
 	};
@@ -66,12 +66,12 @@ TEST(Input, MultipleButtonCallbacks){
 		
 		void reset(){activated = false;};
 		
-		virtual void callback(KeyButtonEvent *event){
+		virtual void callback(KeyButtonEvent *event, float tpf){
 			activated = true;
 		};
 		
 		// If this method is called for any reason, automatic failure
-		virtual void callback(InputEvent *event){
+		virtual void callback(InputEvent *event, float tpf){
 			FAIL();
 		};
 	};
@@ -89,9 +89,11 @@ TEST(Input, MultipleButtonCallbacks){
 	
 	
 	// Case 1 : Quit Event (should trigger none)
+	printf("Check 1\n");
 	sdlEvent.type = SDL_QUIT;
 	
-	window->processEvent(sdlEvent);
+	//window->processEvent(sdlEvent, 0.0f);
+	printf("Check 1.5\n");
 	
 	EXPECT_EQ(clm->activated, false);
 	EXPECT_EQ(crm->activated, false);
@@ -103,9 +105,10 @@ TEST(Input, MultipleButtonCallbacks){
 	
 	
 	// Case 2 : Key Event (should trigger only ck)
+	printf("Check 2\n");
 	sdlEvent.type = SDL_KEYDOWN;
 	
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(clm->activated, false);
 	EXPECT_EQ(crm->activated, false);
@@ -116,11 +119,12 @@ TEST(Input, MultipleButtonCallbacks){
 	ck->reset();
 	
 	
-	// Case 2 : Left Mouse Event (should trigger only clm)
+	// Case 3 : Left Mouse Event (should trigger only clm)
+	printf("Check 3\n");
 	sdlEvent.type = SDL_MOUSEBUTTONUP;
 	sdlEvent.button.button = SDL_BUTTON_LEFT;
 	
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(clm->activated, true);
 	EXPECT_EQ(crm->activated, false);
@@ -173,13 +177,13 @@ TEST(Input, EventPriority){
 		
 		void reset(){activated = false;};
 		
-		virtual void callback(KeyButtonEvent *event){
+		virtual void callback(KeyButtonEvent *event, float tpf){
 			activated = true;
 			event->consume();
 		};
 		
 		// If this method is called for any reason, automatic failure
-		virtual void callback(InputEvent *event){
+		virtual void callback(InputEvent *event, float tpf){
 			FAIL();
 		};
 	};
@@ -214,7 +218,7 @@ TEST(Input, EventPriority){
 	// Trial 1
 	
 	PriorityCallback *c1 = new PriorityCallback(window);
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(c1->activated, true);
 	
@@ -223,7 +227,7 @@ TEST(Input, EventPriority){
 	// Trial 2
 	
 	PriorityCallback *c2 = new PriorityCallback(layer2);
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(c1->activated, false);
 	EXPECT_EQ(c2->activated, true);
@@ -234,7 +238,7 @@ TEST(Input, EventPriority){
 	// Trial 3
 	
 	PriorityCallback *c3 = new PriorityCallback(node);
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(c1->activated, false);
 	EXPECT_EQ(c2->activated, false);
@@ -247,7 +251,7 @@ TEST(Input, EventPriority){
 	// Trial 4
 	
 	PriorityCallback *c4 = new PriorityCallback(layer1);
-	window->processEvent(sdlEvent);
+	window->processEvent(sdlEvent, 0.0f);
 	
 	EXPECT_EQ(c1->activated, false);
 	EXPECT_EQ(c2->activated, false);

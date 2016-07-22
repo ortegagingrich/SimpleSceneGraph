@@ -46,7 +46,7 @@ public:
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void processEvent(InputEvent *event){};
+	virtual void processEvent(InputEvent *event, float tpf){};
 	
 	bool isHidden(); // Depends also on the parent
 	void hide();
@@ -143,7 +143,7 @@ class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
 public:
 	CallbackManager callbackManager;
 	
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 };
 
 
@@ -162,7 +162,7 @@ public:
 	std::list<Component2D*> getChildren() {return children;}
 
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 private:
 	std::list<Component2D*> children;
 };
@@ -171,7 +171,7 @@ private:
 
 class SHARED_EXPORT NodeInput2D : public Node2D, public ComponentInput2D {
 public:
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 };
 
 

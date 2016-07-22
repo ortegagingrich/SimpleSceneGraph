@@ -30,7 +30,7 @@ public:
 	virtual ~Layer();
 	
 	virtual void render(SDL_Renderer *renderer) = 0;
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 	
 	JWindow *getWindow();
 	void setWindow(JWindow *window);
@@ -72,7 +72,7 @@ public:
 	~Layer2D();
 	
 	virtual void render(SDL_Renderer *renderer);
-	virtual void processEvent(InputEvent *event);
+	virtual void processEvent(InputEvent *event, float tpf);
 private:
 	std::list<Renderable*> renderables;
 };

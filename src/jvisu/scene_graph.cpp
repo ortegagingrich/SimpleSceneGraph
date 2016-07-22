@@ -311,10 +311,10 @@ void ComponentSpriteSimple2D::removeTexture(Texture *tex){
  * ComponentInput2D
  */
 
-void ComponentInput2D::processEvent(InputEvent *event){
-	Component2D::processEvent(event);
+void ComponentInput2D::processEvent(InputEvent *event, float tpf){
+	Component2D::processEvent(event, tpf);
 	
-	callbackManager.processEvent(event);
+	callbackManager.processEvent(event, tpf);
 }
 
 
@@ -339,12 +339,12 @@ void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D 
 	}
 }
 
-void Node2D::processEvent(InputEvent *event){
+void Node2D::processEvent(InputEvent *event, float tpf){
 	// The node itself does nothing; the event is passed on to children
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
-		child->processEvent(event);
+		child->processEvent(event, tpf);
 	}
 }
 
@@ -389,9 +389,9 @@ void Node2D::deleteAllChildren(){
  * NodeInput2D
  */
 
-void NodeInput2D::processEvent(InputEvent *event){
-	ComponentInput2D::processEvent(event);
-	Node2D::processEvent(event);
+void NodeInput2D::processEvent(InputEvent *event, float tpf){
+	ComponentInput2D::processEvent(event, tpf);
+	Node2D::processEvent(event, tpf);
 }
 
 
