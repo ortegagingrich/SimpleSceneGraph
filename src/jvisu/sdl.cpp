@@ -76,9 +76,7 @@ void remove_SDL_window(SDL_Window *window){
 		printf("[Error] Cannot destroy NULL window.\n");
 		return;
 	}
-	printf("Before %p\n", window);
 	SDL_DestroyWindow(window);
-	printf("After\n");
 	WINDOWS_ACTIVE--;
 	if(WINDOWS_ACTIVE <= 0) SDL_Quit();
 }

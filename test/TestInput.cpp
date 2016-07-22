@@ -79,7 +79,7 @@ TEST(Input, MultipleButtonCallbacks){
 	/*
 	 * Make Window
 	 */
-	JWindow *window = new JWindow(100, 100, "TEST_INPUT");
+	JWindow *window = new JWindow(100, 100, false);
 	
 	CallbackLeftMouse *clm = new CallbackLeftMouse(window);
 	CallbackRightMouse *crm = new CallbackRightMouse(window);
@@ -89,11 +89,9 @@ TEST(Input, MultipleButtonCallbacks){
 	
 	
 	// Case 1 : Quit Event (should trigger none)
-	printf("Check 1\n");
 	sdlEvent.type = SDL_QUIT;
 	
-	//window->processEvent(sdlEvent, 0.0f);
-	printf("Check 1.5\n");
+	window->processEvent(sdlEvent, 1.0f);
 	
 	EXPECT_EQ(clm->activated, false);
 	EXPECT_EQ(crm->activated, false);
@@ -102,10 +100,10 @@ TEST(Input, MultipleButtonCallbacks){
 	clm->reset();
 	crm->reset();
 	ck->reset();
+	window->activate();
 	
 	
 	// Case 2 : Key Event (should trigger only ck)
-	printf("Check 2\n");
 	sdlEvent.type = SDL_KEYDOWN;
 	
 	window->processEvent(sdlEvent, 0.0f);
@@ -120,7 +118,6 @@ TEST(Input, MultipleButtonCallbacks){
 	
 	
 	// Case 3 : Left Mouse Event (should trigger only clm)
-	printf("Check 3\n");
 	sdlEvent.type = SDL_MOUSEBUTTONUP;
 	sdlEvent.button.button = SDL_BUTTON_LEFT;
 	
@@ -192,7 +189,7 @@ TEST(Input, EventPriority){
 	 * Setup
 	 */
 	
-	JWindow *window = new JWindow(100, 100, "TEST_INPUT");
+	JWindow *window = new JWindow(100, 100, false);
 	
 	Layer2D *layer1, *layer2;
 	NodeInput2D *node;
