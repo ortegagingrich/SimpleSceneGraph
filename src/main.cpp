@@ -9,6 +9,7 @@
 #endif
 
 #include "jvisu.h"
+#include "tick.h"  //TODO: TEMP; include this with window if it works
 
 
 #ifdef __linux__
@@ -259,13 +260,8 @@ int main(int argc, char* argv[]){
 		viewportController.update();
 		window->update();
 		
-		//Sleep the appropriate amount of time for the frame
-#ifdef __linux__
-		usleep(16*1000);
-#endif
-#ifdef _WIN32
-		Sleep(16);
-#endif
+		
+		tick(60, NULL);
 	}
 
 	
