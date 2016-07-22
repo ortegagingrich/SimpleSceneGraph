@@ -72,7 +72,7 @@ public:
 		}
 	}
 	
-	virtual void callback(MouseButtonEvent *event){
+	virtual void callback(MouseButtonEvent *event, float tpf){
 		bool fixed, useLand;
 		if(event->isLeftButton()){
 			fixed = false;
@@ -202,7 +202,7 @@ int main(int argc, char* argv[]){
 		{}
 		
 		
-		void update(){
+		void update(float tpf){
 			Vector2f newCenter = layer->viewport.getCenter();
 			float vdiff = panSpeed * layer->viewport.getRadiusY();
 			float hdiff = panSpeed * layer->viewport.getRadiusY();
@@ -256,16 +256,10 @@ int main(int argc, char* argv[]){
 	// Main Loop
 	while(window->isActive()){
 		
-		viewportController.update();
-		window->update();
+		float tpf = window->tick(60);
 		
-		//Sleep the appropriate amount of time for the frame
-#ifdef __linux__
-		usleep(16*1000);
-#endif
-#ifdef _WIN32
-		Sleep(16);
-#endif
+		viewportController.update(tpf);
+		window->update(tpf);
 	}
 
 	

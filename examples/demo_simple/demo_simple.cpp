@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 	 * Background Handling
 	 */
 	LayerBackground *background = (LayerBackground*) window->getLayerById("background");
-	background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
+	background->setBackgroundColor(0x55, 0x77, 0xbb, 0xff);
 	
 	
 	class OnLeftClick : public MouseButtonCallback {
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]){
 		
 		OnLeftClick(LayerBackground *bg): MouseButtonCallback(bg), background(bg) {}
 		
-		virtual void callback(MouseButtonEvent *event){
+		virtual void callback(MouseButtonEvent *event, float tpf){
 			if(event->isLeftButton()){
 				Vector2f vc = event->getViewportCoordinates();
 				Uint8 alpha = (Uint8) 30 + std::abs(vc.norm() * 140);
@@ -66,12 +66,12 @@ int main(int argc, char* argv[]){
 		
 		OnSpaceBar(LayerBackground *bg): KeyButtonCallback(bg), background(bg) {}
 		
-		virtual void callback(KeyButtonEvent *event){
+		virtual void callback(KeyButtonEvent *event, float tpf){
 			if(event->key == SDLK_SPACE){
 				if(event->isPressed()){
-					background->setBackgroundColor(0xa1, 0xaa, 0xdd, 0x00);
+					background->setBackgroundColor(0xa1, 0xaa, 0xdd, 0xff);
 				}else{
-					background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
+					background->setBackgroundColor(0x55, 0x77, 0xbb, 0xff);
 				}
 			}
 		}
@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
 		Layer2D *layer;
 		OnRightClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
 		
-		virtual void callback(MouseButtonEvent *event){
+		virtual void callback(MouseButtonEvent *event, float tpf){
 			if(event->isReleased() && event->isRightButton()){
 				Vector2f wc = event->getWorldCoordinates(layer);
 				
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]){
 	class OnExit : public QuitEventCallback {
 	public:
 		OnExit(JWindow *win): QuitEventCallback(win), window(win) {};
-		virtual void callback(QuitEvent *event){
+		virtual void callback(QuitEvent *event, float tpf){
 			printf("Disposing from new Callback.\n");
 			window->dispose();
 			event->consume();
@@ -125,15 +125,10 @@ int main(int argc, char* argv[]){
 	// Main Loop
 	while(window->isActive()){
 		
-		window->update();
+		float tpf = window->tick(60);
 		
-		//Sleep the appropriate amount of time for the frame
-#ifdef __linux__
-		usleep(16*1000);
-#endif
-#ifdef _WIN32
-		Sleep(16);
-#endif
+		window->update(tpf);
+		
 	}
 
 	

@@ -56,7 +56,7 @@ public:
 		MouseMotionCallback(layer),
 		drawer(dr)
 	{}
-	virtual void callback(MouseMotionEvent *event){
+	virtual void callback(MouseMotionEvent *event, float tpf){
 		if(event->leftButtonPressed()){
 			Vector2f wc = event->getWorldCoordinates(drawer->layer);
 			drawer->previewLine->endCoordinates = wc;
@@ -73,7 +73,7 @@ public:
 		MouseButtonCallback(layer),
 		drawer(dr)
 	{}
-	virtual void callback(MouseButtonEvent *event){
+	virtual void callback(MouseButtonEvent *event, float tpf){
 		if(event->isLeftButton()){
 			if(event->isPressed()){
 				Vector2f wc = event->getWorldCoordinates(drawer->layer);
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]){
 		{}
 		
 		
-		void update(){
+		void update(float tpf){
 			Vector2f newCenter = layer->viewport.getCenter();
 			float vdiff = panSpeed * layer->viewport.getRadiusY();
 			float hdiff = panSpeed * layer->viewport.getRadiusX();
@@ -284,7 +284,7 @@ int main(int argc, char* argv[]){
 		Layer2D *layer;
 		OnRightClick(Layer2D *l): MouseButtonCallback(l), layer(l) {}
 		
-		virtual void callback(MouseButtonEvent *event){
+		virtual void callback(MouseButtonEvent *event, float tpf){
 			if(event->isReleased() && event->isRightButton()){
 				Vector2f wc = event->getWorldCoordinates(layer);
 				
@@ -300,17 +300,11 @@ int main(int argc, char* argv[]){
 	// Main Loop
 	while(window->isActive()){
 		
-		window->update();
+		float tpf = window->tick(60);
 		
-		viewportController.update();
+		window->update(tpf);
 		
-		//Sleep the appropriate amount of time for the frame
-#ifdef __linux__
-		usleep(16*1000);
-#endif
-#ifdef _WIN32
-		Sleep(16);
-#endif
+		viewportController.update(tpf);
 	}
 
 	

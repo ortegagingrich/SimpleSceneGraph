@@ -9,7 +9,6 @@
 #endif
 
 #include "jvisu.h"
-#include "tick.h"  //TODO: TEMP; include this with window if it works
 
 
 #ifdef __linux__
