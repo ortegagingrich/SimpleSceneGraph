@@ -74,14 +74,6 @@ public:
 	
 	virtual void callback(MouseButtonEvent *event, float tpf){
 		bool fixed, useLand;
-		if(event->isLeftButton()){
-			fixed = false;
-			useLand = true;
-		}else{
-			fixed = true;
-			useLand = false;
-		}
-		if(landTexture == NULL) useLand = false;
 		
 		if(event->isReleased()){
 			// Add new Rectangle Here
@@ -89,28 +81,12 @@ public:
 			Vector2f wc = event->getWorldCoordinates(drawer->layer);
 			printf("(%f, %f)\n", wc.x, wc.y);
 			
-			Uint8 r, g, b, a;
-			r = (int) 200 * wc.x;
-			b = (int) 200 * wc.y;
-			g = 0x00;
-			a = 0x00;
-			Texture *texture;
-			if(useLand){
-				//texture = Texture::createFromFile("assets/test/land.png", drawer->window);
-				texture = landTexture;
-				//texture->load();
-			}else{
-				texture = Texture::createSolidColor(40, 25,drawer->window, r, g, b, a); 
-			}
 			
-			ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
+			Texture *texture = landTexture;
+			
+			
+			ComponentImage2D *newrect = new ComponentImage2D(texture, 128, 128);
 			newrect->position = drawer->mainNode->computeRelativePosition(wc);
-			newrect->width = 0.1;
-			newrect->height = 0.1;
-			//newrect->height = 0.0785;
-			newrect->centerOffset.set(0.05, 0.05);
-			//newrect->centerOffset.set(0.05, 0.03725);
-			newrect->fixedSize = fixed;
 			drawer->mainNode->attachChild(newrect);
 		}
 	};
