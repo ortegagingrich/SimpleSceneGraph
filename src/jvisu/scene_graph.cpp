@@ -307,6 +307,83 @@ void ComponentSpriteSimple2D::removeTexture(Texture *tex){
 }
 
 
+
+/*
+ * ComponentImage2D
+ */
+
+ComponentImage2D::ComponentImage2D(Texture *tex):
+	offsetX(0),
+	offsetY(0),
+	width(tex->width),
+	height(tex->height),
+	texture(NULL)
+{
+	setTexture(tex);
+}
+
+ComponentImage2D::ComponentImage2D(Texture *tex, int offset_x, int offset_y):
+	offsetX(offset_x),
+	offsetY(offset_y),
+	width(tex->width),
+	height(tex->height),
+	texture(NULL)
+{
+	setTexture(tex);
+}
+
+
+ComponentImage2D::~ComponentImage2D(){
+	if(texture != NULL) texture->removeOwner(this);
+}
+
+
+void ComponentImage2D::collectRenderables(
+	std::list<Renderable*> &render_list,
+	Viewport2D &viewport
+){
+	Component2D::collectRenderables(render_list, viewport);
+	if(isHidden()) return;
+	
+	if(texture == NULL) return;
+	
+	
+	Vector2f vc = viewport.worldToViewport(positionAbsolute);
+	
+	
+	
+	RenderableSpriteFixed *sprite = NULL;
+	sprite = RenderableSpriteFixed::createRenderableSpriteFixed(
+		vc.x,
+		vc.y,
+		offsetX,
+		offsetY,
+		zLevel,
+		texture,
+		viewport.getViewportRect()
+	);
+	
+	if(sprite != NULL){
+		render_list.push_back(sprite);
+	}
+}
+
+
+Texture *ComponentImage2D::getTexture() const {return texture;}
+
+void ComponentImage2D::setTexture(Texture *tex){
+	if(texture != NULL) texture->removeOwner(this);
+	if(tex != NULL) tex->addOwner(this);
+	texture = tex;
+}
+
+void ComponentImage2D::removeTexture(Texture *tex){
+	if(texture == tex) texture = NULL;
+}
+
+
+
+
 /*
  * ComponentInput2D
  */

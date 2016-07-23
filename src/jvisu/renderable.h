@@ -133,6 +133,37 @@ protected:
 
 
 
+class RenderableSpriteFixed : public Renderable {
+	/**
+	 * Class of renderable images fixed to pixels.  These can be neither scaled
+	 * nor rotated.
+	 */
+public:
+	static RenderableSpriteFixed *createRenderableSpriteFixed(
+		float xp,
+		float yp,
+		int xo,
+		int yo,
+		float z,
+		Texture *tex,
+		Rect2f cullRect
+	);
+	
+	// All in Viewport Coordinates
+	const float xPosition, yPosition;
+	const int xOffset, yOffset;
+	const int width, height;
+	
+	const Texture *texture;
+	
+	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	
+protected:
+	RenderableSpriteFixed(float xp, float yp, int xo, int yo, float z, Texture *tex);
+};
+
+
+
 class RenderableText : public Renderable {
 	/**
 	 * Class of text-box renderables

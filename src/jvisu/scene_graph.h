@@ -105,7 +105,6 @@ private:
 
 
 
-
 class SHARED_EXPORT ComponentSpriteSimple2D:
 	virtual public Component2D,
 	public TextureOwner
@@ -132,6 +131,36 @@ private:
 	Texture *texture;
 	// For internal use
 	ComponentPoint2D corner;
+};
+
+
+
+class SHARED_EXPORT ComponentImage2D:
+	virtual public Component2D,
+	public TextureOwner
+{
+public:
+	/*
+	 * Offset of the upper-left corner of the image in pixels from the actual
+	 * pixel position of the component
+	 */ 
+	const int offsetX, offsetY;
+	
+	const int width, height; // Locked to those of the texture
+	
+	ComponentImage2D(Texture *tex);
+	ComponentImage2D(Texture *tex, int offset_x, int offset_y);
+	virtual ~ComponentImage2D();
+	
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	
+	Texture *getTexture() const;
+	
+protected:
+	Texture *texture;
+	
+	void setTexture(Texture *tex);
+	virtual void removeTexture(Texture *tex);
 };
 
 

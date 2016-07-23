@@ -127,6 +127,34 @@ void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
  * RenderableSprite
  */
 
+// Helper function for culling sprites
+static bool shouldCullSprite(
+	float x,
+	float y,
+	float w,
+	float h,
+	float r,
+	Rect2f cullRect
+){
+	/**
+	 * Checks to see if the provided rotated rectangle should be culled given
+	 * the provided cullRect.
+	 */
+	Rect2f checkRect;
+	if(r == 0 && false){// Temporary: always use more conservative estimate
+		// No rotation, so use the actual sprite rectangle
+		checkRect.set(x, x + w, y, y + h);
+	}else{
+		// There is rotation, so do a conservative heuristic rectangle
+		float maxdist = Vector2f(w, h).norm();
+		checkRect.set(x - maxdist, x + maxdist, y - maxdist, y + maxdist);
+	}
+	
+	// If there is no intersection, do not make a renderable
+	return !calculate_intersection(checkRect, cullRect);
+}
+
+
 RenderableSprite *RenderableSprite::createRenderableSprite(
 	float x,
 	float y,
@@ -145,18 +173,7 @@ RenderableSprite *RenderableSprite::createRenderableSprite(
 	}
 	
 	// Quick check to make sure the sprite is onscreen
-	Rect2f checkRect;
-	if(r == 0 && false){ // TEMPORARY:
-		// No rotation, so use the actual sprite rectangle
-		checkRect.set(x, x + w, y, y + h);
-	}else{
-		// There is rotation, so do a conservative heuristic rectangle
-		float maxdist = Vector2f(w, h).norm();
-		checkRect.set(x - maxdist, x + maxdist, y - maxdist, y + maxdist);
-	}
-	
-	// If there is no intersection, do not make a renderable
-	if(!calculate_intersection(checkRect, cullRect)) return NULL;
+	if(shouldCullSprite(x, y, w, h, r, cullRect)) return NULL;
 	
 	// Otherwise, make the renderable
 	return new RenderableSprite(x, y, w, h, z, r, tex);
@@ -198,6 +215,85 @@ void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
 	SDL_RendererFlip flip = SDL_FLIP_NONE;*/
 	//SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);
 	//SDL_RenderCopyEx(renderer, sdlTexture, NULL, &dstrect, -deg, &center, flip);
+}
+
+
+/*
+ * RenderableSpriteFixed
+ */
+
+RenderableSpriteFixed *RenderableSpriteFixed::createRenderableSpriteFixed(
+	float xp,
+	float yp,
+	int xo,
+	int yo,
+	float z,
+	Texture *tex,
+	Rect2f cullRect
+){
+	if(tex == NULL){
+		return NULL;	
+	}
+	if(!tex->isLoaded()){
+		return NULL;
+	}
+	
+	//TODO: Cannot Cull images without knowledge of window;
+	
+	// Otherwise, make the renderable
+	return new RenderableSpriteFixed(xp, yp, xo, yo, z, tex);
+}
+
+
+RenderableSpriteFixed::RenderableSpriteFixed(
+	float xp,
+	float yp,
+	int xo,
+	int yo,
+	float z,
+	Texture *tex
+):
+	Renderable(z),
+	xPosition(xp),
+	yPosition(yp),
+	xOffset(xo),
+	yOffset(yo),
+	width(tex->width),
+	height(tex->height),
+	texture(tex)
+{}
+
+
+void RenderableSpriteFixed::render(SDL_Renderer *renderer, JWindow *window){
+	
+	SDL_Texture *sdlTexture = texture->getSdlTexture();
+	
+	SDL_Rect dstrect;
+	window->viewportToScreen(xPosition, yPosition, dstrect.x, dstrect.y);
+	dstrect.x -= xOffset;
+	dstrect.y -= yOffset; 
+	dstrect.w = width;
+	dstrect.h = height;
+	
+	/*
+	 * Since we were unable to cull the sprites of this type at creation-time,
+	 * we must decide now if we are to render them or not.
+	 */
+	Rect2f checkRect, cullRect;
+	cullRect.xMin = 0;
+	cullRect.yMin = 0;
+	cullRect.xMax = window->getScreenWidth();
+	cullRect.yMax = window->getScreenHeight();
+	
+	checkRect.xMin = dstrect.x;
+	checkRect.yMin = dstrect.y;
+	checkRect.xMax = dstrect.x + width;
+	checkRect.yMax = dstrect.y + height;
+	
+	if(!calculate_intersection(checkRect, cullRect)) return;
+	
+	
+	SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);
 }
 
 
