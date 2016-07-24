@@ -362,6 +362,11 @@ void ComponentSpriteText2D::collectRenderables(
 		);
 		setTexture(newTexture);
 		
+		if(newTexture != NULL){
+			float ratio = (float) newTexture->width / (float) newTexture->height;
+			width = height * ratio;
+		}
+		
 		// Update Archived Values
 		oldText = text;
 		oldFontPath = fontPath;

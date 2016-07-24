@@ -35,7 +35,7 @@ public:
 	JWindow *window;
 	Layer2D *layer, *hud;
 	Node2D *rootNode, *mainNode;
-	ComponentSpriteSimple2D *fpsCounter;
+	ComponentSpriteText2D *fpsCounter;
 	
 	RectDrawer(JWindow *win, Layer2D *lay);
 	void update(float tpf);
@@ -130,10 +130,13 @@ RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	hud = new Layer2D("hud");
 	window->addLayerTop(hud);
 	
-	fpsCounter = new ComponentSpriteSimple2D();
+	fpsCounter = new ComponentSpriteText2D(window);
 	hud->rootNode->attachChild(fpsCounter);
 	fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
 	
+	fpsCounter->fontPath = "assets/font/LiberationSerif-Regular.ttf";
+	fpsCounter->fontSize = 24;
+	fpsCounter->height = 0.1f;
 	
 	
 	// Callbacks
@@ -148,21 +151,7 @@ void RectDrawer::update(float tpf){
 	
 	std::string text = stringstream.str();
 	
-	Texture *text_texture = Texture::createFromText(
-		text,
-		"assets/font/LiberationSerif-Regular.ttf",
-		24,
-		window,
-		0xff,
-		0xff,
-		0xff,
-		0xff
-	);
-	
-	float ratio = (float) text_texture->width / (float) text_texture->height;
-	fpsCounter->setTexture(text_texture);
-	fpsCounter->height = 0.1f;
-	fpsCounter->width = fpsCounter->height * ratio;
+	fpsCounter->text = text;
 }
 
 
