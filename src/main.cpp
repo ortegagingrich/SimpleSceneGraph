@@ -79,16 +79,27 @@ public:
 		bool fixed, useLand;
 		
 		if(event->isReleased()){
+			
 			// Add new Rectangle Here
 			printf("Adding new sprite at world coordinates: ");
 			Vector2f wc = event->getWorldCoordinates(drawer->layer);
 			printf("(%f, %f)\n", wc.x, wc.y);
 			
-			
 			Texture *texture = landTexture;
 			
+			Component2D *newrect;
+			if(event->isRightButton()){
+				newrect = new ComponentImage2D(texture, 128, 128);
+				
+			}else if(event->isLeftButton()){
+				ComponentSpriteSimple2D *sprite = new ComponentSpriteSimple2D(texture);
+				sprite->width = 0.1f;
+				sprite->height = 0.1f;
+				sprite->centerOffset.set(0.05, 0.05);
+				
+				newrect = sprite;
+			}
 			
-			ComponentImage2D *newrect = new ComponentImage2D(texture, 128, 128);
 			newrect->position = drawer->mainNode->computeRelativePosition(wc);
 			drawer->mainNode->attachChild(newrect);
 		}
