@@ -20,10 +20,51 @@ Texture *Texture::createSolidColor(int w, int h, JWindow *win,
 }
 
 
+Texture *Texture::createFromText(
+	std::string text,
+	std::string font,
+	int size,
+	JWindow *win,
+	Uint8 r,
+	Uint8 g,
+	Uint8 b,
+	Uint8 a
+){
+	if(win == NULL) return NULL;
+	
+	// We need to determine the dimensions of the texture, which requires a pre-rendering
+	int w = -1;
+	int h = -1;
+	
+	TTF_Font *fnt = TTF_OpenFont(font.c_str(), size);
+	if(fnt == NULL){
+		printf("Could not load font: %s\n", TTF_GetError());
+		return NULL;
+	}
+	TTF_SizeText(fnt, text.c_str(), &w, &h);
+	if(w == -1 || h == -1){
+		printf("Problem with font?\n");
+		return NULL;
+	}
+	TTF_CloseFont(fnt);
+	
+	
+	TextureText *texture = new TextureText(w, h, win, text, font, size, r, g, b, a);
+	
+	if(texture->load()){
+		return texture;
+	}else{
+		delete texture;
+		return NULL;
+	}
+	
+}
+
+
 Texture *Texture::createFromFile(std::string path, JWindow *win){
 	if(win == NULL) return NULL;
 	
-	// Crude, but necessary: we need to determin the dimensions of the texture.
+	// Crude, but necessary: we need to determine the dimensions of the texture.
 	SDL_Surface *test = IMG_Load(path.c_str());
 	if(test == NULL){
 		printf("Unable to load texture from \"%s\"\n", path.c_str());
@@ -92,6 +133,80 @@ bool TextureSolid::load(){
 		
 	// Clean Up
 	SDL_FreeSurface(surface);
+	
+	return isLoaded();
+}
+
+
+
+/*
+ * TextureText
+ */
+
+TextureText::TextureText(
+	int w,
+	int h,
+	JWindow *win,
+	std::string txt,
+	std::string font,
+	int size,
+	Uint8 red,
+	Uint8 green,
+	Uint8 blue,
+	Uint8 alpha
+):
+	Texture(w, h, win),
+	fontName(font),
+	fontSize(size),
+	text(txt),
+	colorRed(red),
+	colorGreen(green),
+	colorBlue(blue),
+	colorAlpha(alpha)
+{}
+
+
+//TODO: duplicated code smell
+bool TextureText::load(){
+	if(isLoaded()) return true;
+	
+	SDL_Renderer *renderer = window->getRenderer();
+	if(renderer == NULL){
+		printf("Cannot load Texture; Window has no active renderer.\n");
+		return false;
+	}
+	
+	SDL_Surface *loadedImage, *convertedImage;
+	
+	TTF_Font *font = TTF_OpenFont(fontName.c_str(), fontSize);
+	if(font == NULL){
+		printf("Could not load font: %s\n", TTF_GetError());
+		return false;
+	}
+	
+	SDL_Color fontColor;
+	fontColor.r = colorRed;
+	fontColor.g = colorGreen;
+	fontColor.b = colorBlue;
+	fontColor.a = colorAlpha;
+	
+	loadedImage = TTF_RenderText_Solid(font, text.c_str(), fontColor);
+	if(loadedImage == NULL){
+		printf("Could not load font: %s\n", TTF_GetError());
+		TTF_CloseFont(font);
+		return false;
+	}
+	
+	
+	convertedImage = SDL_ConvertSurface(loadedImage, window->getFormat(), 0);
+	
+	sdlTexture = SDL_CreateTextureFromSurface(renderer, convertedImage);
+	SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
+	
+	// Cleanup
+	TTF_CloseFont(font);
+	SDL_FreeSurface(loadedImage);
+	SDL_FreeSurface(convertedImage);
 	
 	return isLoaded();
 }

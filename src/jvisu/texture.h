@@ -39,10 +39,37 @@ class TextureOwner;
 
 class SHARED_EXPORT Texture {
 public:
-	static Texture *createSolidColor(int w, int h, JWindow *win,
-	                                 Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	static Texture *createFromFile(std::string filepath, JWindow *win);
+	/*
+	 * Factory Methods for Textures
+	 */
+	static Texture *createSolidColor(
+		int w,
+		int h,
+		JWindow *win,
+		Uint8 r,
+		Uint8 g,
+		Uint8 b,
+		Uint8 a
+	);
+	static Texture *createFromText(
+		std::string text,
+		std::string font,
+		int size,
+		JWindow *win,
+		Uint8 r,
+		Uint8 g,
+		Uint8 b,
+		Uint8 a
+	);
+	static Texture *createFromFile(
+		std::string filepath,
+		JWindow *win
+	);
 	
+	
+	/*
+	 * Texture Base Class
+	 */
 	
 	JWindow* const window;
 	const int width, height;
@@ -84,6 +111,32 @@ protected:
 	TextureSolid(int w, int h, JWindow *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
 
+
+
+class SHARED_EXPORT TextureText : public Texture {
+friend class Texture;
+public:
+	const std::string fontName;
+	const int fontSize;
+	const std::string text;
+	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+	
+	virtual bool load();
+
+protected:
+	TextureText(
+		int w,
+		int h,
+		JWindow *win,
+		std::string txt,
+		std::string font,
+		int size,
+		Uint8 red,
+		Uint8 green,
+		Uint8 blue,
+		Uint8 alpha
+	);
+};
 
 
 

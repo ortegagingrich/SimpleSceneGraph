@@ -164,44 +164,6 @@ protected:
 
 
 
-class RenderableText : public Renderable {
-	/**
-	 * Class of text-box renderables
-	 */
-public:
-	static RenderableText *createRenderableText(
-		float xp,
-		float yp,
-		float z,
-		float xo,
-		float yo,
-		float r,
-		float th,
-		float ar,
-		std::string t,
-		std::string f,
-		Rect2f cullRect
-	);
-	
-	const std::string text;
-	const std::string font;
-	const int fontSize;
-	
-	// All of these are in Viewport Coordinates.
-	const float xPosition, yPosition;  // Position of center of Rotations
-	const float xOffset, yOffset;  // Offset of center of rotation from corner
-	const float rotation;
-	const float textHeight;
-	const float aspectRatio;
-	
-	virtual void render(SDL_Renderer *renderer, JWindow *window);
-	
-protected:
-	RenderableText(float xp, float yp, float z, float xo, float yo, float r, float th,
-	               float ar, std::string t, std::string f);
-};
-
-
 /*
  * Helper Functions
  */

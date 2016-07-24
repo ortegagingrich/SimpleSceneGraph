@@ -249,6 +249,8 @@ void ComponentSpriteSimple2D::collectRenderables(
 ){
 	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
+	if(texture == NULL) return;
+	
 	
 	// get coordinates of the corner
 	corner.position.set(-centerOffset.x, centerOffset.y);

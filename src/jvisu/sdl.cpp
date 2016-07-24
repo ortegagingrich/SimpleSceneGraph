@@ -29,7 +29,17 @@ static int init(){
 	// For PNG loading
 	if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return -1;
 	
+	// For Fonts
+	if(TTF_Init() == -1) return -1;
+	
 	return 0;
+}
+
+
+static void quit(){
+	SDL_Quit();
+	IMG_Quit();
+	TTF_Quit();
 }
 
 
@@ -78,7 +88,7 @@ void remove_SDL_window(SDL_Window *window){
 	}
 	SDL_DestroyWindow(window);
 	WINDOWS_ACTIVE--;
-	if(WINDOWS_ACTIVE <= 0) SDL_Quit();
+	if(WINDOWS_ACTIVE <= 0) quit();
 }
 
 

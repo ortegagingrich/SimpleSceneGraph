@@ -7,7 +7,7 @@
 #ifdef __linux__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #endif
 #ifdef _WIN32
 #include <SDL.h>

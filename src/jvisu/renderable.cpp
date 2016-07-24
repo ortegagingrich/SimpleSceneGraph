@@ -295,68 +295,6 @@ void RenderableSpriteFixed::render(SDL_Renderer *renderer, JWindow *window){
 	
 	SDL_RenderCopy(renderer, sdlTexture, NULL, &dstrect);
 }
-
-
-
-/*
- * RenderableText
- */
-
-RenderableText *RenderableText::createRenderableText(
-	float xp,
-	float yp,
-	float z,
-	float xo,
-	float yo,
-	float r,
-	float th,
-	float ar,
-	std::string t,
-	std::string f,
-	Rect2f cullRect
-){
-	// TODO: Insert checks to see if it really is in the viewport
-	return new RenderableText(xp, yp, z, xo, yo, r, th, ar, t, f);
-}
-
-
-RenderableText::RenderableText(float xp, float yp, float z, float xo, float yo,
-                    float r, float th, float ar, std::string t, std::string f):
-	Renderable(z),
-	text(t),
-	font(f),
-	fontSize(24),
-	xPosition(xp),
-	yPosition(yp),
-	xOffset(xo),
-	yOffset(yo),
-	rotation(r),
-	textHeight(th),
-	aspectRatio(ar)
-{}
-
-
-void RenderableText::render(SDL_Renderer *renderer, JWindow *window){
-	// TODO: Do this all a lot better
-	TTF_Font *ttfFont = TTF_OpenFont(font.c_str(), fontSize);
-	SDL_Color white = {255, 255, 255};
-	SDL_Surface *surface = TTF_RenderText_Solid(ttfFont, text.c_str(), white);
-	
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-	
-	SDL_Rect textRect;
-	textRect.x = 0;
-	textRect.y = 0;
-	textRect.w = window->getScreenWidth();
-	textRect.h = window->getScreenHeight();
-	
-	SDL_RenderCopy(renderer, texture, NULL, &textRect);
-	
-	
-	TTF_CloseFont(ttfFont);
-	SDL_DestroyTexture(texture);
-	SDL_FreeSurface(surface);
-}
 	
 
 
