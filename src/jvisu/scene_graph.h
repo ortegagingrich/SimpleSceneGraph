@@ -135,6 +135,31 @@ private:
 
 
 
+class SHARED_EXPORT ComponentSpriteText2D: public ComponentSpriteSimple2D {
+public:
+	
+	std::string text;
+	std::string fontPath;
+	int fontSize;
+	
+	Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+	
+	
+	ComponentSpriteText2D(JWindow *win);
+	
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	
+private:
+	JWindow *window;
+	
+	std::string oldText;
+	std::string oldFontPath;
+	int oldFontSize;
+	SDL_Color oldColor;
+};
+
+
+
 class SHARED_EXPORT ComponentImage2D:
 	virtual public Component2D,
 	public TextureOwner
