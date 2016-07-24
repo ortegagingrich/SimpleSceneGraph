@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cmath>
+#include <sstream>
 
 #ifdef __linux__
 #include <unistd.h>
@@ -32,10 +33,12 @@ class RectDrawer {
 friend class RectDrawerClickCallback;
 public:
 	JWindow *window;
-	Layer2D *layer;
+	Layer2D *layer, *hud;
 	Node2D *rootNode, *mainNode;
+	ComponentSpriteSimple2D *fpsCounter;
 	
 	RectDrawer(JWindow *win, Layer2D *lay);
+	void update(float tpf);
 private:
 	
 	
@@ -122,12 +125,44 @@ RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	
 	
 	/*
-	 * Preview Components
+	 * FPS Counter
 	 */
+	hud = new Layer2D("hud");
+	window->addLayerTop(hud);
+	
+	fpsCounter = new ComponentSpriteSimple2D();
+	hud->rootNode->attachChild(fpsCounter);
+	fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
+	
 	
 	
 	// Callbacks
 	clickCallback = new RectDrawerClickCallback(this, layer);
+}
+
+void RectDrawer::update(float tpf){
+	// Temporary Texture:
+	//Texture *text_texture = Texture::createSolidColor(128, 12, window, 0xff, 0, 0, 0xff);
+	std::stringstream stringstream;
+	stringstream << "FPS: " << window->getFPS();
+	
+	std::string text = stringstream.str();
+	
+	Texture *text_texture = Texture::createFromText(
+		text,
+		"assets/font/LiberationSerif-Regular.ttf",
+		24,
+		window,
+		0xff,
+		0xff,
+		0xff,
+		0xff
+	);
+	
+	float ratio = (float) text_texture->width / (float) text_texture->height;
+	fpsCounter->setTexture(text_texture);
+	fpsCounter->height = 0.1f;
+	fpsCounter->width = fpsCounter->height * ratio;
 }
 
 
@@ -142,11 +177,6 @@ int main(int argc, char* argv[]){
 	JWindow *window = new JWindow(1280, 720, false);
 	
 	
-	/*
-	 * Background Handling
-	 */
-	//LayerBackground *background = (LayerBackground*) window->getLayerById("background");
-	//background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
 	
 	
 	/*
@@ -234,6 +264,7 @@ int main(int argc, char* argv[]){
 		
 		float tpf = window->tick(60);
 		
+		drawer.update(tpf);
 		viewportController.update(tpf);
 		window->update(tpf);
 		
