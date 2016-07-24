@@ -87,7 +87,7 @@ public:
 			
 			Texture *texture = landTexture;
 			
-			Component2D *newrect;
+			Component2D *newrect = NULL;
 			if(event->isRightButton()){
 				newrect = new ComponentImage2D(texture, 128, 128);
 				

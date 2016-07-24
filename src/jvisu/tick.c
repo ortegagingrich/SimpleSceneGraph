@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "tick.h"
+#include "shared_exports.h"
 
 
 static TickRecord *MASTER_RECORD = NULL;
@@ -30,7 +31,7 @@ static long time_ms(){
 
 
 
-TickRecord *create_tick_record(int size){
+SHARED_EXPORT TickRecord *create_tick_record(int size){
 	TickRecord *record = (TickRecord*) malloc(sizeof(TickRecord));
 	record->tpf_record = (float*) malloc(size * sizeof(float));
 	int i;
@@ -46,7 +47,7 @@ TickRecord *create_tick_record(int size){
 }
 
 
-void delete_tick_record(TickRecord *record){
+SHARED_EXPORT void delete_tick_record(TickRecord *record){
 	if(record != NULL){
 		free(record->tpf_record);
 		free(record);
@@ -54,7 +55,7 @@ void delete_tick_record(TickRecord *record){
 }
 
 
-float compute_tick_record_fps(TickRecord *record){
+SHARED_EXPORT float compute_tick_record_fps(TickRecord *record){
 	if(record == NULL){
 		if(MASTER_RECORD == NULL){
 			return 0.0f;
@@ -81,7 +82,7 @@ float compute_tick_record_fps(TickRecord *record){
 }
 
 
-float tick(int target_fps, TickRecord *record){
+SHARED_EXPORT float tick(int target_fps, TickRecord *record){
 	if(record == NULL){
 		if(MASTER_RECORD == NULL){
 			MASTER_RECORD = create_tick_record(10);
