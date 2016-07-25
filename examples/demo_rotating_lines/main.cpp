@@ -219,16 +219,51 @@ int main(int argc, char* argv[]){
 		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
 		JWindow *window;
-		Layer2D *layer;
+		Layer2D *layer, *hud;
 		Node2D *mainNode;
+		ComponentSpriteText2D *fpsCounter;
+		
 		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
 			window(win),
 			layer(l),
 			mainNode(m)
-		{}
+		{
+			hud = new Layer2D("hud");
+			window->addLayerTop(hud);
+			
+			fpsCounter = new ComponentSpriteText2D();
+			hud->rootNode->attachChild(fpsCounter);
+			fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
+		}
 		
 		
 		void update(float tpf){
+			
+			/*
+			 * FPS Counter
+			 */
+			std::stringstream stringstream;
+			stringstream << "FPS: " << window->getFPS();
+	
+			std::string text = stringstream.str();
+	
+			Texture *text_texture = Texture::createFromText(
+				text,
+				"assets/font/LiberationSerif-Regular.ttf",
+				24,
+				window,
+				0xff,
+				0xff,
+				0xff,
+				0xff
+			);
+	
+			float ratio = (float) text_texture->width / (float) text_texture->height;
+			fpsCounter->setTexture(text_texture);
+			fpsCounter->height = 0.1f;
+			fpsCounter->width = fpsCounter->height * ratio;
+			
+			
 			Vector2f newCenter = layer->viewport.getCenter();
 			float vdiff = panSpeed * layer->viewport.getRadiusY();
 			float hdiff = panSpeed * layer->viewport.getRadiusX();
