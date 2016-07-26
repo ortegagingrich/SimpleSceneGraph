@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cmath>
+#include <sstream>
 
 #ifdef __linux__
 #include <unistd.h>
@@ -231,7 +232,7 @@ int main(int argc, char* argv[]){
 			hud = new Layer2D("hud");
 			window->addLayerTop(hud);
 			
-			fpsCounter = new ComponentSpriteText2D();
+			fpsCounter = new ComponentSpriteText2D(window);
 			hud->rootNode->attachChild(fpsCounter);
 			fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
 		}
