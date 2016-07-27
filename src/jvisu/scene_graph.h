@@ -202,6 +202,15 @@ public:
 
 
 
+class SHARED_EXPORT ComponentButtonSimple2D:
+	virtual public ComponentSpriteSimple2D,
+	virtual public ComponentInput2D
+{
+	
+}
+
+
+
 class SHARED_EXPORT Node2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have child components attached to them
