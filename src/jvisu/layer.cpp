@@ -101,6 +101,9 @@ void Layer2D::processEvent(InputEvent *event, float tpf){
 	// Pass the event down the scene graph
 	rootNode->processEvent(event, tpf);
 	
+	// Process any buttons which were activated in the scene graph
+	buttonManager.processEvent(event, tpf);
+	
 	// Call the super method to process the event with this layer
 	Layer::processEvent(event, tpf);
 }

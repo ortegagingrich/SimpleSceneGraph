@@ -24,11 +24,19 @@
 #include <list>
 #include "scene_graph.h"
 #include "button.h"
+#include "button_manager.h"
 
 
 /*
  * ComponentButtonSimple2D
  */
+
+void ComponentButtonSimple2D::update(float tpf){
+	ComponentButton2D::update(tpf);
+	
+	NodeInput2D::update(tpf);
+}
+
 
 void ComponentButtonSimple2D::collectRenderables(
 	std::list<Renderable*> &render_list,
@@ -45,14 +53,22 @@ void ComponentButtonSimple2D::collectRenderables(
 
 
 void ComponentButtonSimple2D::processEvent(InputEvent *event, float tpf){
+	// Process the event for the button
+	ComponentButton2D::processEvent(event, tpf);
 	
-	//TODO: Insert button event processing
-	
+	// Send the event to children for processing
 	NodeInput2D::processEvent(event, tpf);
 }
 
 
-void ComponentButtonSimple2D::precallback(InputEvent *event, float tpf){
+
+
+/*
+ * ComponentButton2D
+ */
+
+
+void ComponentButton2D::precallback(InputEvent *event, float tpf){
 	/*
 	 * TODO: Split based on event properties, etc. and call the appropriate
 	 * callback function.
@@ -62,32 +78,44 @@ void ComponentButtonSimple2D::precallback(InputEvent *event, float tpf){
 
 
 
+/*
+ * ButtonManager
+ */
+
+ButtonManager::ButtonManager():
+	topButton(NULL)
+{}
 
 
+void ButtonManager::considerButton(
+	InputEvent *event,
+	ComponentButton2D *button,
+	float priority
+){
+	/**
+	 * Checks to see if the provided button has higher priority than the stored
+	 * button.  If so, it replaces the stored button.
+	 */
+	
+	if(topButton == NULL){
+		if(event->isConsumed) return;
+	}else if(priority <= topPriority){
+		return;
+	}
+	topButton = button;
+	topPriority = priority;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void ButtonManager::processEvent(InputEvent *event, float tpf){
+	/**
+	 * Initiates the pre-callback
+	 */
+	if(topButton != NULL){
+		topButton->precallback(event, tpf);
+	}
+	
+	topButton = NULL;
+}
 
 

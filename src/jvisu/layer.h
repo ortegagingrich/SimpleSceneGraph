@@ -11,6 +11,7 @@
 #include "sdl.h"
 #include "viewport.h"
 #include "callback.h"
+#include "button_manager.h"
 
 
 class JWindow;
@@ -66,8 +67,10 @@ private:
 class SHARED_EXPORT Layer2D: public Layer {
 public:
 	Viewport2D viewport;
+	ButtonManager buttonManager;
 	
 	Node2D *rootNode;
+	
 	
 	Layer2D(std::string id);
 	~Layer2D();

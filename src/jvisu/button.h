@@ -4,19 +4,19 @@
 #include <list>
 #include "callback.h"
 #include "scene_graph.h"
+#include "button_manager.h"
 
 
 
-class SHARED_EXPORT ComponentButtonSimple2D:
-	virtual public ComponentSpriteSimple2D,
-	virtual public NodeInput2D,
+class SHARED_EXPORT ComponentButton2D:
+	virtual public Component2D,
 	virtual protected JEventCallback
 {
 public:
+	
 	// Necessary to keep track of past input events for click, double click, etc.
 	virtual void update(float tpf);
 	
-	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, float tpf);
 	
 	virtual void callback(InputEvent *event, float tpf){};
@@ -49,6 +49,22 @@ protected:
 };
 
 
+
+
+
+
+class SHARED_EXPORT ComponentButtonSimple2D:
+	virtual public ComponentButton2D,
+	virtual public ComponentSpriteSimple2D,
+	virtual public NodeInput2D
+{
+public:
+	
+	virtual void update(float tpf);
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void processEvent(InputEvent *event, float tpf);
+	
+};
 
 
 
