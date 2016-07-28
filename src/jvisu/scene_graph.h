@@ -48,7 +48,7 @@ public:
 	virtual void update(float tpf){};
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void processEvent(InputEvent *event, float tpf){};
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf){};
 	
 	bool isHidden(); // Depends also on the parent
 	void hide();
@@ -199,7 +199,7 @@ class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
 public:
 	CallbackManager callbackManager;
 	
-	virtual void processEvent(InputEvent *event, float tpf);
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 };
 
 
@@ -219,7 +219,7 @@ public:
 	
 	virtual void update(float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void processEvent(InputEvent *event, float tpf);
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 protected:
 	void collectChildRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 private:
@@ -233,7 +233,7 @@ class SHARED_EXPORT NodeInput2D :
 	virtual public ComponentInput2D {
 
 public:
-	virtual void processEvent(InputEvent *event, float tpf);
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 };
 
 

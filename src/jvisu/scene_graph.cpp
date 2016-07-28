@@ -463,8 +463,8 @@ void ComponentImage2D::removeTexture(Texture *tex){
  * ComponentInput2D
  */
 
-void ComponentInput2D::processEvent(InputEvent *event, float tpf){
-	Component2D::processEvent(event, tpf);
+void ComponentInput2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	Component2D::processEvent(event, layer, tpf);
 	
 	callbackManager.processEvent(event, tpf);
 }
@@ -509,12 +509,12 @@ void Node2D::collectChildRenderables(
 	}
 }
 
-void Node2D::processEvent(InputEvent *event, float tpf){
+void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 	// The node itself does nothing; the event is passed on to children
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
-		child->processEvent(event, tpf);
+		child->processEvent(event, layer, tpf);
 	}
 }
 
@@ -559,9 +559,9 @@ void Node2D::deleteAllChildren(){
  * NodeInput2D
  */
 
-void NodeInput2D::processEvent(InputEvent *event, float tpf){
-	ComponentInput2D::processEvent(event, tpf);
-	Node2D::processEvent(event, tpf);
+void NodeInput2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	ComponentInput2D::processEvent(event, layer, tpf);
+	Node2D::processEvent(event, layer, tpf);
 }
 
 

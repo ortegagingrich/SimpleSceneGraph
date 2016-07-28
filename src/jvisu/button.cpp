@@ -23,6 +23,7 @@
 
 #include <list>
 #include "scene_graph.h"
+#include "input.h"
 #include "button.h"
 #include "button_manager.h"
 
@@ -52,12 +53,12 @@ void ComponentButtonSimple2D::collectRenderables(
 }
 
 
-void ComponentButtonSimple2D::processEvent(InputEvent *event, float tpf){
+void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 	// Process the event for the button
-	ComponentButton2D::processEvent(event, tpf);
+	ComponentButton2D::processEvent(event, layer, tpf);
 	
 	// Send the event to children for processing
-	NodeInput2D::processEvent(event, tpf);
+	NodeInput2D::processEvent(event, layer, tpf);
 }
 
 
@@ -98,7 +99,7 @@ void ButtonManager::considerButton(
 	 */
 	
 	if(topButton == NULL){
-		if(event->isConsumed) return;
+		if(event->isConsumed()) return;
 	}else if(priority <= topPriority){
 		return;
 	}

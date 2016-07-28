@@ -7,17 +7,21 @@
 #include "button_manager.h"
 
 
+class Layer2D;
+
+
 
 class SHARED_EXPORT ComponentButton2D:
 	virtual public Component2D,
 	virtual protected JEventCallback
 {
+friend class ButtonManager;
 public:
 	
 	// Necessary to keep track of past input events for click, double click, etc.
 	virtual void update(float tpf);
 	
-	virtual void processEvent(InputEvent *event, float tpf);
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 	
 	virtual void callback(InputEvent *event, float tpf){};
 	
@@ -62,7 +66,7 @@ public:
 	
 	virtual void update(float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void processEvent(InputEvent *event, float tpf);
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 	
 };
 
