@@ -53,7 +53,13 @@ Layer2D::Layer2D(std::string i): Layer(i) {
 }
 
 Layer2D::~Layer2D(){
-	delete rootNode;
+	if(rootNode != NULL) delete rootNode;
+}
+
+
+void Layer2D::update(float tpf){
+	// Update the scene graph starting with the root node
+	if(rootNode != NULL) rootNode->update(tpf);
 }
 
 

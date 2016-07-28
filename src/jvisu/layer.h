@@ -29,6 +29,7 @@ public:
 	Layer(std::string id);
 	virtual ~Layer();
 	
+	virtual void update(float tpf){};
 	virtual void render(SDL_Renderer *renderer) = 0;
 	virtual void processEvent(InputEvent *event, float tpf);
 	
@@ -71,6 +72,7 @@ public:
 	Layer2D(std::string id);
 	~Layer2D();
 	
+	virtual void update(float tpf);
 	virtual void render(SDL_Renderer *renderer);
 	virtual void processEvent(InputEvent *event, float tpf);
 private:

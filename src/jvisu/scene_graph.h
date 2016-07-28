@@ -45,6 +45,8 @@ public:
 	Component2D();
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
+	virtual void update(float tpf){};
+	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, float tpf){};
 	
@@ -213,8 +215,9 @@ public:
 	void attachChild(Component2D *child); // Also detaches child from its current parent
 	void detachChild(Component2D *child);
 	void deleteAllChildren();
-	std::list<Component2D*> getChildren() {return children;}
-
+	std::list<Component2D*> getChildren() {return children;};
+	
+	virtual void update(float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, float tpf);
 protected:
@@ -242,6 +245,9 @@ class SHARED_EXPORT ComponentButtonSimple2D:
 	virtual public NodeInput2D,
 	virtual protected JEventCallback
 {
+public:
+	// Necessary to keep track of past input events for click, double click, etc.
+	virtual void update(float tpf);
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, float tpf);

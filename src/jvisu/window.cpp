@@ -118,10 +118,15 @@ void JWindow::update(float tpf){
 		return;
 	}
 	
+	// Update all layers
+	std::list<Layer*>::iterator iter;
+	for(iter = layers.begin(); iter != layers.end(); iter++){
+		Layer *layer = *iter;
+		layer->update(tpf);
+	}
 	
-	//TODO: Develop a System of checking if refreshes are really needed.
+	// Draw the Window
 	refresh();
-	
 	
 	// Note: Processing of input should be the final step of the update cycle,
 	//       as this may result in the end of the event.

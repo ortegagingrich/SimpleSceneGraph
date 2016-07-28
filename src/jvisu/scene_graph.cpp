@@ -479,6 +479,17 @@ Node2D::~Node2D(){
 	deleteAllChildren();
 }
 
+
+void Node2D::update(float tpf){
+	// Update all children
+	std::list<Component2D*>::iterator iter;
+	for(iter = children.begin(); iter != children.end(); iter++){
+		Component2D *child = *iter;
+		child->update(tpf);
+	}
+}
+
+
 void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	// First collect renderables for the node itself with the super method
 	Component2D::collectRenderables(render_list, v);
