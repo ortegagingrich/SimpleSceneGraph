@@ -24,6 +24,7 @@
 #include <list>
 
 #include "input.h"
+#include "window.h"
 #include "layer.h"
 #include "viewport.h"
 #include "scene_graph.h"
@@ -37,10 +38,10 @@
  * ComponentButtonSimple2D
  */
 
-void ComponentButtonSimple2D::update(float tpf){
-	ComponentButton2D::update(tpf);
+void ComponentButtonSimple2D::update(Layer2D *layer, float tpf){
+	ComponentButton2D::update(layer, tpf);
 	
-	NodeInput2D::update(tpf);
+	NodeInput2D::update(layer, tpf);
 }
 
 
@@ -95,8 +96,35 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
  * ComponentButton2D
  */
 
-void ComponentButton2D::update(float tpf){
-	//TODO: Stuff
+void ComponentButton2D::update(Layer2D *layer, float tpf){
+	
+	JWindow *window = layer->getWindow();
+	
+	/*
+	 * Click Processing
+	 */
+	
+	// Get Cursor coordinates
+	int mx = window->getMouseX();
+	int my = window->getMouseY();
+	Vector2f mouseViewport;
+	window->screenToViewport(mx, my, mouseViewport.x, mouseViewport.y);
+	
+	// If the cursor is not on the button, cancel pending clicks
+	if(!isInside(mouseViewport, layer->viewport)){
+		pendingLeftClick = false;
+		pendingRightClick = false;
+		pendingMiddleClick = false;
+	}
+	
+	/*
+	 * If the pending click buttons are no longer being pressed, the release
+	 * happened outside of the button, so there is no longer a pending click on
+	 * this button.
+	 */
+	if(!window->isLeftMouseButtonPressed()) pendingLeftClick = false;
+	if(!window->isRightMouseButtonPressed()) pendingRightClick = false;
+	if(!window->isMiddleMouseButtonPressed()) pendingMiddleClick = false;
 }
 
 
@@ -120,20 +148,26 @@ void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	if(event->isPressed()){
 		if(event->isLeftButton()){
 			onLeftPress(event, tpf);
+			pendingLeftClick = true;
 		}else if(event->isRightButton()){
 			onRightPress(event, tpf);
+			pendingRightClick = true;
 		}else if(event->isMiddleButton()){
 			onMiddlePress(event, tpf);
+			pendingMiddleClick = true;
 		}
 	}
 	
 	if(event->isReleased()){
 		if(event->isLeftButton()){
 			onLeftRelease(event, tpf);
+			if(pendingLeftClick) onLeftClick(event, tpf);
 		}else if(event->isRightButton()){
 			onRightRelease(event, tpf);
+			if(pendingRightClick) onRightClick(event, tpf);
 		}else if(event->isMiddleButton()){
 			onMiddleRelease(event, tpf);
+			if(pendingMiddleClick) onMiddleClick(event, tpf);
 		}
 	}
 	

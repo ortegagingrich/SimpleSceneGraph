@@ -59,7 +59,7 @@ Layer2D::~Layer2D(){
 
 void Layer2D::update(float tpf){
 	// Update the scene graph starting with the root node
-	if(rootNode != NULL) rootNode->update(tpf);
+	if(rootNode != NULL) rootNode->update(this, tpf);
 }
 
 

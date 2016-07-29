@@ -480,12 +480,12 @@ Node2D::~Node2D(){
 }
 
 
-void Node2D::update(float tpf){
+void Node2D::update(Layer2D *layer, float tpf){
 	// Update all children
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
-		child->update(tpf);
+		child->update(layer, tpf);
 	}
 }
 

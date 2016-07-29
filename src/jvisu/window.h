@@ -71,7 +71,7 @@ public:
 	// Mainly public for testing purposes:
 	void processEvent(InputEvent *event, float tpf);
 	void processEvent(SDL_Event event, float tpf);
-
+	
 private:
 	SDL_Window *window;
 	std::string windowName;

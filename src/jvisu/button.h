@@ -20,7 +20,7 @@ friend class ButtonManager;
 public:
 	
 	// Necessary to keep track of past input events for click, double click, etc.
-	virtual void update(float tpf);
+	virtual void update(Layer2D *layer, float tpf);
 	
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 	
@@ -57,7 +57,7 @@ protected:
 	
 	virtual void precallback(InputEvent *event, float tpf);
 private:
-	
+	bool pendingLeftClick, pendingRightClick, pendingMiddleClick;
 };
 
 
@@ -72,7 +72,7 @@ class SHARED_EXPORT ComponentButtonSimple2D:
 {
 public:
 	
-	virtual void update(float tpf);
+	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 

@@ -45,7 +45,7 @@ public:
 	Component2D();
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
-	virtual void update(float tpf){};
+	virtual void update(Layer2D *layer, float tpf){};
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf){};
@@ -151,9 +151,10 @@ public:
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	
-private:
+protected:
 	JWindow *window;
 	
+private:
 	std::string oldText;
 	std::string oldFontPath;
 	int oldFontSize;
@@ -217,7 +218,7 @@ public:
 	void deleteAllChildren();
 	std::list<Component2D*> getChildren() {return children;};
 	
-	virtual void update(float tpf);
+	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 protected:
