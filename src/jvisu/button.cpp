@@ -23,11 +23,14 @@
 
 #include <list>
 
-#include "layer.h"
-#include "scene_graph.h"
 #include "input.h"
+#include "layer.h"
+#include "viewport.h"
+#include "scene_graph.h"
 #include "button.h"
 #include "button_manager.h"
+#include "vectormath.h"
+#include "geometry.h"
 
 
 /*
@@ -65,6 +68,28 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
 
 
 
+bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
+	// We will need absolute positions, so re-calculate them for this component
+	computeAbsolutePosition(parent);
+	
+	Vector2f eventCoordinates, centerpos;
+	if(fixedSize){
+		eventCoordinates.set(x, y);
+		centerpos = viewport.worldToViewport(positionAbsolute);
+	}else{
+		viewport.viewportToWorld(x, y, eventCoordinates.x, eventCoordinates.y);
+		centerpos = positionAbsolute;
+	}
+	
+	eventCoordinates -= centerpos;
+	eventCoordinates.rotate(-rotationAbsolute);
+	eventCoordinates.add(-centerOffset.x, centerOffset.y);
+	
+	Rect2f buttonRect(0, width, 0, height);
+	return calculate_intersection(buttonRect, eventCoordinates);
+}
+
+
 
 /*
  * ComponentButton2D
@@ -75,15 +100,44 @@ void ComponentButton2D::update(float tpf){
 }
 
 
-void ComponentButton2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
-	// TODO: If the event is not triggered inside of the rectangle, do nothing
+void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
+	if(e == NULL) return;
+	if(e->getType() != "MOUSEBUTTON") return;
+	MouseButtonEvent *event = (MouseButtonEvent*) e;
 	
-	layer->buttonManager.considerButton(this, zLevel, event);
+	if(isInside(event->getViewportCoordinates(), layer->viewport)){
+		layer->buttonManager.considerButton(this, zLevel, event);
+	}
 }
 
 
 
-void ComponentButton2D::precallback(InputEvent *event, float tpf){
+void ComponentButton2D::precallback(InputEvent *e, float tpf){
+	if(e == NULL) return;
+	if(e->getType() != "MOUSEBUTTON") return;
+	MouseButtonEvent *event = (MouseButtonEvent*) e;
+	
+	if(event->isPressed()){
+		if(event->isLeftButton()){
+			onLeftPress(event, tpf);
+		}else if(event->isRightButton()){
+			onRightPress(event, tpf);
+		}else if(event->isMiddleButton()){
+			onMiddlePress(event, tpf);
+		}
+	}
+	
+	if(event->isReleased()){
+		if(event->isLeftButton()){
+			onLeftRelease(event, tpf);
+		}else if(event->isRightButton()){
+			onRightRelease(event, tpf);
+		}else if(event->isMiddleButton()){
+			onMiddleRelease(event, tpf);
+		}
+	}
+	
+	
 	/*
 	 * TODO: Split based on event properties, etc. and call the appropriate
 	 * callback function.
@@ -119,6 +173,7 @@ void ButtonManager::considerButton(
 	}
 	topButton = button;
 	topPriority = priority;
+	event->consume();
 }
 
 

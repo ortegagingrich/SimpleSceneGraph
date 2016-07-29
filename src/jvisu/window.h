@@ -62,6 +62,11 @@ public:
 	
 	// Input
 	bool isKeyPressed(SDL_Keycode keycode);
+	bool isLeftMouseButtonPressed();
+	bool isRightMouseButtonPressed();
+	bool isMiddleMouseButtonPressed();
+	int getMouseX();
+	int getMouseY();
 	
 	// Mainly public for testing purposes:
 	void processEvent(InputEvent *event, float tpf);

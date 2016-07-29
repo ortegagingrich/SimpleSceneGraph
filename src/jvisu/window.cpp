@@ -379,4 +379,29 @@ bool JWindow::isKeyPressed(SDL_Keycode keycode){
 	return keystate[scancode] != 0;
 }
 
+bool JWindow::isLeftMouseButtonPressed(){
+	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT);
+}
+
+bool JWindow::isRightMouseButtonPressed(){
+	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
+}
+
+bool JWindow::isMiddleMouseButtonPressed(){
+	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_MIDDLE);
+}
+
+int JWindow::getMouseX(){
+	int x;
+	SDL_GetMouseState(&x, NULL);
+	return x;
+}
+
+int JWindow::getMouseY(){
+	int y;
+	SDL_GetMouseState(&y, NULL);
+	return y;
+}
+
+
 

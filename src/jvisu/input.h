@@ -17,6 +17,8 @@
 
 class JWindow;
 class Layer2D;
+class Viewport2D;
+
 
 /*
  * Base Class
@@ -89,6 +91,7 @@ public:
 	
 	Vector2f getViewportCoordinates(){return viewportCoordinates;};
 	Vector2f getWorldCoordinates(const Layer2D *layer);
+	Vector2f getWorldCoordinates(const Viewport2D &viewport);
 	
 	virtual bool isPressed();
 	virtual bool isReleased();
@@ -113,6 +116,7 @@ public:
 	
 	Vector2f getViewportCoordinates(){return viewportCoordinates;};
 	Vector2f getWorldCoordinates(const Layer2D *layer);
+	Vector2f getWorldCoordinates(const Viewport2D &viewport);
 	
 	bool leftButtonPressed();
 	bool rightButtonPressed();

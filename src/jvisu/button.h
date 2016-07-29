@@ -8,6 +8,7 @@
 
 
 class Layer2D;
+class Viewport2D;
 
 
 
@@ -29,27 +30,34 @@ public:
 	// Note: More than one of these might be called if they overlap
 	
 	// Only called upon first Press
-	virtual void onLeftPress(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onRightPress(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onMiddlePress(MouseButtonEvent *event, float tpf) = 0;
+	virtual void onLeftPress(MouseButtonEvent *event, float tpf){};
+	virtual void onRightPress(MouseButtonEvent *event, float tpf){};
+	virtual void onMiddlePress(MouseButtonEvent *event, float tpf){};
 	
 	// Called on Release
-	virtual void onLeftRelease(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onRightRelease(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onMiddleRelease(MouseButtonEvent *event, float tpf) = 0;
+	virtual void onLeftRelease(MouseButtonEvent *event, float tpf){};
+	virtual void onRightRelease(MouseButtonEvent *event, float tpf){};
+	virtual void onMiddleRelease(MouseButtonEvent *event, float tpf){};
 	
 	// Press and Release happened on the same button
-	virtual void onLeftClick(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onRightClick(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onMiddleClick(MouseButtonEvent *event, float tpf) = 0;
+	virtual void onLeftClick(MouseButtonEvent *event, float tpf){};
+	virtual void onRightClick(MouseButtonEvent *event, float tpf){};
+	virtual void onMiddleClick(MouseButtonEvent *event, float tpf){};
 	
 	// Double-Click; also generages Single Click
-	virtual void onLeftDoubleClick(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onRightDoubleClick(MouseButtonEvent *event, float tpf) = 0;
-	virtual void onMiddleDoubleClick(MouseButtonEvent *event, float tpf) = 0;
+	virtual void onLeftDoubleClick(MouseButtonEvent *event, float tpf){};
+	virtual void onRightDoubleClick(MouseButtonEvent *event, float tpf){};
+	virtual void onMiddleDoubleClick(MouseButtonEvent *event, float tpf){};
 	
 protected:
+	virtual bool isInside(float x, float y, Viewport2D &viewport) = 0;
+	virtual bool isInside(Vector2f vc, Viewport2D &viewport){
+		return isInside(vc.x, vc.y, viewport);
+	};
+	
 	virtual void precallback(InputEvent *event, float tpf);
+private:
+	
 };
 
 
@@ -67,7 +75,9 @@ public:
 	virtual void update(float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
-	
+
+protected:
+	virtual bool isInside(float x, float y, Viewport2D &viewport);
 };
 
 

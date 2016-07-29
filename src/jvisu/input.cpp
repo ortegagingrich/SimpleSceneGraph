@@ -76,8 +76,16 @@ MouseButtonEvent::MouseButtonEvent(SDL_Event event, JWindow *win):
 
 
 Vector2f MouseButtonEvent::getWorldCoordinates(const Layer2D *layer){
+	if(layer == NULL){
+		printf("Cannot get world coordinates with a NULL layer.\n");
+		exit(-1);
+	}
+	return getWorldCoordinates(layer->viewport);
+}
+
+Vector2f MouseButtonEvent::getWorldCoordinates(const Viewport2D &viewport){
 	Vector2f viewportCoordinates = getViewportCoordinates();
-	return layer->viewport.viewportToWorld(viewportCoordinates);
+	return viewport.viewportToWorld(viewportCoordinates);
 }
 
 
@@ -121,9 +129,18 @@ MouseMotionEvent::MouseMotionEvent(SDL_Event event, JWindow *win):
 
 
 Vector2f MouseMotionEvent::getWorldCoordinates(const Layer2D *layer){
-	Vector2f viewportCoordinates = getViewportCoordinates();
-	return layer->viewport.viewportToWorld(viewportCoordinates);
+	if(layer == NULL){
+		printf("Cannot get world coordinates with a NULL layer.\n");
+		exit(-1);
+	}
+	return getWorldCoordinates(layer->viewport);
 }
+
+Vector2f MouseMotionEvent::getWorldCoordinates(const Viewport2D &viewport){
+	Vector2f viewportCoordinates = getViewportCoordinates();
+	return viewport.viewportToWorld(viewportCoordinates);
+}
+
 
 
 bool MouseMotionEvent::leftButtonPressed(){
