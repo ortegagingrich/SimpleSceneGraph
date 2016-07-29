@@ -16,7 +16,7 @@ public:
 	
 	ButtonManager();
 	
-	void considerButton(InputEvent *event, ComponentButton2D *button, float priority);
+	void considerButton(ComponentButton2D *button, float priority, InputEvent *event);
 	void processEvent(InputEvent *event, float tpf);
 	
 private:

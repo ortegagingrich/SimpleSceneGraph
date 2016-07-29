@@ -22,6 +22,8 @@
  */
 
 #include <list>
+
+#include "layer.h"
 #include "scene_graph.h"
 #include "input.h"
 #include "button.h"
@@ -68,6 +70,18 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
  * ComponentButton2D
  */
 
+void ComponentButton2D::update(float tpf){
+	//TODO: Stuff
+}
+
+
+void ComponentButton2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	// TODO: If the event is not triggered inside of the rectangle, do nothing
+	
+	layer->buttonManager.considerButton(this, zLevel, event);
+}
+
+
 
 void ComponentButton2D::precallback(InputEvent *event, float tpf){
 	/*
@@ -89,9 +103,9 @@ ButtonManager::ButtonManager():
 
 
 void ButtonManager::considerButton(
-	InputEvent *event,
 	ComponentButton2D *button,
-	float priority
+	float priority,
+	InputEvent *event
 ){
 	/**
 	 * Checks to see if the provided button has higher priority than the stored
