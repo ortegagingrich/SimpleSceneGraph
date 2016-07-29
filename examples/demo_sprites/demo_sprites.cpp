@@ -197,8 +197,7 @@ void RectDrawer::update(float tpf){
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	//JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
-	JWindow *window = new JWindow(1280, 720, false);
+	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	/*
