@@ -86,7 +86,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
 	eventCoordinates.rotate(-rotationAbsolute);
 	eventCoordinates.add(-centerOffset.x, centerOffset.y);
 	
-	Rect2f buttonRect(0, width, 0, height);
+	Rect2f buttonRect(0, width, -height, 0);
 	return calculate_intersection(buttonRect, eventCoordinates);
 }
 

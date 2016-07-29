@@ -399,7 +399,7 @@ int JWindow::getMouseX(){
 
 int JWindow::getMouseY(){
 	int y;
-	SDL_GetMouseState(&y, NULL);
+	SDL_GetMouseState(NULL, &y);
 	return y;
 }
 
