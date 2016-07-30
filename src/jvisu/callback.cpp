@@ -29,7 +29,7 @@ JEventCallback::JEventCallback(ComponentInput2D *component):
 
 
 JEventCallback::~JEventCallback(){
-	boundManager->unregisterCallback(this);
+	if(boundManager != NULL) boundManager->unregisterCallback(this);
 }
 
 //Default pre-callback just checks to make sure the event is not consumed

@@ -23,6 +23,9 @@ class CallbackManager;
 class SHARED_EXPORT JEventCallback {
 friend class CallbackManager;
 public:
+	
+	
+	JEventCallback(): boundManager(NULL) {};
 	JEventCallback(JWindow *window);
 	JEventCallback(Layer *layer);
 	JEventCallback(ComponentInput2D *component);
