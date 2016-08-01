@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <algorithm>
 #include <string>
 
 #include "sdl.h"
@@ -304,7 +305,16 @@ void Texture::addOwner(TextureOwner *owner){
 
 
 void Texture::removeOwner(TextureOwner *owner){
-	owners.remove(owner);
+	/*
+	 * Removes only the first match from the owner's list.  If the list has repeats,
+	 * it is only because the owner uses the texture in more than one way and this
+	 * method must be called once for each "use."
+	 */
+	std::list<TextureOwner*>::iterator iter = std::find(owners.begin(), owners.end(), owner);
+	if(iter != owners.end()){
+		owners.erase(iter);
+	}
+	
 	if(owners.empty()) delete this;
 }
 

@@ -59,6 +59,7 @@ protected:
 		return isInside(vc.x, vc.y, viewport);
 	};
 	
+	
 	virtual void precallback(InputEvent *event, float tpf);
 	
 	// Internal Pre-callback functions.

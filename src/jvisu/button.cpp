@@ -255,7 +255,6 @@ void ComponentButton2D::preStartMouseOver(MouseMotionEvent *event, float tpf){
 }
 
 void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
-	printf("Here\n");
 	onEndMouseOver(event, tpf);
 }
 
