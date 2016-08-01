@@ -130,18 +130,38 @@ void ComponentButton2D::update(Layer2D *layer, float tpf){
 
 void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 	if(e == NULL) return;
-	if(e->getType() != "MOUSEBUTTON") return;
-	MouseButtonEvent *event = (MouseButtonEvent*) e;
+	if(e->getType() == "MOUSEBUTTON"){
+		MouseButtonEvent *event = (MouseButtonEvent*) e;
 	
-	if(isInside(event->getViewportCoordinates(), layer->viewport)){
-		layer->buttonManager.considerButton(this, zLevel, event);
+		if(isInside(event->getViewportCoordinates(), layer->viewport)){
+			layer->buttonManager.considerButton(this, zLevel, event);
+		}
+	}else if(e->getType() == "MOUSEMOTION"){
+		MouseMotionEvent *event = (MouseMotionEvent*) e;
+		
+		if(isInside(event->getViewportCoordinates(), layer->viewport)){
+			layer->buttonManager.considerButton(this, zLevel, event);
+		}else if(mouseAlreadyOver){
+			onEndMouseOver(event, tpf);
+			mouseAlreadyOver = false;
+		}
 	}
+	
 }
 
 
 
 void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	if(e == NULL) return;
+	
+	// If it is a new mouseover event
+	if(e->getType() == "MOUSEMOTION" && !mouseAlreadyOver){
+		onStartMouseOver((MouseMotionEvent*) e, tpf);
+		mouseAlreadyOver = true;
+	}
+	
+	
+	// It must be a MouseButtonEvent, so branch appropriately
 	if(e->getType() != "MOUSEBUTTON") return;
 	MouseButtonEvent *event = (MouseButtonEvent*) e;
 	

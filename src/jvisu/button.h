@@ -49,6 +49,10 @@ public:
 	virtual void onRightDoubleClick(MouseButtonEvent *event, float tpf){};
 	virtual void onMiddleDoubleClick(MouseButtonEvent *event, float tpf){};
 	
+	// Mouseover; Only activated the first frame the mouse is over the button
+	virtual void onStartMouseOver(MouseMotionEvent *event, float tpf){};
+	virtual void onEndMouseOver(MouseMotionEvent *event, float tpf){};
+	
 protected:
 	virtual bool isInside(float x, float y, Viewport2D &viewport) = 0;
 	virtual bool isInside(Vector2f vc, Viewport2D &viewport){
@@ -58,6 +62,7 @@ protected:
 	virtual void precallback(InputEvent *event, float tpf);
 private:
 	bool pendingLeftClick, pendingRightClick, pendingMiddleClick;
+	bool mouseAlreadyOver;
 };
 
 
