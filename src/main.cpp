@@ -74,6 +74,14 @@ public:
 		printf("[%s] Left Click\n", label.c_str());
 	}
 	
+	virtual void onStartMouseOver(MouseMotionEvent *event, float tpf){
+		printf("[%s] Mouse Over Start\n", label.c_str());
+	}
+	
+	virtual void onEndMouseOver(MouseMotionEvent *event, float tpf){
+		printf("[%s] Mouse Over End\n", label.c_str());
+	}
+	
 };
 
 
