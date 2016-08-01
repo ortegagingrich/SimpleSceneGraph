@@ -142,7 +142,7 @@ void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 		if(isInside(event->getViewportCoordinates(), layer->viewport)){
 			layer->buttonManager.considerButton(this, zLevel, event);
 		}else if(mouseAlreadyOver){
-			onEndMouseOver(event, tpf);
+			preEndMouseOver(event, tpf);
 			mouseAlreadyOver = false;
 		}
 	}
@@ -156,7 +156,7 @@ void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	
 	// If it is a new mouseover event
 	if(e->getType() == "MOUSEMOTION" && !mouseAlreadyOver){
-		onStartMouseOver((MouseMotionEvent*) e, tpf);
+		preStartMouseOver((MouseMotionEvent*) e, tpf);
 		mouseAlreadyOver = true;
 	}
 	
@@ -167,26 +167,26 @@ void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	
 	if(event->isPressed()){
 		if(event->isLeftButton()){
-			onLeftPress(event, tpf);
+			preLeftPress(event, tpf);
 			pendingLeftClick = true;
 		}else if(event->isRightButton()){
-			onRightPress(event, tpf);
+			preRightPress(event, tpf);
 			pendingRightClick = true;
 		}else if(event->isMiddleButton()){
-			onMiddlePress(event, tpf);
+			preMiddlePress(event, tpf);
 			pendingMiddleClick = true;
 		}
 	}
 	
 	if(event->isReleased()){
 		if(event->isLeftButton()){
-			onLeftRelease(event, tpf);
+			preLeftRelease(event, tpf);
 			if(pendingLeftClick) onLeftClick(event, tpf);
 		}else if(event->isRightButton()){
-			onRightRelease(event, tpf);
+			preRightRelease(event, tpf);
 			if(pendingRightClick) onRightClick(event, tpf);
 		}else if(event->isMiddleButton()){
-			onMiddleRelease(event, tpf);
+			preMiddleRelease(event, tpf);
 			if(pendingMiddleClick) onMiddleClick(event, tpf);
 		}
 	}
@@ -198,6 +198,66 @@ void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	 */
 }
 
+
+/*
+ * Precallback Hooks
+ */
+void ComponentButton2D::preLeftPress(MouseButtonEvent *event, float tpf){
+	onLeftPress(event, tpf);
+}
+
+void ComponentButton2D::preRightPress(MouseButtonEvent *event, float tpf){
+	onRightPress(event, tpf);
+}
+
+void ComponentButton2D::preMiddlePress(MouseButtonEvent *event, float tpf){
+	onMiddlePress(event, tpf);
+}
+
+void ComponentButton2D::preLeftRelease(MouseButtonEvent *event, float tpf){
+	onLeftRelease(event, tpf);
+}
+
+void ComponentButton2D::preRightRelease(MouseButtonEvent *event, float tpf){
+	onRightRelease(event, tpf);
+}
+
+void ComponentButton2D::preMiddleRelease(MouseButtonEvent *event, float tpf){
+	onMiddleRelease(event, tpf);
+}
+
+void ComponentButton2D::preLeftClick(MouseButtonEvent *event, float tpf){
+	onLeftClick(event, tpf);
+}
+
+void ComponentButton2D::preRightClick(MouseButtonEvent *event, float tpf){
+	onRightClick(event, tpf);
+}
+
+void ComponentButton2D::preMiddleClick(MouseButtonEvent *event, float tpf){
+	onMiddleClick(event, tpf);
+}
+
+void ComponentButton2D::preLeftDoubleClick(MouseButtonEvent *event, float tpf){
+	onLeftDoubleClick(event, tpf);
+}
+
+void ComponentButton2D::preRightDoubleClick(MouseButtonEvent *event, float tpf){
+	onRightDoubleClick(event, tpf);
+}
+
+void ComponentButton2D::preMiddleDoubleClick(MouseButtonEvent *event, float tpf){
+	onMiddleDoubleClick(event, tpf);
+}
+
+void ComponentButton2D::preStartMouseOver(MouseMotionEvent *event, float tpf){
+	onStartMouseOver(event, tpf);
+}
+
+void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
+	printf("Here\n");
+	onEndMouseOver(event, tpf);
+}
 
 
 

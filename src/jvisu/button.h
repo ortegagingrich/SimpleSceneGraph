@@ -60,6 +60,28 @@ protected:
 	};
 	
 	virtual void precallback(InputEvent *event, float tpf);
+	
+	// Internal Pre-callback functions.
+	virtual void preLeftPress(MouseButtonEvent *event, float tpf);
+	virtual void preRightPress(MouseButtonEvent *event, float tpf);
+	virtual void preMiddlePress(MouseButtonEvent *event, float tpf);
+	
+	virtual void preLeftRelease(MouseButtonEvent *event, float tpf);
+	virtual void preRightRelease(MouseButtonEvent *event, float tpf);
+	virtual void preMiddleRelease(MouseButtonEvent *event, float tpf);
+	
+	virtual void preLeftClick(MouseButtonEvent *event, float tpf);
+	virtual void preRightClick(MouseButtonEvent *event, float tpf);
+	virtual void preMiddleClick(MouseButtonEvent *event, float tpf);
+	
+	virtual void preLeftDoubleClick(MouseButtonEvent *event, float tpf);
+	virtual void preRightDoubleClick(MouseButtonEvent *event, float tpf);
+	virtual void preMiddleDoubleClick(MouseButtonEvent *event, float tpf);
+	
+	virtual void preStartMouseOver(MouseMotionEvent *event, float tpf);
+	virtual void preEndMouseOver(MouseMotionEvent *event, float tpf);
+	
+	
 private:
 	bool pendingLeftClick, pendingRightClick, pendingMiddleClick;
 	bool mouseAlreadyOver;
