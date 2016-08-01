@@ -131,7 +131,7 @@ bool TextureSolid::load(){
 	// Make a texture from the surface
 	sdlTexture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
-		
+	
 	// Clean Up
 	SDL_FreeSurface(surface);
 	

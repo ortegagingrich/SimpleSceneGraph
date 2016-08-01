@@ -149,6 +149,16 @@ RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	mainNode->attachChild(rotLine);
 	
 	
+	// Transparent Sprite
+	Texture *fairyTexture = Texture::createFromFile("assets/test/Red.png", window);
+	
+	ComponentSpriteSimple2D *fairy = new ComponentSpriteSimple2D(fairyTexture);
+	rootNode->attachChild(fairy);
+	fairy->width = 0.05;
+	fairy->height = 0.05;
+	fairy->zLevel = 100;
+	
+	
 	/*
 	 * FPS Counter
 	 */

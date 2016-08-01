@@ -68,6 +68,7 @@ int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy)
 		return -1;
 	}
 	
+	
 	// Fill it with blackness
 	SDL_Surface *surface = SDL_GetWindowSurface(window);
 	Uint32 backgroundColor = SDL_MapRGB(surface->format, 0x00, 0x00, 0x00);
