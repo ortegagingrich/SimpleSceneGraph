@@ -9,6 +9,9 @@
 
 class Layer2D;
 class Viewport2D;
+class Texture;
+
+class ComponentButtonSimple2D;
 
 
 
@@ -17,6 +20,7 @@ class SHARED_EXPORT ComponentButton2D:
 	virtual protected JEventCallback
 {
 friend class ButtonManager;
+friend class ComponentButtonSimple2D;
 public:
 	
 	// Necessary to keep track of past input events for click, double click, etc.
@@ -100,12 +104,25 @@ class SHARED_EXPORT ComponentButtonSimple2D:
 {
 public:
 	
+	ComponentButtonSimple2D();
+	~ComponentButtonSimple2D();
+	
+	Texture *getOverlayTexture() const;
+	Texture *getPressedTexture() const;
+	void setOverlayTexture(Texture *tex);
+	void setPressedTexture(Texture *tex);
+	
+	virtual void removeTexture(Texture *tex);
+	
 	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 
 protected:
 	virtual bool isInside(float x, float y, Viewport2D &viewport);
+
+private:
+	Texture *overlayTexture, *pressedTexture;
 };
 
 

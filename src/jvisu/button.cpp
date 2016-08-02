@@ -30,6 +30,7 @@
 #include "scene_graph.h"
 #include "button.h"
 #include "button_manager.h"
+#include "renderable.h"
 #include "vectormath.h"
 #include "geometry.h"
 
@@ -37,6 +38,48 @@
 /*
  * ComponentButtonSimple2D
  */
+
+ComponentButtonSimple2D::ComponentButtonSimple2D():
+	overlayTexture(NULL),
+	pressedTexture(NULL)
+{}
+
+ComponentButtonSimple2D::~ComponentButtonSimple2D(){
+	if(overlayTexture != NULL) overlayTexture->removeOwner(this);
+	if(pressedTexture != NULL) pressedTexture->removeOwner(this);
+}
+
+
+Texture *ComponentButtonSimple2D::getOverlayTexture() const {
+	return overlayTexture;
+}
+
+Texture *ComponentButtonSimple2D::getPressedTexture() const {
+	return pressedTexture;
+}
+
+void ComponentButtonSimple2D::setOverlayTexture(Texture *tex){
+	if(overlayTexture != NULL) overlayTexture->removeOwner(this);
+	if(tex != NULL) tex->addOwner(this);
+	overlayTexture = tex;
+}
+
+void ComponentButtonSimple2D::setPressedTexture(Texture *tex){
+	if(pressedTexture != NULL) pressedTexture->removeOwner(this);
+	if(tex != NULL) tex->addOwner(this);
+	pressedTexture = tex;
+}
+
+
+void ComponentButtonSimple2D::removeTexture(Texture *tex){
+	// Super method to check the base texture
+	ComponentSpriteSimple2D::removeTexture(tex);
+	
+	//Check other textures
+	if(overlayTexture != NULL) overlayTexture = NULL;
+	if(pressedTexture != NULL) pressedTexture = NULL;
+}
+
 
 void ComponentButtonSimple2D::update(Layer2D *layer, float tpf){
 	ComponentButton2D::update(layer, tpf);
@@ -50,7 +93,30 @@ void ComponentButtonSimple2D::collectRenderables(
 	Viewport2D &viewport
 ){
 	// Renderables for self
+	// Base Texture
 	ComponentSpriteSimple2D::collectRenderables(render_list, viewport);
+	
+	// Other Textures
+	RenderableSprite *overlaySprite, *pressedSprite;
+	
+	if(overlayTexture != NULL && mouseAlreadyOver){
+		overlaySprite = makeRenderableFromTexture(overlayTexture, viewport);
+		
+		if(overlaySprite != NULL){
+			overlaySprite->zMod = 1.0f;
+			render_list.push_back(overlaySprite);
+		}
+	}
+	
+	if(pressedTexture != NULL && pendingLeftClick){
+		pressedSprite = makeRenderableFromTexture(pressedTexture, viewport);
+		
+		if(pressedSprite != NULL){
+			pressedSprite->zMod = 2.0f;
+			render_list.push_back(overlaySprite);
+		}
+	}
+	
 	
 	/*
 	 * Collect Renderables for Children
