@@ -17,6 +17,7 @@
 class Layer2D;
 class Viewport2D;
 class Renderable;
+class RenderableSprite;
 class InputEvent;
 
 
@@ -128,6 +129,8 @@ public:
 	void setTexture(Texture *tex);
 	
 protected:
+	RenderableSprite *makeRenderableFromTexture(Texture *tex, Viewport2D &viewport);
+	
 	virtual void removeTexture(Texture *tex);
 private:
 	Texture *texture;

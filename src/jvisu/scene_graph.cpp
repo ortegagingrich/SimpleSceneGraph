@@ -250,7 +250,20 @@ void ComponentSpriteSimple2D::collectRenderables(
 ){
 	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
-	if(texture == NULL) return;
+	
+	RenderableSprite *sprite = makeRenderableFromTexture(texture, viewport);
+	
+	if(sprite != NULL){
+		render_list.push_back(sprite);
+	}
+}
+
+
+RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
+	Texture *tex,
+	Viewport2D &viewport
+){
+	if(tex == NULL) return NULL;
 	
 	
 	// get coordinates of the corner
@@ -286,14 +299,13 @@ void ComponentSpriteSimple2D::collectRenderables(
 		scaleFactor * height,
 		zLevel,
 		rotationAbsolute,
-		texture,
+		tex,
 		viewport.getViewportRect()
 	);
-	//sprite = RenderableSprite::createRenderableSprite(0, 0, 0.5, 0.5, 100, 0.2, texture);
-	if(sprite != NULL){
-		render_list.push_back(sprite);
-	}
+	
+	return sprite;
 }
+
 
 
 Texture *ComponentSpriteSimple2D::getTexture() const {return texture;}
