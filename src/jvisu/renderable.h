@@ -31,12 +31,13 @@ class Renderable {
 	 */
 public:
 	const float zLevel;
+	float zMod;  // Used to distinguish between identical z-Levels
 	
 	virtual ~Renderable(){};
 	virtual void render(SDL_Renderer *renderer, JWindow *window) = 0;
 
 protected:
-	Renderable(float z): zLevel(z) {};
+	Renderable(float z): zLevel(z), zMod(0.0f) {};
 };
 
 

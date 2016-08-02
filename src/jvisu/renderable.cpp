@@ -303,6 +303,7 @@ void RenderableSpriteFixed::render(SDL_Renderer *renderer, JWindow *window){
  */
 
 static bool compare_zlevel(const Renderable* a, const Renderable* b){
+	if(a->zLevel == b->zLevel) return a->zMod < b->zMod;
 	return a->zLevel < b->zLevel;
 }
 
