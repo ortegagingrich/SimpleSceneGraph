@@ -25,180 +25,79 @@ const bool USE_HARDWARE_ACCELERATION = true;
  * Class Definitions for this Demo
  */
 
-
-class RectDrawerClickCallback;
-
-
-class RectDrawer {
-friend class RectDrawerClickCallback;
+class FPSCounter : public ComponentSpriteText2D {
 public:
-	JWindow *window;
-	Layer2D *layer, *hud;
-	Node2D *rootNode, *mainNode;
-	ComponentSpriteSimple2D *fpsCounter;
-	
-	RectDrawer(JWindow *win, Layer2D *lay);
-	
-	void update(float tpf);
-private:
-	
-	
-	// Callbacks
-	RectDrawerClickCallback *clickCallback;
-};
-
-
-
-class RectDrawerClickCallback : public MouseButtonCallback, public TextureOwner {
-public:
-	
-	Texture *landTexture;
-	
-	RectDrawerClickCallback(RectDrawer *dr, Layer2D *layer):
-		MouseButtonCallback(layer),
-		drawer(dr)
-	{
-		landTexture = Texture::createFromFile("assets/test/land.png", drawer->window);
-		//landTexture = Texture::createSolidColor(20, 20, drawer->window, 0xff, 0xff, 0, 0);
+	FPSCounter(JWindow *win): ComponentSpriteText2D(win){
+		fontPath = "assets/font/LiberationSerif-Regular.ttf";
+		fontSize = 24;
+		text = "[FPS]";
 		
-		if(landTexture != NULL) landTexture->addOwner(this);
-	};
-	
-	virtual ~RectDrawerClickCallback(){
-		if(landTexture != NULL){
-			landTexture->removeOwner(this);
-		}
-	};
-	
-	virtual void removeTexture(Texture *tex){
-		if(tex == landTexture){
-			landTexture = NULL;
-		}
+		position = Vector2f(-win->getAspectRatio(), 1.0f);
+		height = 0.1f;
 	}
 	
-	virtual void callback(MouseButtonEvent *event, float tpf){
-		bool fixed, useLand;
-		if(event->isLeftButton()){
-			fixed = false;
-			useLand = true;
-		}else{
-			fixed = true;
-			useLand = false;
-		}
-		if(landTexture == NULL) useLand = false;
+	virtual void update(Layer2D *layer, float tpf){
+		ComponentSpriteText2D::update(layer, tpf);
 		
-		if(event->isReleased()){
-			// Add new Rectangle Here
-			printf("Adding new sprite at world coordinates: ");
-			Vector2f wc = event->getWorldCoordinates(drawer->layer);
-			printf("(%f, %f)\n", wc.x, wc.y);
-			
-			Uint8 r, g, b, a;
-			r = (int) 200 * wc.x;
-			b = (int) 200 * wc.y;
-			g = 0x00;
-			a = 0x00;
-			Texture *texture;
-			if(useLand){
-				//texture = Texture::createFromFile("assets/test/land.png", drawer->window);
-				texture = landTexture;
-				//texture->load();
-			}else{
-				texture = Texture::createSolidColor(40, 25,drawer->window, r, g, b, a); 
-			}
-			
-			ComponentSpriteSimple2D *newrect = new ComponentSpriteSimple2D(texture);
-			newrect->position = drawer->mainNode->computeRelativePosition(wc);
-			newrect->width = 0.1;
-			newrect->height = 0.1;
-			//newrect->height = 0.0785;
-			newrect->centerOffset.set(0.05, 0.05);
-			//newrect->centerOffset.set(0.05, 0.03725);
-			newrect->fixedSize = fixed;
-			drawer->mainNode->attachChild(newrect);
-		}
-	};
-private:
-	RectDrawer *drawer;
+		// Make new FPS string
+		std::stringstream stream;
+		stream << "FPS: " << window->getFPS();
+		text = stream.str();
+	}
 };
 
 
 
-RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
-	rootNode = layer->rootNode;
+class TestButton : public ComponentButtonSimple2D {
+public:
+	std::string label;
+	JWindow *window;
 	
-	mainNode = new Node2D();
-	rootNode->attachChild(mainNode);
-	//mainNode->hide();
-	
-	// Reference Line
-	ComponentLine2D *refLine = new ComponentLine2D();
-	refLine->colorBlue = 0x00;
-	refLine->colorGreen = 0x00;
-	refLine->startCoordinates = Vector2f(0, 0);
-	refLine->endCoordinates = Vector2f(0, 100);
-	rootNode->attachChild(refLine);
-	
-	// Main Node Rotation Line
-	ComponentLine2D *rotLine = new ComponentLine2D();
-	rotLine->colorGreen = 0x00;
-	rotLine->colorRed = 0x88;
-	rotLine->zLevel = -50;
-	rotLine->startCoordinates = Vector2f(0, 0);
-	rotLine->endCoordinates = Vector2f(0, 100);
-	mainNode->attachChild(rotLine);
-	
-	
-	// Transparent Sprite
-	Texture *fairyTexture = Texture::createFromFile("assets/test/Red.png", window);
-	
-	ComponentSpriteSimple2D *fairy = new ComponentSpriteSimple2D(fairyTexture);
-	rootNode->attachChild(fairy);
-	fairy->width = 0.05;
-	fairy->height = 0.05;
-	fairy->zLevel = 100;
-	
+	TestButton(JWindow *win, std::string txt): window(win), label(txt) {
+		Texture *base, *overlay, *pressed;
+		base = Texture::createFromFile("assets/test/button.png", win);
+		overlay = Texture::createSolidColor(1, 1, win, 0xbb, 0x88, 0xbb, 0x55);
+		pressed = Texture::createFromFile("assets/test/button_pressed.png", win);
+		//pressed = Texture::createSolidColor(1, 1, win, 0x00, 0xff, 0x00, 0x00);
+		
+		if(pressed == NULL){
+			printf("Disaster\n");
+			exit(-1);
+		}
+		
+		setTexture(base);
+		setOverlayTexture(overlay);
+		setPressedTexture(pressed);
+	};
 	
 	/*
-	 * FPS Counter
+	 * Test Callbacks
 	 */
-	hud = new Layer2D("hud");
-	window->addLayerTop(hud);
 	
-	fpsCounter = new ComponentSpriteSimple2D();
-	hud->rootNode->attachChild(fpsCounter);
-	fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
+	virtual void onLeftPress(MouseButtonEvent *event, float tpf){
+		printf("[%s] Left Press\n", label.c_str());
+	}
 	
+	virtual void onLeftRelease(MouseButtonEvent *event, float tpf){
+		printf("[%s] Left Release\n", label.c_str());
+	}
 	
-	// Callbacks
-	clickCallback = new RectDrawerClickCallback(this, layer);
-}
+	virtual void onLeftClick(MouseButtonEvent *event, float tpf){
+		printf("[%s] Left Click\n", label.c_str());
+	}
+	
+	virtual void onStartMouseOver(MouseMotionEvent *event, float tpf){
+		printf("[%s] Mouse Over Start\n", label.c_str());
+	}
+	
+	virtual void onEndMouseOver(MouseMotionEvent *event, float tpf){
+		printf("[%s] Mouse Over End\n", label.c_str());
+	}
+	
+};
 
 
-void RectDrawer::update(float tpf){
-	// Temporary Texture:
-	//Texture *text_texture = Texture::createSolidColor(128, 12, window, 0xff, 0, 0, 0xff);
-	std::stringstream stringstream;
-	stringstream << "FPS: " << window->getFPS();
-	
-	std::string text = stringstream.str();
-	
-	Texture *text_texture = Texture::createFromText(
-		text,
-		"assets/font/LiberationSerif-Regular.ttf",
-		24,
-		window,
-		0xff,
-		0xff,
-		0xff,
-		0xff
-	);
-	
-	float ratio = (float) text_texture->width / (float) text_texture->height;
-	fpsCounter->setTexture(text_texture);
-	fpsCounter->height = 0.1f;
-	fpsCounter->width = fpsCounter->height * ratio;
-}
+
 
 
 /*
@@ -207,14 +106,10 @@ void RectDrawer::update(float tpf){
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
+	//JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
 	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
-	/*
-	 * Background Handling
-	 */
-	//LayerBackground *background = (LayerBackground*) window->getLayerById("background");
-	//background->setBackgroundColor(0x55, 0x77, 0xbb, 0x00);
 	
 	
 	/*
@@ -223,8 +118,23 @@ int main(int argc, char* argv[]){
 	Layer2D *layer2d = new Layer2D("2dlayer");
 	window->addLayerTop(layer2d);
 	
+	Node2D *mainNode = new Node2D();
+	layer2d->rootNode->attachChild(mainNode);
 	
-	RectDrawer drawer(window, layer2d);
+	
+	/*
+	 * Fixed Layer
+	 */
+	Layer2D *hud = new Layer2D("hud");
+	window->addLayerTop(hud);
+	hud->rootNode->attachChild(new FPSCounter(window));
+	
+	TestButton *button1 = new TestButton(window, "Fixed Button");
+	hud->rootNode->attachChild(button1);
+	
+	
+	TestButton *button2 = new TestButton(window, "World Button");
+	mainNode->attachChild(button2);
 	
 	
 	
@@ -292,7 +202,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	};
-	ViewportController viewportController(window, layer2d, drawer.mainNode);
+	ViewportController viewportController(window, layer2d, mainNode);
 	
 	
 	
@@ -301,10 +211,9 @@ int main(int argc, char* argv[]){
 	while(window->isActive()){
 		
 		float tpf = window->tick(60);
-		
-		drawer.update(tpf);
 		viewportController.update(tpf);
 		window->update(tpf);
+		
 	}
 
 	

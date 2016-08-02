@@ -2,6 +2,7 @@
 #include "window.h"
 #include "layer.h"
 #include "scene_graph.h"
+#include "button.h"
 #include "viewport.h"
 #include "renderable.h"
 #include "input.h"

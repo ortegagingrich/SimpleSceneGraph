@@ -193,7 +193,6 @@ float r, Texture *tex):
 
 
 void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
-	
 	SDL_Texture *sdlTexture = texture->getSdlTexture();
 	float deg = rotation * RAD_2_DEG;
 	

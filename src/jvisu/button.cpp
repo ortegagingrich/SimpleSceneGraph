@@ -21,6 +21,7 @@
 	   its precallback() method called.  Based on the event type, etc.
  */
 
+#include <cstdio>
 #include <list>
 
 #include "input.h"
@@ -113,7 +114,7 @@ void ComponentButtonSimple2D::collectRenderables(
 		
 		if(pressedSprite != NULL){
 			pressedSprite->zMod = 2.0f;
-			render_list.push_back(overlaySprite);
+			render_list.push_back(pressedSprite);
 		}
 	}
 	

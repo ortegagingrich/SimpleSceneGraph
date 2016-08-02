@@ -34,6 +34,9 @@ public:
 	float zMod;  // Used to distinguish between identical z-Levels
 	
 	virtual ~Renderable(){};
+	
+	virtual std::string getType() const {return "Renderable";};
+	
 	virtual void render(SDL_Renderer *renderer, JWindow *window) = 0;
 
 protected:
@@ -64,6 +67,8 @@ public:
 	const int width;
 	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
+	virtual std::string getType() const {return "RenderableLine";};
+	
 	virtual void render(SDL_Renderer *renderer, JWindow *window);
 	
 protected:
@@ -92,6 +97,8 @@ public:
 	const float xPosition, yPosition;
 	const int width;
 	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+	
+	virtual std::string getType() const {return "RenderablePoint";};
 	
 	virtual void render(SDL_Renderer *renderer, JWindow *window);
 	
@@ -125,6 +132,8 @@ public:
 	
 	const Texture *texture;
 	
+	virtual std::string getType() const {return "RenderableSprite";};
+	
 	virtual void render(SDL_Renderer *renderer, JWindow *window);
 
 protected:
@@ -156,6 +165,8 @@ public:
 	const int width, height;
 	
 	const Texture *texture;
+	
+	virtual std::string getType() const {return "RenderableSpriteFixed";};
 	
 	virtual void render(SDL_Renderer *renderer, JWindow *window);
 	
