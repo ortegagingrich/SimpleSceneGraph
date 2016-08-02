@@ -78,7 +78,10 @@ private:
 	
 	int screenWidth, screenHeight;
 	bool active;
-	
+
+	SDL_PixelFormat *pixelFormat;
+	SDL_Texture *buffer;
+
 	std::list<Layer*> layers;
 	
 	SDL_Renderer *renderer;

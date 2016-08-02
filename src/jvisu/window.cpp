@@ -25,6 +25,8 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	screenWidth(sx),
 	screenHeight(sy),
 	active(false),
+	pixelFormat(NULL),
+	buffer(NULL),
 	renderer(NULL), // until activation
 	tickRecord(NULL)
 {
@@ -54,7 +56,12 @@ int JWindow::activate(){
 	renderer = create_SDL_renderer(window, (int) hardwareAccelerated);
 	
 	if(result < 0 || renderer == NULL) return -1;
-	
+
+	// Pixel Format for the texture buffer
+	pixelFormat = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
+	buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, screenWidth, screenHeight);
+
+	// Tick Record for fps calculations
 	tickRecord = create_tick_record(10);
 	
 	active = true;
@@ -75,23 +82,33 @@ int JWindow::dispose(){
 	 * This method disposes of all SDL components of the window, but leaves the
 	 * object in place
 	 */
-	if(!active){
+	if (!active){
 		printf("Cannot Dispose inactive window.\n");
 		return -1;
 	}
-	
+
 	// Remove all layers
-	while(!layers.empty()){
+	while (!layers.empty()){
 		Layer *layer = layers.front();
-		printf("Deleting Layer \"%s\" from Window \"%s\"\n", layer->id.c_str(), 
-		        windowName.c_str());
+		printf("Deleting Layer \"%s\" from Window \"%s\"\n", layer->id.c_str(),
+			windowName.c_str());
 		// Note: This automatically removes the layer from the list.
 		delete layer;
 	}
-	
-	if(renderer != NULL){
+
+	if (renderer != NULL){
 		SDL_DestroyRenderer(renderer);
 		renderer = NULL;
+	}
+
+	if (pixelFormat != NULL){
+		SDL_FreeFormat(pixelFormat);
+		pixelFormat = NULL;
+	}
+
+	if (buffer != NULL){
+		SDL_DestroyTexture(buffer);
+		buffer = NULL;
 	}
 	
 	if(tickRecord != NULL){
@@ -156,9 +173,13 @@ void JWindow::refresh(){
 	 * when it is needed, in practice, this method is generally called every frame.
 	 */
 	
+	/* 
+	 * First Draw to Buffer Texture
+	 */
+	SDL_SetRenderTarget(renderer, buffer);
+
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(renderer);
-	
 	
 	// Fill in the buffer by rendering the layers in order
 	std::list<Layer*>::iterator iter;
@@ -168,7 +189,16 @@ void JWindow::refresh(){
 	}
 	
 	
-	// Actually render the screen now
+	/*
+	 * Actually render the screen now
+	 */
+	SDL_SetRenderTarget(renderer, NULL);
+	
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
+	SDL_RenderClear(renderer);
+
+	SDL_RenderCopy(renderer, buffer, NULL, NULL);
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -234,7 +264,8 @@ float JWindow::getAspectRatio() const {
 }
 
 SDL_PixelFormat *JWindow::getFormat() const {
-	return SDL_GetWindowSurface(window)->format;
+	return pixelFormat;
+	//return SDL_GetWindowSurface(window)->format;
 }
 SDL_Renderer *JWindow::getRenderer() {
 	return renderer;
