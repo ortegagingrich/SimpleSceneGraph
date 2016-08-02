@@ -13,7 +13,7 @@
 
 
 #ifdef __linux__
-const bool USE_HARDWARE_ACCELERATION = false;
+const bool USE_HARDWARE_ACCELERATION = true;
 #endif
 #ifdef _WIN32
 const bool USE_HARDWARE_ACCELERATION = true;
