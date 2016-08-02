@@ -99,6 +99,16 @@ void Component2D::detachFromParent(){
 	}
 }
 
+
+Layer2D *Component2D::getLayer(){
+	if(parent != NULL){
+		return parent->getLayer();
+	}else{
+		return NULL;
+	}
+}
+
+
 Vector2f Component2D::computeRelativePosition(Vector2f worldCoordinates){
 	/**
 	 * Computes the position of the provided coordinates relative to this
@@ -564,6 +574,17 @@ void Node2D::deleteAllChildren(){
 	while(!children.empty()){
 		delete children.front();
 	}
+}
+
+
+/*
+ * NodeRoot2D
+ */
+
+NodeRoot2D::NodeRoot2D(Layer2D *l): layer(l) {}
+
+Layer2D *NodeRoot2D::getLayer(){
+	return layer;
 }
 
 

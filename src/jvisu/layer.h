@@ -17,7 +17,7 @@
 class JWindow;
 class InputEvent;
 class Node2D;
-class Node3D;
+class NodeRoot2D;
 class Renderable;
 
 
@@ -69,7 +69,7 @@ public:
 	Viewport2D viewport;
 	ButtonManager buttonManager;
 	
-	Node2D *rootNode;
+	NodeRoot2D *rootNode;
 	
 	
 	Layer2D(std::string id);

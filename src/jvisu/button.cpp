@@ -328,6 +328,68 @@ void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
 
 
 /*
+ * ComponentDragable2D
+ */
+
+ComponentDragable2D::ComponentDragable2D():
+	anchor(0.0f, 0.0f)
+{}
+
+
+void ComponentDragable2D::update(Layer2D *layer, float tpf){
+	// If there is a pending left click, a drag must be in progress
+	if(pendingLeftClick){
+		// Get the current world coordinates of the mouse cursor
+		JWindow *window = layer->getWindow();
+		int sx = window->getMouseX();
+		int sy = window->getMouseY();
+		Vector2f vc, wc;
+		window->screenToViewport(sx, sy, vc.x, vc.y);
+		wc = layer->viewport.viewportToWorld(vc);
+		
+		Vector2f rel;
+		if(inheritPosition && parent != NULL){
+			rel = parent->computeRelativePosition(wc);
+		}else{
+			rel = wc;
+		}
+		
+		position = rel + anchor;
+	}
+	
+	ComponentButtonSimple2D::update(layer, tpf);
+}
+
+
+void ComponentDragable2D::preLeftPress(MouseButtonEvent *event, float tpf){
+	// Choose a new anchor point
+	Layer2D *layer = getLayer();
+	if(layer == NULL) return;
+	Vector2f wc, rel;
+	wc = event->getWorldCoordinates(layer);
+	if(inheritPosition && parent != NULL){
+		rel = parent->computeRelativePosition(wc);
+	}else{
+		rel = wc;
+	}
+	anchor = position - rel;
+	
+	
+	ComponentButton2D::preLeftPress(event, tpf);
+	preDragStart(tpf);
+}
+
+void ComponentDragable2D::preDragStart(float tpf){
+	onDragStart(tpf);
+}
+
+void ComponentDragable2D::preDragEnd(float tpf){
+	onDragEnd(tpf);
+}
+
+
+
+/*
  * ButtonManager
  */
 

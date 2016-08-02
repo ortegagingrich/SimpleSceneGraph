@@ -55,6 +55,7 @@ public:
 	void hide();
 	void show();
 	
+	virtual Layer2D *getLayer();
 	Node2D *getParent(){return parent;};
 	void detachFromParent();
 	
@@ -228,6 +229,17 @@ protected:
 	void collectChildRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 private:
 	std::list<Component2D*> children;
+};
+
+
+class SHARED_EXPORT NodeRoot2D : virtual public Node2D {
+public:
+	NodeRoot2D(Layer2D *l);
+	
+	virtual Layer2D *getLayer();
+	
+private:
+	Layer2D *layer;
 };
 
 

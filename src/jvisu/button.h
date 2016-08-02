@@ -2,9 +2,11 @@
 #define BUTTON_H
 
 #include <list>
+
 #include "callback.h"
 #include "scene_graph.h"
 #include "button_manager.h"
+#include "vectormath.h"
 
 
 class Layer2D;
@@ -21,6 +23,7 @@ class SHARED_EXPORT ComponentButton2D:
 {
 friend class ButtonManager;
 friend class ComponentButtonSimple2D;
+friend class ComponentDragable2D;
 public:
 	
 	// Necessary to keep track of past input events for click, double click, etc.
@@ -123,6 +126,30 @@ protected:
 
 private:
 	Texture *overlayTexture, *pressedTexture;
+};
+
+
+
+
+class SHARED_EXPORT ComponentDragable2D:
+	virtual public ComponentButtonSimple2D
+{
+public:
+	
+	ComponentDragable2D();
+	
+	virtual void update(Layer2D *layer, float tpf);
+	
+	virtual void onDragStart(float tpf){};
+	virtual void onDragEnd(float tpf){};
+	
+protected:
+	virtual void preLeftPress(MouseButtonEvent *event, float tpf);
+	virtual void preDragStart(float tpf);
+	virtual void preDragEnd(float tpf);
+	
+private:
+	Vector2f anchor;
 };
 
 

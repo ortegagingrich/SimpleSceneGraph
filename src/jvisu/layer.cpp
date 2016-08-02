@@ -50,7 +50,7 @@ void Layer::setWindow(JWindow *win){
  */
 
 Layer2D::Layer2D(std::string i): Layer(i) {
-	rootNode = new Node2D();
+	rootNode = new NodeRoot2D(this);
 }
 
 Layer2D::~Layer2D(){
