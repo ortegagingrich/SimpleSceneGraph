@@ -48,7 +48,7 @@ public:
 
 
 
-class TestButton : public ComponentDragable2D {
+class TestButton : public ComponentDraggable2D {
 public:
 	std::string label;
 	JWindow *window;

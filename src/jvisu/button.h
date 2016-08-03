@@ -33,6 +33,8 @@ public:
 	
 	virtual void callback(InputEvent *event, float tpf){};
 	
+	virtual bool isPressed() const;
+	
 	// Abstract Callback Methods
 	// Note: More than one of these might be called if they overlap
 	
@@ -131,12 +133,12 @@ private:
 
 
 
-class SHARED_EXPORT ComponentDragable2D:
+class SHARED_EXPORT ComponentDraggable2D:
 	virtual public ComponentButtonSimple2D
 {
 public:
 	
-	ComponentDragable2D();
+	ComponentDraggable2D();
 	
 	virtual void update(Layer2D *layer, float tpf);
 	

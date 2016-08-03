@@ -217,6 +217,10 @@ void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 }
 
 
+bool ComponentButton2D::isPressed() const {
+	return pendingLeftClick;
+}
+
 
 void ComponentButton2D::precallback(InputEvent *e, float tpf){
 	if(e == NULL) return;
@@ -328,15 +332,15 @@ void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
 
 
 /*
- * ComponentDragable2D
+ * ComponentDraggable2D
  */
 
-ComponentDragable2D::ComponentDragable2D():
+ComponentDraggable2D::ComponentDraggable2D():
 	anchor(0.0f, 0.0f)
 {}
 
 
-void ComponentDragable2D::update(Layer2D *layer, float tpf){
+void ComponentDraggable2D::update(Layer2D *layer, float tpf){
 	// If there is a pending left click, a drag must be in progress
 	if(pendingLeftClick){
 		// Get the current world coordinates of the mouse cursor
@@ -361,7 +365,7 @@ void ComponentDragable2D::update(Layer2D *layer, float tpf){
 }
 
 
-void ComponentDragable2D::preLeftPress(MouseButtonEvent *event, float tpf){
+void ComponentDraggable2D::preLeftPress(MouseButtonEvent *event, float tpf){
 	// Choose a new anchor point
 	Layer2D *layer = getLayer();
 	if(layer == NULL) return;
@@ -379,11 +383,11 @@ void ComponentDragable2D::preLeftPress(MouseButtonEvent *event, float tpf){
 	preDragStart(tpf);
 }
 
-void ComponentDragable2D::preDragStart(float tpf){
+void ComponentDraggable2D::preDragStart(float tpf){
 	onDragStart(tpf);
 }
 
-void ComponentDragable2D::preDragEnd(float tpf){
+void ComponentDraggable2D::preDragEnd(float tpf){
 	onDragEnd(tpf);
 }
 
