@@ -23,8 +23,10 @@ class SHARED_EXPORT ComponentButton2D:
 {
 friend class ButtonManager;
 friend class ComponentButtonSimple2D;
-friend class ComponentDragable2D;
+friend class ComponentDraggable2D;
 public:
+	
+	ComponentButton2D();
 	
 	// Necessary to keep track of past input events for click, double click, etc.
 	virtual void update(Layer2D *layer, float tpf);

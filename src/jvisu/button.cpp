@@ -163,6 +163,14 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
  * ComponentButton2D
  */
 
+ComponentButton2D::ComponentButton2D():
+	pendingLeftClick(false),
+	pendingRightClick(false),
+	pendingMiddleClick(false),
+	mouseAlreadyOver(false)
+{}
+
+
 void ComponentButton2D::update(Layer2D *layer, float tpf){
 	
 	JWindow *window = layer->getWindow();
