@@ -53,7 +53,12 @@ public:
 	std::string label;
 	JWindow *window;
 	
-	TestButton(JWindow *win, std::string txt): window(win), label(txt) {
+	TestButton(JWindow *win, std::string txt):
+		ComponentDraggable2D(win),
+		label(txt),
+		window(win)
+	{
+	
 		Texture *base, *overlay, *pressed;
 		base = Texture::createFromFile("assets/test/button.png", win);
 		overlay = Texture::createSolidColor(1, 1, win, 0xbb, 0x88, 0xbb, 0x55);

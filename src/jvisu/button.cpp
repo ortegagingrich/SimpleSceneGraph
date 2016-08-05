@@ -40,7 +40,7 @@
  * ComponentButtonSimple2D
  */
 
-ComponentButtonSimple2D::ComponentButtonSimple2D():
+ComponentButtonSimple2D::ComponentButtonSimple2D(JWindow *win):
 	overlayTexture(NULL),
 	pressedTexture(NULL)
 {}
@@ -343,7 +343,8 @@ void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
  * ComponentDraggable2D
  */
 
-ComponentDraggable2D::ComponentDraggable2D():
+ComponentDraggable2D::ComponentDraggable2D(JWindow *win):
+	ComponentButtonSimple2D(win),
 	anchor(0.0f, 0.0f)
 {}
 

@@ -111,7 +111,7 @@ class SHARED_EXPORT ComponentButtonSimple2D:
 {
 public:
 	
-	ComponentButtonSimple2D();
+	ComponentButtonSimple2D(JWindow *win);
 	~ComponentButtonSimple2D();
 	
 	Texture *getOverlayTexture() const;
@@ -120,6 +120,14 @@ public:
 	void setPressedTexture(Texture *tex);
 	
 	virtual void removeTexture(Texture *tex);
+	
+	
+	// Text Overlay Methods
+	void setText(std::string text);
+	void clearText();
+	void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	
+	
 	
 	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
@@ -136,11 +144,11 @@ private:
 
 
 class SHARED_EXPORT ComponentDraggable2D:
-	virtual public ComponentButtonSimple2D
+	public ComponentButtonSimple2D
 {
 public:
 	
-	ComponentDraggable2D();
+	ComponentDraggable2D(JWindow *win);
 	
 	virtual void update(Layer2D *layer, float tpf);
 	
