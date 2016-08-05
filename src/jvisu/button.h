@@ -125,6 +125,7 @@ public:
 	// Text Overlay Methods
 	void setText(std::string text);
 	void clearText();
+	void setFont(std::string font);
 	void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	
 	
@@ -138,6 +139,7 @@ protected:
 
 private:
 	Texture *overlayTexture, *pressedTexture;
+	ComponentSpriteText2D *textOverlay;
 };
 
 

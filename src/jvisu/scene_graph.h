@@ -125,6 +125,7 @@ public:
 	virtual ~ComponentSpriteSimple2D();
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zmod);
 	
 	Texture *getTexture() const;
 	void setTexture(Texture *tex);
@@ -154,6 +155,7 @@ public:
 	ComponentSpriteText2D(JWindow *win);
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zm);
 	
 protected:
 	JWindow *window;

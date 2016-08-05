@@ -258,12 +258,22 @@ void ComponentSpriteSimple2D::collectRenderables(
 	std::list<Renderable*> &render_list,
 	Viewport2D &viewport
 ){
+	collectRenderables(render_list, viewport, 0.0f);
+}
+
+
+void ComponentSpriteSimple2D::collectRenderables(
+	std::list<Renderable*> &render_list,
+	Viewport2D &viewport,
+	float zmod
+){
 	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
 	RenderableSprite *sprite = makeRenderableFromTexture(texture, viewport);
 	
 	if(sprite != NULL){
+		sprite->zMod = zmod;
 		render_list.push_back(sprite);
 	}
 }
@@ -362,6 +372,15 @@ void ComponentSpriteText2D::collectRenderables(
 	std::list<Renderable*> &render_list,
 	Viewport2D &viewport
 ){
+	collectRenderables(render_list, viewport, 0.0f);
+}
+
+
+void ComponentSpriteText2D::collectRenderables(
+	std::list<Renderable*> &render_list,
+	Viewport2D &viewport,
+	float zmod
+){
 	// Check to see if we need to replace the texture
 	if(
 		text.compare(oldText) != 0 ||
@@ -400,7 +419,7 @@ void ComponentSpriteText2D::collectRenderables(
 	}
 	
 	// Call super method for collecting renderables
-	ComponentSpriteSimple2D::collectRenderables(render_list, viewport);
+	ComponentSpriteSimple2D::collectRenderables(render_list, viewport, zmod);
 }
 
 

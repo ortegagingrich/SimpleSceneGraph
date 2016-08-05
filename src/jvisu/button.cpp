@@ -43,11 +43,15 @@
 ComponentButtonSimple2D::ComponentButtonSimple2D(JWindow *win):
 	overlayTexture(NULL),
 	pressedTexture(NULL)
-{}
+{
+	textOverlay = new ComponentSpriteText2D(win);
+}
 
 ComponentButtonSimple2D::~ComponentButtonSimple2D(){
 	if(overlayTexture != NULL) overlayTexture->removeOwner(this);
 	if(pressedTexture != NULL) pressedTexture->removeOwner(this);
+	
+	if(textOverlay != NULL) delete textOverlay;
 }
 
 
@@ -82,8 +86,33 @@ void ComponentButtonSimple2D::removeTexture(Texture *tex){
 }
 
 
+// Text Methods
+void ComponentButtonSimple2D::setText(std::string text){
+	textOverlay->text = text;
+}
+
+void ComponentButtonSimple2D::clearText(){
+	textOverlay->text = "";
+}
+
+void ComponentButtonSimple2D::setFont(std::string font){
+	textOverlay->fontPath = font;
+}
+
+void ComponentButtonSimple2D::setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+	textOverlay->colorRed = r;
+	textOverlay->colorGreen = g;
+	textOverlay->colorBlue = b;
+	textOverlay->colorAlpha = a;
+}
+
+
+
+
 void ComponentButtonSimple2D::update(Layer2D *layer, float tpf){
 	ComponentButton2D::update(layer, tpf);
+	
+	if(textOverlay != NULL) textOverlay->update(layer, tpf);
 	
 	NodeInput2D::update(layer, tpf);
 }
@@ -118,6 +147,8 @@ void ComponentButtonSimple2D::collectRenderables(
 		}
 	}
 	
+	// Overlay Text
+	if(textOverlay != NULL) textOverlay->collectRenderables(render_list, viewport, 3.0f);
 	
 	/*
 	 * Collect Renderables for Children
