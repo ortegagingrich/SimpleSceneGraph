@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Isrc/jvisu -g
+CFLAGS=-std=c++11 -Isrc/jvisu -g
 WFLAGS=-Wall
 LFLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf
 TESTFLAGS=-lgtest -lgtest_main
