@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cmath>
 #include <sstream>
+#include <string>
 
 #ifdef __linux__
 #include <unistd.h>
@@ -20,6 +21,8 @@ const bool USE_HARDWARE_ACCELERATION = true;
 #endif
 
 
+std::string TEST_FONT = "assets/font/LiberationSerif-Regular.ttf";
+
 
 /*
  * Class Definitions for this Demo
@@ -28,7 +31,7 @@ const bool USE_HARDWARE_ACCELERATION = true;
 class FPSCounter : public ComponentSpriteText2D {
 public:
 	FPSCounter(JWindow *win): ComponentSpriteText2D(win){
-		fontPath = "assets/font/LiberationSerif-Regular.ttf";
+		fontPath = TEST_FONT;
 		fontSize = 24;
 		text = "[FPS]";
 		
@@ -135,10 +138,16 @@ int main(int argc, char* argv[]){
 	hud->rootNode->attachChild(new FPSCounter(window));
 	
 	TestButton *button1 = new TestButton(window, "Fixed Button");
+	button1->setFont(TEST_FONT);
+	button1->setText("Fixed");
+	button1->setFontSize(48);
 	hud->rootNode->attachChild(button1);
 	
 	
 	TestButton *button2 = new TestButton(window, "World Button");
+	button2->setFont(TEST_FONT);
+	button2->setText("World");
+	button2->setFontSize(128);
 	mainNode->attachChild(button2);
 	
 	

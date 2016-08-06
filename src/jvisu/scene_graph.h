@@ -26,6 +26,7 @@ class Node2D;
 class SHARED_EXPORT Component2D {
 friend class ComponentLine2D;
 friend class ComponentSpriteSimple2D;
+friend class ComponentButtonSimple2D;
 	/**
 	 * Abstract base class of 2D components.
 	 */

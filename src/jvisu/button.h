@@ -126,6 +126,7 @@ public:
 	void setText(std::string text);
 	void clearText();
 	void setFont(std::string font);
+	void setFontSize(int size);
 	void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	
 	

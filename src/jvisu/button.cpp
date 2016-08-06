@@ -45,6 +45,7 @@ ComponentButtonSimple2D::ComponentButtonSimple2D(JWindow *win):
 	pressedTexture(NULL)
 {
 	textOverlay = new ComponentSpriteText2D(win);
+	textOverlay->parent = this;
 }
 
 ComponentButtonSimple2D::~ComponentButtonSimple2D(){
@@ -99,6 +100,10 @@ void ComponentButtonSimple2D::setFont(std::string font){
 	textOverlay->fontPath = font;
 }
 
+void ComponentButtonSimple2D::setFontSize(int size){
+	textOverlay->fontSize = size;
+}
+
 void ComponentButtonSimple2D::setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
 	textOverlay->colorRed = r;
 	textOverlay->colorGreen = g;
@@ -148,7 +153,8 @@ void ComponentButtonSimple2D::collectRenderables(
 	}
 	
 	// Overlay Text
-	if(textOverlay != NULL) textOverlay->collectRenderables(render_list, viewport, 3.0f);
+	textOverlay->centerOffset = centerOffset;
+	textOverlay->collectRenderables(render_list, viewport, 3.0f);
 	
 	/*
 	 * Collect Renderables for Children
