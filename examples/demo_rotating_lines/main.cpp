@@ -293,7 +293,23 @@ int main(int argc, char* argv[]){
 				mainNode->rotation -= rotSpeed;
 			}
 			
-			// Zooming
+			// Scaling
+			if(window->isKeyPressed(SDLK_i)){
+				mainNode->scale.scale(1, zoomFactor);
+			}
+			if(window->isKeyPressed(SDLK_j)){
+				mainNode->scale.scale(1.0f/zoomFactor, 1);
+			}
+			if(window->isKeyPressed(SDLK_k)){
+				mainNode->scale.scale(1, 1.0f/zoomFactor);
+			}
+			if(window->isKeyPressed(SDLK_l)){
+				mainNode->scale.scale(zoomFactor, 1);
+			}
+			
+			
+			
+			// Zooming (not scaling)
 			
 			if(window->isKeyPressed(SDLK_p)){
 				float ry = layer->viewport.getRadiusY();
@@ -338,9 +354,8 @@ int main(int argc, char* argv[]){
 		
 		float tpf = window->tick(60);
 		
-		window->update(tpf);
-		
 		viewportController.update(tpf);
+		window->update(tpf);
 	}
 
 	
