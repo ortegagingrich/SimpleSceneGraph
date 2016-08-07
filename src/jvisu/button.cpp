@@ -29,6 +29,7 @@
 #include "layer.h"
 #include "viewport.h"
 #include "scene_graph.h"
+#include "text.h"
 #include "button.h"
 #include "button_manager.h"
 #include "renderable.h"

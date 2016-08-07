@@ -9,6 +9,7 @@
 #include "layer.h"
 #include "texture.h"
 #include "scene_graph.h"
+#include "text.h"
 #include "button.h"
 #include "callback.h"
 #include "input.h"

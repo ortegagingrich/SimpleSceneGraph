@@ -14,6 +14,7 @@ class Viewport2D;
 class Texture;
 
 class ComponentButtonSimple2D;
+class ComponentSpriteText2D;
 
 
 
