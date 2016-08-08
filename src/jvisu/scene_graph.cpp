@@ -286,6 +286,16 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	if(tex == NULL) return NULL;
 	
 	
+	/*
+	 * TODO: Replace everything here.
+	 * To make a renderable, we need the upper-left corner of the renderable and
+	 * the rotation.
+	 * 1) Scale the offset vector appropriately
+	 * 2) Rotate the offset vector
+	 * 3) Add the modified offset vector to the absolute position; this is the corner.
+	 */
+	
+	
 	// get coordinates of the corner
 	corner.position.set(-centerOffset.x, centerOffset.y);
 	corner.computeAbsolutePosition(this);
