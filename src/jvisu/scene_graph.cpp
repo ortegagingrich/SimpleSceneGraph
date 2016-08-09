@@ -278,6 +278,8 @@ void ComponentSpriteSimple2D::collectRenderables(
 	}
 }
 
+//TODO: TEMPORARY
+long COUNT = 0;
 
 RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	Texture *tex,
@@ -293,47 +295,56 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	 * 1) Scale the offset vector appropriately
 	 * 2) Rotate the offset vector
 	 * 3) Add the modified offset vector to the absolute position; this is the corner.
+	 * We also need to know the width and height of the rectangle in viewport coordinates.
 	 */
 	
+	Vector2f offset(-centerOffset.x, centerOffset.y);
+	offset.scale(scaleAbsolute.x, scaleAbsolute.y);
+	offset.rotate(rotationAbsolute);
 	
-	// get coordinates of the corner
-	corner.position.set(-centerOffset.x, centerOffset.y);
-	corner.computeAbsolutePosition(this);
+	float scaleFactorX = scaleAbsolute.x;
+	float scaleFactorY = scaleAbsolute.y;
 	
-	// factor for scaling the sprite rectangle
-	float scaleFactor;
-	
-	// get the viewport coordinates of the corner
 	Vector2f vc;
 	if(!fixedSize){
-		vc = viewport.worldToViewport(corner.positionAbsolute);
-		scaleFactor = 1.0 / viewport.getRadiusY();
+		vc = viewport.worldToViewport(positionAbsolute + offset);
+		scaleFactorX *= viewport.getInverseRadiusY();
+		scaleFactorY *= viewport.getInverseRadiusY();
 	}else{
-		vc = viewport.worldToViewport(positionAbsolute);
-		Vector2f out = viewport.worldToViewport(corner.positionAbsolute);
-		out -= vc;
-		out.normalize();
-		out.scale(centerOffset.norm());
-		vc += out;
-		
-		scaleFactor = 1;
+		// Fixed Size Sprites
+		vc = viewport.worldToViewport(positionAbsolute) + offset;
 	}
-	
 	
 	// Finally make the renderable
 	RenderableSprite *sprite;
 	sprite = RenderableSprite::createRenderableSprite(
 		vc.x,
 		vc.y,
-		scaleFactor * width,
-		scaleFactor * height,
+		scaleFactorX * width,
+		scaleFactorY * height,
 		zLevel,
 		rotationAbsolute,
 		tex,
 		viewport.getViewportRect()
 	);
 	
+	//TODO: Temporary
+	if(fixedSize){
+		if(!(COUNT % 60)){
+			printf("Rendering Fixed Size Sprite\n");
+			printf("\tCorner (Viewport Coordinates): (%f, %f)\n", vc.x, vc.y);
+			printf(
+				"\tSize   (Viewport Coordinates): (%f, %f)\n",
+				scaleFactorX * width,
+				scaleFactorY * height
+			);
+		}
+		COUNT++;
+	}
+	
+	
 	return sprite;
+	
 }
 
 
