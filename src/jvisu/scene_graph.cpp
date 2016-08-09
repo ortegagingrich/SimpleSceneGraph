@@ -278,8 +278,6 @@ void ComponentSpriteSimple2D::collectRenderables(
 	}
 }
 
-//TODO: TEMPORARY
-long COUNT = 0;
 
 RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	Texture *tex,
@@ -287,16 +285,6 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 ){
 	if(tex == NULL) return NULL;
 	
-	
-	/*
-	 * TODO: Replace everything here.
-	 * To make a renderable, we need the upper-left corner of the renderable and
-	 * the rotation.
-	 * 1) Scale the offset vector appropriately
-	 * 2) Rotate the offset vector
-	 * 3) Add the modified offset vector to the absolute position; this is the corner.
-	 * We also need to know the width and height of the rectangle in viewport coordinates.
-	 */
 	
 	Vector2f offset(-centerOffset.x, centerOffset.y);
 	offset.scale(scaleAbsolute.x, scaleAbsolute.y);
@@ -327,20 +315,6 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 		tex,
 		viewport.getViewportRect()
 	);
-	
-	//TODO: Temporary
-	if(fixedSize){
-		if(!(COUNT % 60)){
-			printf("Rendering Fixed Size Sprite\n");
-			printf("\tCorner (Viewport Coordinates): (%f, %f)\n", vc.x, vc.y);
-			printf(
-				"\tSize   (Viewport Coordinates): (%f, %f)\n",
-				scaleFactorX * width,
-				scaleFactorY * height
-			);
-		}
-		COUNT++;
-	}
 	
 	
 	return sprite;

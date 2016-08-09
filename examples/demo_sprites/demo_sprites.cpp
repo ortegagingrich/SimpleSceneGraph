@@ -80,11 +80,12 @@ public:
 		bool fixed, useLand;
 		if(event->isLeftButton()){
 			fixed = false;
-			useLand = true;
 		}else{
 			fixed = true;
-			useLand = false;
 		}
+		
+		
+		useLand = !drawer->window->isKeyPressed(SDLK_SPACE);
 		if(landTexture == NULL) useLand = false;
 		
 		if(event->isReleased()){
@@ -97,7 +98,7 @@ public:
 			r = (int) 200 * wc.x;
 			b = (int) 200 * wc.y;
 			g = 0x00;
-			a = 0x00;
+			a = 0xff;
 			Texture *texture;
 			if(useLand){
 				//texture = Texture::createFromFile("assets/test/land.png", drawer->window);
