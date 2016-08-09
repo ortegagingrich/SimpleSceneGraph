@@ -24,6 +24,8 @@ Viewport2D::Viewport2D():
 Vector2f Viewport2D::getCenter() const {return Vector2f(centerX, centerY);}
 float Viewport2D::getRadiusX() const {return radiusX;}
 float Viewport2D::getRadiusY() const {return radiusY;}
+float Viewport2D::getInverseRadiusX() const {return inverseRadiusX;}
+float Viewport2D::getInverseRadiusY() const {return inverseRadiusY;}
 float Viewport2D::getAspectRatio() const {return radiusX / radiusY;}
 bool Viewport2D::isAspectRatioPreserved() const {return aspectPreserved;}
 bool Viewport2D::isAspectRatioLocked() const {return aspectLocked;}

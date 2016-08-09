@@ -23,6 +23,8 @@ public:
 	Vector2f getCenter() const;
 	float getRadiusX() const;
 	float getRadiusY() const;
+	float getInverseRadiusX() const;
+	float getInverseRadiusY() const;
 	float getAspectRatio() const;
 	bool isAspectRatioPreserved() const;
 	bool isAspectRatioLocked() const;
