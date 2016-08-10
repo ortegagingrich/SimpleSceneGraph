@@ -175,6 +175,10 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
 
 
 bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
+	/**
+	 * Check whether or not the provided coordinates (which)
+	 */
+	
 	// We will need absolute positions, so re-calculate them for this component
 	computeAbsolutePosition(parent);
 	
@@ -191,7 +195,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
 	eventCoordinates.rotate(-rotationAbsolute);
 	eventCoordinates.add(-centerOffset.x, centerOffset.y);
 	
-	Rect2f buttonRect(0, width, -height, 0);
+	Rect2f buttonRect(0, width * scaleAbsolute.x, -height * scaleAbsolute.y, 0);
 	return calculate_intersection(buttonRect, eventCoordinates);
 }
 
