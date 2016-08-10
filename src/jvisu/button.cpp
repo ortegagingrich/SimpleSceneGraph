@@ -174,28 +174,74 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
 
 
 
-bool ComponentButtonSimple2D::isInside(float x, float y, Viewport2D &viewport){
+bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	/**
-	 * Check whether or not the provided coordinates (which)
+	 * Check whether or not the provided coordinates (which use viewport coordinates)
+	 * are inside of the sprite's rectangle
 	 */
+	if(layer == NULL) return false;
+	
 	
 	// We will need absolute positions, so re-calculate them for this component
 	computeAbsolutePosition(parent);
 	
+	
+	// No need to do anything if the rectangle is collapsed
+	if(width * height * scaleAbsolute.x * scaleAbsolute.y == 0) return false;
+	
+	
+	/*
+	 * Cases we must be able to deal with:
+	 * 1) Both width and height are negative (image)
+	 * 2) Only one of width and height is negative:
+	 *    a) fixedSize
+	 *    b) !fixedSize
+	 * 3) Both width and height are positive:
+	 *    a) fixedSize
+	 *    b) !fixedSize
+	 */
+	
+	// Width and Height which reflect the actual width and height of the sprite
+	Texture *texture = getTexture();
+	bool fixedPixel = false;
+	float w = width, h = -height;
+	if(width < 0){
+		if(texture == NULL) return false;
+		if(height < 0){
+			w = texture->width;
+			h = texture->height;
+			fixedPixel = true;
+		}else{
+			w = h * texture->getAspectRatio();
+		}
+	}else if(height < 0){
+		if(texture == NULL) return false;
+		h = -w / texture->getAspectRatio();
+	}
+	
+	
 	Vector2f eventCoordinates, centerpos;
 	if(fixedSize){
 		eventCoordinates.set(x, y);
-		centerpos = viewport.worldToViewport(positionAbsolute);
+		centerpos = layer->viewport.worldToViewport(positionAbsolute);
 	}else{
-		viewport.viewportToWorld(x, y, eventCoordinates.x, eventCoordinates.y);
+		layer->viewport.viewportToWorld(x, y, eventCoordinates.x, eventCoordinates.y);
 		centerpos = positionAbsolute;
 	}
+	
 	
 	eventCoordinates -= centerpos;
 	eventCoordinates.rotate(-rotationAbsolute);
 	eventCoordinates.add(-centerOffset.x, centerOffset.y);
 	
-	Rect2f buttonRect(0, width * scaleAbsolute.x, -height * scaleAbsolute.y, 0);
+	if(fixedPixel){
+		if(layer->getWindow() == NULL) return false;
+		int xp, yp;
+		layer->getWindow()->viewportToScreen(eventCoordinates.x, eventCoordinates.y, xp, yp);
+		eventCoordinates.set(xp, yp);
+	}
+	
+	Rect2f buttonRect(0, w * scaleAbsolute.x, h * scaleAbsolute.y, 0);
 	return calculate_intersection(buttonRect, eventCoordinates);
 }
 
@@ -228,7 +274,7 @@ void ComponentButton2D::update(Layer2D *layer, float tpf){
 	window->screenToViewport(mx, my, mouseViewport.x, mouseViewport.y);
 	
 	// If the cursor is not on the button, cancel pending clicks
-	if(!isInside(mouseViewport, layer->viewport)){
+	if(!isInside(mouseViewport, layer)){
 		pendingLeftClick = false;
 		pendingRightClick = false;
 		pendingMiddleClick = false;
@@ -250,13 +296,13 @@ void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 	if(e->getType() == "MOUSEBUTTON"){
 		MouseButtonEvent *event = (MouseButtonEvent*) e;
 	
-		if(isInside(event->getViewportCoordinates(), layer->viewport)){
+		if(isInside(event->getViewportCoordinates(), layer)){
 			layer->buttonManager.considerButton(this, zLevel, event);
 		}
 	}else if(e->getType() == "MOUSEMOTION"){
 		MouseMotionEvent *event = (MouseMotionEvent*) e;
 		
-		if(isInside(event->getViewportCoordinates(), layer->viewport)){
+		if(isInside(event->getViewportCoordinates(), layer)){
 			layer->buttonManager.considerButton(this, zLevel, event);
 		}else if(mouseAlreadyOver){
 			preEndMouseOver(event, tpf);

@@ -319,6 +319,11 @@ void Texture::removeOwner(TextureOwner *owner){
 }
 
 
+float Texture::getAspectRatio() const {
+	return (float) width / (float) height;
+}
+
+
 SDL_Texture *Texture::getSdlTexture() const {return sdlTexture;}
 
 

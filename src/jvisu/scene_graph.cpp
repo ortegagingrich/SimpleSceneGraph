@@ -283,12 +283,48 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	Texture *tex,
 	Viewport2D &viewport
 ){
+	
+	/*
+	 * This Method is a complicated mess.  Three different nearly-unrelated
+	 * cases are treated with the same code, hence the unreadability.
+	 * TODO: Reorganize this and add liberal comment descriptions of what is being
+	 * done and for what cases.
+	 */
+	
 	if(tex == NULL) return NULL;
+	
+	Layer2D *layer = getLayer();
+	if(layer == NULL) return NULL;
+	JWindow *window = layer->getWindow();
+	if(window == NULL) return NULL;
+	
+	
+	bool fixedPixel = false;
+	float w = width, h = height;
+	if(width < 0){
+		if(height < 0){
+			w = tex->width;
+			h = tex->height;
+			fixedPixel = true;
+		}else{
+			w = h * tex->getAspectRatio();
+		}
+	}else if(height < 0){
+		h = w / tex->getAspectRatio();
+	}
+	
 	
 	
 	Vector2f offset(-centerOffset.x, centerOffset.y);
+	if(fixedPixel){
+		offset.scale(2.0f / window->getScreenHeight());
+		if(!fixedSize){
+			offset.scale(viewport.getInverseRadiusY());
+		}
+	}
 	offset.scale(scaleAbsolute.x, scaleAbsolute.y);
 	offset.rotate(rotationAbsolute);
+	
 	
 	float scaleFactorX = scaleAbsolute.x;
 	float scaleFactorY = scaleAbsolute.y;
@@ -296,20 +332,30 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	Vector2f vc;
 	if(!fixedSize){
 		vc = viewport.worldToViewport(positionAbsolute + offset);
-		scaleFactorX *= viewport.getInverseRadiusY();
-		scaleFactorY *= viewport.getInverseRadiusY();
+		if(!fixedPixel){
+			scaleFactorX *= viewport.getInverseRadiusY();
+			scaleFactorY *= viewport.getInverseRadiusY();	
+		}
 	}else{
 		// Fixed Size Sprites
 		vc = viewport.worldToViewport(positionAbsolute) + offset;
 	}
+	
+	
+	if(fixedPixel){
+		int pixelFactor = window->getScreenHeight() / 2;
+		scaleFactorX /= pixelFactor;
+		scaleFactorY /= pixelFactor;
+	}
+	
 	
 	// Finally make the renderable
 	RenderableSprite *sprite;
 	sprite = RenderableSprite::createRenderableSprite(
 		vc.x,
 		vc.y,
-		scaleFactorX * width,
-		scaleFactorY * height,
+		scaleFactorX * w,
+		scaleFactorY * h,
 		zLevel,
 		rotationAbsolute,
 		tex,

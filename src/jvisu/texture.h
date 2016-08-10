@@ -84,6 +84,8 @@ public:
 	void addOwner(TextureOwner *owner);
 	void removeOwner(TextureOwner *owner);
 	
+	float getAspectRatio() const;
+	
 	SDL_Texture *getSdlTexture() const; // returns NULL if not loaded
 	
 protected:

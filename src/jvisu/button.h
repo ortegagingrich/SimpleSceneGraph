@@ -66,9 +66,9 @@ public:
 	virtual void onEndMouseOver(MouseMotionEvent *event, float tpf){};
 	
 protected:
-	virtual bool isInside(float x, float y, Viewport2D &viewport) = 0;
-	virtual bool isInside(Vector2f vc, Viewport2D &viewport){
-		return isInside(vc.x, vc.y, viewport);
+	virtual bool isInside(float x, float y, Layer2D *layer) = 0;
+	virtual bool isInside(Vector2f vc, Layer2D *layer){
+		return isInside(vc.x, vc.y, layer);
 	};
 	
 	
@@ -137,7 +137,7 @@ public:
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 
 protected:
-	virtual bool isInside(float x, float y, Viewport2D &viewport);
+	virtual bool isInside(float x, float y, Layer2D *layer);
 
 private:
 	Texture *overlayTexture, *pressedTexture;
