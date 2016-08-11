@@ -130,7 +130,11 @@ void ComponentButtonSimple2D::collectRenderables(
 ){
 	// Renderables for self
 	// Base Texture
+	if(isHidden()) return;
+	
+	
 	ComponentSpriteSimple2D::collectRenderables(render_list, viewport);
+	
 	
 	// Other Textures
 	RenderableSprite *overlaySprite, *pressedSprite;
@@ -156,6 +160,7 @@ void ComponentButtonSimple2D::collectRenderables(
 	// Overlay Text
 	textOverlay->centerOffset = centerOffset;
 	textOverlay->collectRenderables(render_list, viewport, 3.0f);
+	
 	
 	/*
 	 * Collect Renderables for Children
@@ -209,7 +214,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 		if(texture == NULL) return false;
 		if(height < 0){
 			w = texture->width;
-			h = texture->height;
+			h = -texture->height;
 			fixedPixel = true;
 		}else{
 			w = h * texture->getAspectRatio();
@@ -236,9 +241,9 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	
 	if(fixedPixel){
 		if(layer->getWindow() == NULL) return false;
-		int xp, yp;
-		layer->getWindow()->viewportToScreen(eventCoordinates.x, eventCoordinates.y, xp, yp);
-		eventCoordinates.set(xp, yp);
+		float pixelFactor = layer->getWindow()->getScreenHeight() / 2;
+		
+		eventCoordinates.scale(pixelFactor);
 	}
 	
 	Rect2f buttonRect(0, w * scaleAbsolute.x, h * scaleAbsolute.y, 0);

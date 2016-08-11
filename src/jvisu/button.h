@@ -133,7 +133,7 @@ public:
 	
 	
 	virtual void update(Layer2D *layer, float tpf);
-	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 
 protected:

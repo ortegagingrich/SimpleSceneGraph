@@ -64,7 +64,7 @@ public:
 	
 		Texture *base, *overlay, *pressed;
 		base = Texture::createFromFile("assets/test/button.png", win);
-		overlay = Texture::createSolidColor(1, 1, win, 0xbb, 0x88, 0xbb, 0x55);
+		overlay = Texture::createSolidColor(256, 256, win, 0xbb, 0x88, 0xbb, 0x55);
 		pressed = Texture::createFromFile("assets/test/button_pressed.png", win);
 		//pressed = Texture::createSolidColor(1, 1, win, 0x00, 0xff, 0x00, 0x00);
 		
@@ -144,12 +144,72 @@ int main(int argc, char* argv[]){
 	hud->rootNode->attachChild(button1);
 	
 	
-	TestButton *button2 = new TestButton(window, "World Button");
+	TestButton *button2 = new TestButton(window, "pixel");
 	button2->setFont(TEST_FONT);
-	button2->setText("World");
+	button2->setText("p");
 	button2->setFontSize(128);
+	button2->width = -1;
+	button2->height = -1;
 	mainNode->attachChild(button2);
 	
+	
+	/*TestButton *button3 = new TestButton(window, "nh");
+	button3->setFont(TEST_FONT);
+	button3->setText("nh");
+	button3->setFontSize(128);
+	button3->width = -1;
+	button3->height = 0.05f;
+	button3->position.x = 0.2f;
+	mainNode->attachChild(button3);
+	
+	
+	TestButton *button4 = new TestButton(window, "nw");
+	button4->setFont(TEST_FONT);
+	button4->setText("nw");
+	button4->setFontSize(128);
+	button4->width = 0.05f;
+	button4->height = -1;
+	button4->position.x = -0.2f;
+	mainNode->attachChild(button4);
+	
+	
+	TestButton *button5 = new TestButton(window, "nb");
+	button5->setFont(TEST_FONT);
+	button5->setText("nb");
+	button5->setFontSize(128);
+	button5->width = 0.1f;
+	button5->height = 0.1f;
+	mainNode->attachChild(button5);
+	
+	
+	TestButton *button6 = new TestButton(window, "fh");
+	button6->setFont(TEST_FONT);
+	button6->setText("fh");
+	button6->setFontSize(128);
+	button6->width = -1;
+	button6->height = 0.2f;
+	button6->fixedSize = true;
+	mainNode->attachChild(button6);
+	
+	
+	TestButton *button7 = new TestButton(window, "fw");
+	button7->setFont(TEST_FONT);
+	button7->setText("fw");
+	button7->setFontSize(128);
+	button7->width = 0.05f;
+	button7->height = -1;
+	button7->fixedSize = true;
+	mainNode->attachChild(button7);
+	
+	
+	TestButton *button8 = new TestButton(window, "fb");
+	button8->setFont(TEST_FONT);
+	button8->setText("fb");
+	button8->setFontSize(128);
+	button8->width = 0.1f;
+	button8->height = 0.1f;
+	button8->fixedSize = true;
+	mainNode->attachChild(button8);*/
 	
 	
 	/*
