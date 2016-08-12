@@ -158,6 +158,23 @@ void ComponentButtonSimple2D::collectRenderables(
 	}
 	
 	// Overlay Text
+	Texture *texture = getTexture();
+	if(width > 0 && texture != NULL){
+		textOverlay->width = width;
+		if(height > 0){
+			textOverlay->height = height;
+		}else{
+			textOverlay->height = width / texture->getAspectRatio();
+		}
+	}else if(height > 0 && texture != NULL){
+		textOverlay->height = height;
+		textOverlay->width = height * texture->getAspectRatio();
+	}else{
+		textOverlay->width = -1;
+		textOverlay->height = -1;
+	}
+	
+	textOverlay->fixedSize = fixedSize;
 	textOverlay->centerOffset = centerOffset;
 	textOverlay->collectRenderables(render_list, viewport, 3.0f);
 	
