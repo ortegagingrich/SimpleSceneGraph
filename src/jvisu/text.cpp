@@ -87,8 +87,97 @@ void ComponentSpriteText2D::collectRenderables(
 		oldColor.a = colorAlpha;
 	}
 	
+	
+	/*
+	 * Instead of calling the sprite super method, we handle things directly here,
+	 * though a bit differently.
+	 */
+	
+	Component2D::collectRenderables(render_list, viewport);
+	if(isHidden()) return;
+	
+	RenderableSprite *sprite = NULL;
+	
+	
+	Texture *texture = getTexture();
+	if(texture == NULL) return;
+	
+	/*
+	 * Special Handling for selected Rectangles
+	 */
+	if(width > 0 && height > 0){
+		Layer2D *layer = getLayer();
+		if(layer == NULL) return;
+		JWindow *window = layer->getWindow();
+		if(window == NULL) return;
+		
+		
+		float targetRatio = width / height;
+		float sourceRatio = texture->getAspectRatio();
+		
+		
+		float pixelRatio;
+		Vector2f offset;
+		if(sourceRatio > targetRatio){
+			pixelRatio = width / texture->width;
+			offset.set(0, 0.5f * (height - texture->height * pixelRatio));
+		}else{
+			pixelRatio = height / texture->height;
+			offset.set(0.5f * (width - texture->width * pixelRatio), 0);
+		}
+		
+		offset.add(-centerOffset.x, centerOffset.y);
+		offset.rotate(rotationAbsolute);
+		
+		
+		Vector2f vc;
+		float scaleFactorX = scaleAbsolute.x;
+		float scaleFactorY = scaleAbsolute.y;
+		
+		if(fixedSize){
+			vc = viewport.worldToViewport(positionAbsolute) + offset;
+		}else{
+			vc = viewport.worldToViewport(positionAbsolute + offset);
+			scaleFactorX *= viewport.getInverseRadiusY();
+			scaleFactorY *= viewport.getInverseRadiusY();
+		}
+		
+		
+		// Compute base width and height of text rectangle in viewport coordinates.
+		float w = pixelRatio * texture->width;
+		float h = pixelRatio * texture->height;
+		
+		
+		// Finally, make the renderable
+		sprite = RenderableSprite::createRenderableSprite(
+			vc.x,
+			vc.y,
+			scaleFactorX * w,
+			scaleFactorY * h,
+			zLevel,
+			rotationAbsolute,
+			texture,
+			viewport.getViewportRect()
+		);
+		
+	}else{
+		sprite = makeRenderableFromTexture(texture, viewport);
+	}
+	
+	
+	
+	
+	
+	
+	
+	if(sprite != NULL){
+		sprite->zMod = zmod;
+		render_list.push_back(sprite);
+	}
+	
+	
 	// Call super method for collecting renderables
-	ComponentSpriteSimple2D::collectRenderables(render_list, viewport, zmod);
+	//ComponentSpriteSimple2D::collectRenderables(render_list, viewport, zmod);
 }
 
 
