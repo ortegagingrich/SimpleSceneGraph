@@ -217,7 +217,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 			h = -texture->height;
 			fixedPixel = true;
 		}else{
-			w = h * texture->getAspectRatio();
+			w = -h * texture->getAspectRatio();
 		}
 	}else if(height < 0){
 		if(texture == NULL) return false;

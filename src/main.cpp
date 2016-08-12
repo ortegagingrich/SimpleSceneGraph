@@ -153,7 +153,7 @@ int main(int argc, char* argv[]){
 	mainNode->attachChild(button2);
 	
 	
-	/*TestButton *button3 = new TestButton(window, "nh");
+	TestButton *button3 = new TestButton(window, "nh");
 	button3->setFont(TEST_FONT);
 	button3->setText("nh");
 	button3->setFontSize(128);
@@ -187,7 +187,7 @@ int main(int argc, char* argv[]){
 	button6->setText("fh");
 	button6->setFontSize(128);
 	button6->width = -1;
-	button6->height = 0.2f;
+	button6->height = 0.4f;
 	button6->fixedSize = true;
 	mainNode->attachChild(button6);
 	
@@ -196,7 +196,7 @@ int main(int argc, char* argv[]){
 	button7->setFont(TEST_FONT);
 	button7->setText("fw");
 	button7->setFontSize(128);
-	button7->width = 0.05f;
+	button7->width = 0.1f;
 	button7->height = -1;
 	button7->fixedSize = true;
 	mainNode->attachChild(button7);
@@ -206,10 +206,10 @@ int main(int argc, char* argv[]){
 	button8->setFont(TEST_FONT);
 	button8->setText("fb");
 	button8->setFontSize(128);
-	button8->width = 0.1f;
-	button8->height = 0.1f;
+	button8->width = 0.2f;
+	button8->height = 0.2f;
 	button8->fixedSize = true;
-	mainNode->attachChild(button8);*/
+	mainNode->attachChild(button8);
 	
 	
 	/*
