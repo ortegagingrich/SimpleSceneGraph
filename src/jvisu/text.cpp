@@ -120,7 +120,7 @@ void ComponentSpriteText2D::collectRenderables(
 		Vector2f offset;
 		if(sourceRatio > targetRatio){
 			pixelRatio = width / texture->width;
-			offset.set(0, 0.5f * (height - texture->height * pixelRatio));
+			offset.set(0, -0.5f * (height - texture->height * pixelRatio));
 		}else{
 			pixelRatio = height / texture->height;
 			offset.set(0.5f * (width - texture->width * pixelRatio), 0);
