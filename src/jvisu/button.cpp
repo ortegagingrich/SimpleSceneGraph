@@ -202,6 +202,8 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	 * are inside of the sprite's rectangle
 	 */
 	if(layer == NULL) return false;
+	JWindow *window = layer->getWindow();
+	if(window == NULL) return false;
 	
 	
 	// We will need absolute positions, so re-calculate them for this component
@@ -230,8 +232,10 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	if(width < 0){
 		if(texture == NULL) return false;
 		if(height < 0){
-			w = texture->width;
-			h = -texture->height;
+			float pixelFactor = 2.0f / (float) window->getScreenHeight();
+			// w and h should now be viewport coordinate width and height, respectively.
+			w = texture->width * pixelFactor;
+			h = -texture->height * pixelFactor;
 			fixedPixel = true;
 		}else{
 			w = -h * texture->getAspectRatio();
@@ -243,7 +247,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	
 	
 	Vector2f eventCoordinates, centerpos;
-	if(fixedSize){
+	if(fixedSize || fixedPixel){
 		eventCoordinates.set(x, y);
 		centerpos = layer->viewport.worldToViewport(positionAbsolute);
 	}else{
@@ -255,13 +259,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	eventCoordinates -= centerpos;
 	eventCoordinates.rotate(-rotationAbsolute);
 	eventCoordinates.add(-centerOffset.x, centerOffset.y);
-	
-	if(fixedPixel){
-		if(layer->getWindow() == NULL) return false;
-		float pixelFactor = layer->getWindow()->getScreenHeight() / 2;
-		
-		eventCoordinates.scale(pixelFactor);
-	}
+
 	
 	Rect2f buttonRect(0, w * scaleAbsolute.x, h * scaleAbsolute.y, 0);
 	return calculate_intersection(buttonRect, eventCoordinates);
