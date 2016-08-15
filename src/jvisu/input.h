@@ -37,13 +37,25 @@ public:
 	
 	virtual std::string getType(){return "NONE";};
 	
-	bool isConsumed();
-	void consume();
+	virtual bool isConsumed();
+	virtual void consume();
 
 protected:
 	InputEvent(SDL_Event event, JWindow *win);
 private:
 	bool consumed;
+};
+
+
+class SHARED_EXPORT InputEventPermanent : public InputEvent {
+	/**
+	 * Input events which cannot be consumed
+	 */
+public:
+	virtual bool isConsumed();
+	virtual void consume();
+protected:
+	InputEventPermanent(SDL_Event event, JWindow *win) : InputEvent(event, win){};
 };
 
 
@@ -133,7 +145,7 @@ protected:
  * Quit Event
  */
 
-class SHARED_EXPORT QuitEvent : public InputEvent {
+class SHARED_EXPORT QuitEvent : public InputEventPermanent {
 friend class InputEvent;
 public:
 	virtual std::string getType(){return "QUIT";};

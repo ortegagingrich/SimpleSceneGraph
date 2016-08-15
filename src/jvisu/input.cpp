@@ -41,6 +41,16 @@ void InputEvent::consume(){consumed = true;}
 
 
 /*
+ * Permanent (non-consumable) input events
+ */
+
+bool InputEventPermanent::isConsumed(){ return false; }
+void InputEventPermanent::consume(){
+	printf("WARNING: Input events of type \"%s\" cannot be consumed.\n", getType().c_str());
+}
+
+
+/*
  * Source for KeyButtonEvent
  */
 
@@ -159,5 +169,5 @@ bool MouseMotionEvent::middleButtonPressed(){
 /*
  * Source for QuitEvent
  */
-QuitEvent::QuitEvent(SDL_Event event, JWindow *win): InputEvent(event, win) {}
+QuitEvent::QuitEvent(SDL_Event event, JWindow *win): InputEventPermanent(event, win) {}
 
