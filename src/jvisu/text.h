@@ -17,7 +17,7 @@ class JWindow;
 
 
 
-class SHARED_EXPORT ComponentSpriteText2D: public ComponentSpriteSimple2D {
+class SHARED_EXPORT ComponentSpriteText2D : public ComponentSpriteSimple2D {
 public:
 	
 	std::string text;
@@ -41,6 +41,30 @@ private:
 	int oldFontSize;
 	SDL_Color oldColor;
 };
+
+
+
+class SHARED_EXPORT ComponentTextBox2D : public ComponentSpriteText2D {
+public:
+	// Number of lines of text to display
+	int lineCount;
+	
+	/*
+	 * Ratio of height of space between lines to the height of the lines
+	 * themselves.  spaceingRatio = 1 for double spacing, for example.
+	 */
+	float spacingRatio;
+	
+	
+	ComponentTextBox2D(JWindow *win);
+	
+	virtual void collectRenderables(
+		std::list<Renderable*> &render_list,
+		Viewport2D &v,
+		float zmod
+	);
+	
+}
 
 
 
