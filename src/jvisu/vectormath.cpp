@@ -94,6 +94,10 @@ bool Vector2f::operator==(Vector2f v) const {
 	return (x == v.x) && (y == v.y);
 }
 
+bool Vector2f::operator!=(Vector2f v) const {
+	return (x != v.x) || (y != v.y);
+}
+
 // Negation
 
 Vector2f Vector2f::operator-() const {

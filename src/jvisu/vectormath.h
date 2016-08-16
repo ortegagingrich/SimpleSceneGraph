@@ -51,6 +51,7 @@ public:
 	
 	// Identity
 	bool operator==(Vector2f v) const;
+	bool operator!=(Vector2f v) const;
 	
 	// Negation
 	Vector2f operator-() const;
