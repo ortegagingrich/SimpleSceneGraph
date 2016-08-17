@@ -102,6 +102,7 @@ public:
 	Vector2f startCoordinates, endCoordinates;
 	
 	ComponentLine2D();
+	ComponentLine2D(float x1, float y1, float x2, float y2);
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 private:

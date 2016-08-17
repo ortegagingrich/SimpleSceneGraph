@@ -140,6 +140,15 @@ int main(int argc, char* argv[]){
 	mainNode->attachChild(loremIpsum);
 	
 	
+	// Frame
+	Node2D *frame = new Node2D();
+	mainNode->attachChild(frame);
+	frame->attachChild(new ComponentLine2D(-0.7f,  0.5f,  0.7f,  0.5f));
+	frame->attachChild(new ComponentLine2D(-0.7f,  0.5f, -0.7f, -0.5f));
+	frame->attachChild(new ComponentLine2D( 0.7f, -0.5f, -0.7f, -0.5f));
+	frame->attachChild(new ComponentLine2D( 0.7f, -0.5f,  0.7f,  0.5f));
+	
+	
 	
 	/*
 	 * Fixed Layer

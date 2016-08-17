@@ -186,6 +186,18 @@ ComponentLine2D::ComponentLine2D():
 {}
 
 
+ComponentLine2D::ComponentLine2D(float x1, float y1, float x2, float y2):
+	colorRed(0xff),
+	colorGreen(0xff),
+	colorBlue(0xff),
+	colorAlpha(0xff)
+{
+	startCoordinates.set(x1, y1);
+	endCoordinates.set(x2, y2);
+}
+
+
+
 void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
 	Component2D::collectRenderables(render_list, v);
 	if(isHidden()) return;
