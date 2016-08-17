@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cmath>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 #ifdef __linux__
@@ -21,7 +22,16 @@ const bool USE_HARDWARE_ACCELERATION = true;
 #endif
 
 
-std::string TEST_FONT = "assets/font/LiberationSerif-Regular.ttf";
+const std::string TEST_FONT = "assets/font/LiberationSerif-Regular.ttf";
+
+
+static std::string load_lorem_ipsum(){
+	std::ifstream filestream("assets/text/lorem_ipsum.txt");
+	std::stringstream buffer;
+	buffer << filestream.rdbuf();
+	return buffer.str();
+}
+
 
 
 /*
@@ -51,15 +61,18 @@ public:
 
 
 
-class TestButton : public ComponentDraggable2D {
+class ToggleButton : public ComponentButtonSimple2D {
 public:
 	std::string label;
 	JWindow *window;
+	Component2D *target;
 	
-	TestButton(JWindow *win, std::string txt):
-		ComponentDraggable2D(win),
+	
+	ToggleButton(JWindow *win, std::string txt):
+		ComponentButtonSimple2D(win),
 		label(txt),
-		window(win)
+		window(win),
+		target(NULL)
 	{
 	
 		Texture *base, *overlay, *pressed;
@@ -82,24 +95,8 @@ public:
 	 * Test Callbacks
 	 */
 	
-	virtual void onLeftPress(MouseButtonEvent *event, float tpf){
-		printf("[%s] Left Press\n", label.c_str());
-	}
-	
-	virtual void onLeftRelease(MouseButtonEvent *event, float tpf){
-		printf("[%s] Left Release\n", label.c_str());
-	}
-	
 	virtual void onLeftClick(MouseButtonEvent *event, float tpf){
-		printf("[%s] Left Click\n", label.c_str());
-	}
-	
-	virtual void onStartMouseOver(MouseMotionEvent *event, float tpf){
-		printf("[%s] Mouse Over Start\n", label.c_str());
-	}
-	
-	virtual void onEndMouseOver(MouseMotionEvent *event, float tpf){
-		printf("[%s] Mouse Over End\n", label.c_str());
+		if(target != NULL) target->toggleVisibility();
 	}
 	
 };
@@ -130,6 +127,20 @@ int main(int argc, char* argv[]){
 	layer2d->rootNode->attachChild(mainNode);
 	
 	
+	ComponentTextBox2D *loremIpsum = new ComponentTextBox2D(window);
+	loremIpsum->position.set(-0.7f, 0.5f);
+	loremIpsum->width = 1.4f;
+	loremIpsum->height = 1.0f;
+	loremIpsum->lineCount = 4;
+	loremIpsum->spacingRatio = 1.0f;
+	loremIpsum->fontPath = TEST_FONT;
+	loremIpsum->fontSize = 48;
+	loremIpsum->text = load_lorem_ipsum();
+	loremIpsum->hide();
+	mainNode->attachChild(loremIpsum);
+	
+	
+	
 	/*
 	 * Fixed Layer
 	 */
@@ -137,86 +148,18 @@ int main(int argc, char* argv[]){
 	window->addLayerTop(hud);
 	hud->rootNode->attachChild(new FPSCounter(window));
 	
-	TestButton *button1 = new TestButton(window, "Fixed Button");
+	ToggleButton *button1 = new ToggleButton(window, "Fixed Button");
 	button1->setFont(TEST_FONT);
-	button1->setText("Fixed");
+	button1->setText("Toggle Lorem Ipsum");
 	button1->setFontSize(48);
+	button1->position.set(-0.4f, 1.0f);
+	button1->height = 0.1f;
+	button1->width = 0.8f;
+	button1->target = loremIpsum;
 	hud->rootNode->attachChild(button1);
 	
 	
-	TestButton *button2 = new TestButton(window, "pixel");
-	button2->setFont(TEST_FONT);
-	button2->setText("p");
-	button2->setFontSize(128);
-	button2->width = -1;
-	button2->height = -1;
-	button2->zLevel = -2;
-	mainNode->attachChild(button2);
 	
-	
-	TestButton *button3 = new TestButton(window, "nh");
-	button3->setFont(TEST_FONT);
-	button3->setText("nh");
-	button3->setFontSize(128);
-	button3->width = -1;
-	button3->height = 0.05f;
-	button3->position.x = 0.2f;
-	button3->zLevel = 2.0f;
-	mainNode->attachChild(button3);
-	
-	
-	TestButton *button4 = new TestButton(window, "nw");
-	button4->setFont(TEST_FONT);
-	button4->setText("nw");
-	button4->setFontSize(128);
-	button4->width = 0.05f;
-	button4->height = -1;
-	button4->position.x = -0.2f;
-	button4->zLevel = 4.0f;
-	mainNode->attachChild(button4);
-	
-	
-	TestButton *button5 = new TestButton(window, "nb");
-	button5->setFont(TEST_FONT);
-	button5->setText("nb");
-	button5->setFontSize(128);
-	button5->width = 0.1f;
-	button5->height = 0.1f;
-	button5->zLevel = 5;
-	mainNode->attachChild(button5);
-	
-	
-	TestButton *button6 = new TestButton(window, "fh");
-	button6->setFont(TEST_FONT);
-	button6->setText("fh");
-	button6->setFontSize(128);
-	button6->width = -1;
-	button6->height = 0.4f;
-	button6->fixedSize = true;
-	button6->zLevel = 6.0f;
-	mainNode->attachChild(button6);
-	
-	
-	TestButton *button7 = new TestButton(window, "fw");
-	button7->setFont(TEST_FONT);
-	button7->setText("fw");
-	button7->setFontSize(128);
-	button7->width = 0.1f;
-	button7->height = -1;
-	button7->fixedSize = true;
-	button7->zLevel = 7;
-	mainNode->attachChild(button7);
-	
-	
-	TestButton *button8 = new TestButton(window, "fb");
-	button8->setFont(TEST_FONT);
-	button8->setText("fb");
-	button8->setFontSize(128);
-	button8->width = 0.2f;
-	button8->height = 0.2f;
-	button8->fixedSize = true;
-	button8->zLevel = 8;
-	mainNode->attachChild(button8);
 	
 	
 	/*
