@@ -318,6 +318,13 @@ void ComponentTextBox2D::refreshTextures(){
 	}
 	
 	
+	/*
+	 * Note:
+	 * Lest ye be tempted to merge the two loops, remember that the above actions
+	 * must be done for all lines, regardless of whether or not they are written
+	 * to.
+	 */
+	
 	
 	char *buffer = (char*) malloc((text.size() + 1) * sizeof(char));
 	strcpy(buffer, text.c_str());
