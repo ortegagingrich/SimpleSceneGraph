@@ -194,6 +194,9 @@ void ComponentTextBox2D::collectRenderables(
 	Viewport2D &viewport,
 	float zmod
 ){
+	Component2D::collectRenderables(render_list, viewport);
+	if(isHidden()) return;
+	
 	// Do nothing if no dimensions are set
 	if(width < 0 || height < 0) return;
 	
@@ -310,7 +313,7 @@ void ComponentTextBox2D::refreshTextures(){
 		line->colorGreen = colorGreen;
 		line->colorBlue = colorBlue;
 		line->colorAlpha = colorAlpha;
-		line->width = width;
+		line->width = -1;
 		line->height = lineHeight;
 		line->position.set(0, -lineNumber * (1 + spacingRatio) * lineHeight);
 		
@@ -343,20 +346,22 @@ void ComponentTextBox2D::refreshTextures(){
 		
 		// First token
 		if(token == NULL) break;
+		testString.append(" ");
 		testString.append(token);
 		
 		float testLength = 0;
-		while(testLength < line->width / line->height && testLength >= 0){
+		while(testLength < width / lineHeight && testLength >= 0){
 			line->text.append(" ");
 			line->text.append(token);
 			
-			token = strtok(buffer, " ");
+			token = strtok(NULL, " ");
 			if(token == NULL) break;
 			
+			testString.append(" ");
 			testString.append(token);
 			
 			// estimate width ratio of test string
-			testLength = size_text(fontPath, fontSize, line->text);
+			testLength = size_text(fontPath, fontSize, testString);
 		}
 	}
 	

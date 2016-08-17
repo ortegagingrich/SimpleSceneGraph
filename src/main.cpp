@@ -60,12 +60,15 @@ public:
 };
 
 
+/*
+ * A button to toggle the visibility of a component.
+ */
 
 class ToggleButton : public ComponentButtonSimple2D {
 public:
 	std::string label;
 	JWindow *window;
-	Component2D *target;
+	Component2D *target; // The compoment whose visibility is to be toggled.
 	
 	
 	ToggleButton(JWindow *win, std::string txt):
@@ -92,7 +95,7 @@ public:
 	};
 	
 	/*
-	 * Test Callbacks
+	 * Callback
 	 */
 	
 	virtual void onLeftClick(MouseButtonEvent *event, float tpf){
