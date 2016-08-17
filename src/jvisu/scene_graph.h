@@ -186,6 +186,8 @@ public:
 
 
 
+//TODO: Separate Node into "public" node and "private" node
+
 class SHARED_EXPORT Node2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have child components attached to them

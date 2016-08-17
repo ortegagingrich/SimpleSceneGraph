@@ -1,5 +1,4 @@
-
-
+#include <cstdlib>
 #include <string>
 #include <list>
 
@@ -165,19 +164,198 @@ void ComponentSpriteText2D::collectRenderables(
 	}
 	
 	
-	
-	
-	
-	
-	
 	if(sprite != NULL){
 		sprite->zMod = zmod;
 		render_list.push_back(sprite);
 	}
 	
-	
-	// Call super method for collecting renderables
-	//ComponentSpriteSimple2D::collectRenderables(render_list, viewport, zmod);
 }
+
+
+/*
+ * ComponentTextBox2D
+ */
+
+ComponentTextBox2D::ComponentTextBox2D(JWindow *win):
+	ComponentSpriteText2D(win),
+	lineCount(1),
+	spacingRatio(1.0f),
+	oldLineCount(0),
+	oldSpacingRatio(1.0f),
+	oldWidth(-1.0f),
+	oldHeight(-1.0f)
+{
+	refreshTextures();
+}
+
+
+void ComponentTextBox2D::collectRenderables(
+	std::list<Renderable*> &render_list,
+	Viewport2D &viewport,
+	float zmod
+){
+	// Do nothing if no dimensions are set
+	if(width < 0 || height < 0) return;
+	
+	// Refresh line textures, if needed
+	refreshTextures();
+	
+	// Collect renderables from line compoments
+	std::list<ComponentSpriteText2D*>::iterator iter;
+	for(iter = lineList.begin(); iter != lineList.end(); iter++){
+		ComponentSpriteText2D *line = *iter;
+		if(line != NULL) line->collectRenderables(render_list, viewport, zmod);
+	}
+}
+
+
+
+static float size_text(std::string fontPath, int size, std::string text){
+	/**
+	 * This is a static helper method for estimating the ratio of the width of
+	 * a piece of rendered text to its height.  If the provided font is invalid
+	 * or rendering is otherwise not possible, this returns -1.  Note that no
+	 * actual rendering is done; just a call to TTF_SizeText();
+	 */
+	TTF_Font *font = TTF_OpenFont(fontPath.c_str(), size);
+	if(font == NULL) return -1;
+	
+	int w, h;
+	TTF_SizeText(font, text.c_str(), &w, &h);
+	
+	TTF_CloseFont(font);
+	
+	return (float) w / (float) h;
+}
+
+
+void ComponentTextBox2D::refreshTextures(){
+	/**
+	 * Checks to see if it is necessary to re-render the textures for the
+	 * individual lines of the textbox.  If it is necessary, their textures are
+	 * recalculated.
+	 */
+	
+	bool needsRefresh = false;
+	
+	// Check to see if lines need to be added/removed
+	if(lineCount != oldLineCount){
+		
+		while( (signed int) lineList.size() != lineCount ){
+			if(oldLineCount < lineCount){
+				ComponentSpriteText2D *line = new ComponentSpriteText2D(window);
+				attachChild(line);
+				lineList.push_back(line);
+			}else if( !lineList.empty() ){
+				ComponentSpriteText2D *line = lineList.back();
+				lineList.pop_back();
+				if( line != NULL ) delete line;
+			}else{
+				break;
+			}
+		}
+		
+		oldLineCount = lineCount;
+		needsRefresh = true;
+	}
+	
+	if(
+		text.compare(oldText) != 0 ||
+		fontPath.compare(oldFontPath) != 0 ||
+		fontSize != oldFontSize ||
+		colorRed != oldColor.r ||
+		colorGreen != oldColor.g ||
+		colorBlue != oldColor.b ||
+		colorAlpha != oldColor.a ||
+		width != oldWidth ||
+		height != oldHeight ||
+		spacingRatio != oldSpacingRatio
+	){
+		needsRefresh = true;
+		
+		// Update Archived Values
+		oldText = text;
+		oldFontPath = fontPath;
+		oldFontSize = fontSize;
+		oldColor.r = colorRed;
+		oldColor.g = colorGreen;
+		oldColor.b = colorBlue;
+		oldColor.a = colorAlpha;
+		oldWidth = width;
+		oldHeight = height;
+		oldSpacingRatio = spacingRatio;
+	}
+	
+	
+	if(!needsRefresh) return;
+	
+	/*
+	 * At this point, we know that a refresh is needed.
+	 */
+	
+	// The height of each individual line (not including spacing)
+	float lineHeight = height / ((1 + spacingRatio) * (lineCount - 1) + 1);
+	
+	// Make sure all line sprites have the proper settings
+	std::list<ComponentSpriteText2D*>::iterator iter;
+	int lineNumber = 0;
+	for(iter = lineList.begin(); iter != lineList.end(); iter++){
+		ComponentSpriteText2D *line = *iter;
+		if(line == NULL) continue;
+		
+		line->text.clear();
+		line->fontPath = fontPath;
+		line->fontSize = fontSize;
+		line->colorRed = colorRed;
+		line->colorGreen = colorGreen;
+		line->colorBlue = colorBlue;
+		line->colorAlpha = colorAlpha;
+		line->width = width;
+		line->height = lineHeight;
+		line->position.set(0, -lineNumber * (1 + spacingRatio) * lineHeight);
+		
+		lineNumber++;
+	}
+	
+	
+	
+	char *buffer = (char*) malloc((text.size() + 1) * sizeof(char));
+	strcpy(buffer, text.c_str());
+	
+	// First token
+	char *token = strtok(buffer, " ");
+	
+	std::string testString;
+	
+	for(iter = lineList.begin(); iter != lineList.end(); iter++){
+		ComponentSpriteText2D *line = *iter;
+		if(line == NULL) continue;
+		
+		line->text.clear();
+		testString.clear();
+		
+		// First token
+		if(token == NULL) break;
+		testString.append(token);
+		
+		float testLength = 0;
+		while(testLength < line->width / line->height && testLength >= 0){
+			line->text.append(" ");
+			line->text.append(token);
+			
+			token = strtok(buffer, " ");
+			if(token == NULL) break;
+			
+			testString.append(token);
+			
+			// estimate width ratio of test string
+			testLength = size_text(fontPath, fontSize, line->text);
+		}
+	}
+	
+	free(buffer);
+}
+
+
 
 
