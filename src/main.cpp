@@ -150,6 +150,7 @@ int main(int argc, char* argv[]){
 	button2->setFontSize(128);
 	button2->width = -1;
 	button2->height = -1;
+	button2->zLevel = -2;
 	mainNode->attachChild(button2);
 	
 	
@@ -160,6 +161,7 @@ int main(int argc, char* argv[]){
 	button3->width = -1;
 	button3->height = 0.05f;
 	button3->position.x = 0.2f;
+	button3->zLevel = 2.0f;
 	mainNode->attachChild(button3);
 	
 	
@@ -170,6 +172,7 @@ int main(int argc, char* argv[]){
 	button4->width = 0.05f;
 	button4->height = -1;
 	button4->position.x = -0.2f;
+	button4->zLevel = 4.0f;
 	mainNode->attachChild(button4);
 	
 	
@@ -179,6 +182,7 @@ int main(int argc, char* argv[]){
 	button5->setFontSize(128);
 	button5->width = 0.1f;
 	button5->height = 0.1f;
+	button5->zLevel = 5;
 	mainNode->attachChild(button5);
 	
 	
@@ -189,6 +193,7 @@ int main(int argc, char* argv[]){
 	button6->width = -1;
 	button6->height = 0.4f;
 	button6->fixedSize = true;
+	button6->zLevel = 6.0f;
 	mainNode->attachChild(button6);
 	
 	
@@ -199,6 +204,7 @@ int main(int argc, char* argv[]){
 	button7->width = 0.1f;
 	button7->height = -1;
 	button7->fixedSize = true;
+	button7->zLevel = 7;
 	mainNode->attachChild(button7);
 	
 	
@@ -209,6 +215,7 @@ int main(int argc, char* argv[]){
 	button8->width = 0.2f;
 	button8->height = 0.2f;
 	button8->fixedSize = true;
+	button8->zLevel = 8;
 	mainNode->attachChild(button8);
 	
 	

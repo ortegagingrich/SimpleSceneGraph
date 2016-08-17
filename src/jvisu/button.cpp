@@ -176,6 +176,7 @@ void ComponentButtonSimple2D::collectRenderables(
 	
 	textOverlay->fixedSize = fixedSize;
 	textOverlay->centerOffset = centerOffset;
+	textOverlay->zLevel = zLevel;
 	textOverlay->collectRenderables(render_list, viewport, 3.0f);
 	
 	

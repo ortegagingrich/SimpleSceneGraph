@@ -1,3 +1,5 @@
+#include <cstdio>
+
 #include "sdl.h"
 #include "window.h"
 #include "layer.h"
