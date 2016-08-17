@@ -93,6 +93,10 @@ void Component2D::show(){
 	hidden = false;
 }
 
+void Component2D::toggleVisibility(){
+	hidden = !hidden;
+}
+
 void Component2D::detachFromParent(){
 	if(parent != NULL){
 		parent->detachChild(this);

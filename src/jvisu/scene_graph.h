@@ -55,6 +55,7 @@ public:
 	bool isHidden(); // Depends also on the parent
 	void hide();
 	void show();
+	void toggleVisibility();
 	
 	virtual Layer2D *getLayer();
 	Node2D *getParent(){return parent;};
