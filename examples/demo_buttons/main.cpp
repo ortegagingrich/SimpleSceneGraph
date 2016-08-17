@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cmath>
 #include <sstream>
+#include <string>
 
 #ifdef __linux__
 #include <unistd.h>
@@ -13,12 +14,14 @@
 
 
 #ifdef __linux__
-const bool USE_HARDWARE_ACCELERATION = false;
+const bool USE_HARDWARE_ACCELERATION = true;
 #endif
 #ifdef _WIN32
 const bool USE_HARDWARE_ACCELERATION = true;
 #endif
 
+
+std::string TEST_FONT = "assets/font/LiberationSerif-Regular.ttf";
 
 
 /*
@@ -28,7 +31,7 @@ const bool USE_HARDWARE_ACCELERATION = true;
 class FPSCounter : public ComponentSpriteText2D {
 public:
 	FPSCounter(JWindow *win): ComponentSpriteText2D(win){
-		fontPath = "assets/font/LiberationSerif-Regular.ttf";
+		fontPath = TEST_FONT;
 		fontSize = 24;
 		text = "[FPS]";
 		
@@ -48,14 +51,31 @@ public:
 
 
 
-class TestButton : public ComponentButtonSimple2D {
+class TestButton : public ComponentDraggable2D {
 public:
 	std::string label;
 	JWindow *window;
 	
-	TestButton(JWindow *win, std::string txt): window(win), label(txt) {
-		Texture *texture = Texture::createFromFile("assets/test/button.png", win);
-		setTexture(texture);
+	TestButton(JWindow *win, std::string txt):
+		ComponentDraggable2D(win),
+		label(txt),
+		window(win)
+	{
+	
+		Texture *base, *overlay, *pressed;
+		base = Texture::createFromFile("assets/test/button.png", win);
+		overlay = Texture::createSolidColor(256, 256, win, 0xbb, 0x88, 0xbb, 0x55);
+		pressed = Texture::createFromFile("assets/test/button_pressed.png", win);
+		//pressed = Texture::createSolidColor(1, 1, win, 0x00, 0xff, 0x00, 0x00);
+		
+		if(pressed == NULL){
+			printf("Disaster\n");
+			exit(-1);
+		}
+		
+		setTexture(base);
+		setOverlayTexture(overlay);
+		setPressedTexture(pressed);
 	};
 	
 	/*
@@ -118,12 +138,85 @@ int main(int argc, char* argv[]){
 	hud->rootNode->attachChild(new FPSCounter(window));
 	
 	TestButton *button1 = new TestButton(window, "Fixed Button");
+	button1->setFont(TEST_FONT);
+	button1->setText("Fixed");
+	button1->setFontSize(48);
 	hud->rootNode->attachChild(button1);
 	
 	
-	TestButton *button2 = new TestButton(window, "World Button");
+	TestButton *button2 = new TestButton(window, "pixel");
+	button2->setFont(TEST_FONT);
+	button2->setText("p");
+	button2->setFontSize(128);
+	button2->width = -1;
+	button2->height = -1;
+	button2->zLevel = -2;
 	mainNode->attachChild(button2);
 	
+	
+	TestButton *button3 = new TestButton(window, "nh");
+	button3->setFont(TEST_FONT);
+	button3->setText("nh");
+	button3->setFontSize(128);
+	button3->width = -1;
+	button3->height = 0.05f;
+	button3->position.x = 0.2f;
+	button3->zLevel = 2.0f;
+	mainNode->attachChild(button3);
+	
+	
+	TestButton *button4 = new TestButton(window, "nw");
+	button4->setFont(TEST_FONT);
+	button4->setText("nw");
+	button4->setFontSize(128);
+	button4->width = 0.05f;
+	button4->height = -1;
+	button4->position.x = -0.2f;
+	button4->zLevel = 4.0f;
+	mainNode->attachChild(button4);
+	
+	
+	TestButton *button5 = new TestButton(window, "nb");
+	button5->setFont(TEST_FONT);
+	button5->setText("nb");
+	button5->setFontSize(128);
+	button5->width = 0.1f;
+	button5->height = 0.1f;
+	button5->zLevel = 5;
+	mainNode->attachChild(button5);
+	
+	
+	TestButton *button6 = new TestButton(window, "fh");
+	button6->setFont(TEST_FONT);
+	button6->setText("fh");
+	button6->setFontSize(128);
+	button6->width = -1;
+	button6->height = 0.4f;
+	button6->fixedSize = true;
+	button6->zLevel = 6.0f;
+	mainNode->attachChild(button6);
+	
+	
+	TestButton *button7 = new TestButton(window, "fw");
+	button7->setFont(TEST_FONT);
+	button7->setText("fw");
+	button7->setFontSize(128);
+	button7->width = 0.1f;
+	button7->height = -1;
+	button7->fixedSize = true;
+	button7->zLevel = 7;
+	mainNode->attachChild(button7);
+	
+	
+	TestButton *button8 = new TestButton(window, "fb");
+	button8->setFont(TEST_FONT);
+	button8->setText("fb");
+	button8->setFontSize(128);
+	button8->width = 0.2f;
+	button8->height = 0.2f;
+	button8->fixedSize = true;
+	button8->zLevel = 8;
+	mainNode->attachChild(button8);
 	
 	
 	/*
@@ -172,6 +265,22 @@ int main(int argc, char* argv[]){
 			if(window->isKeyPressed(SDLK_e)){
 				mainNode->rotation -= rotSpeed;
 			}
+			
+			
+			// Scaling
+			if(window->isKeyPressed(SDLK_i)){
+				mainNode->scale.scale(1, zoomFactor);
+			}
+			if(window->isKeyPressed(SDLK_j)){
+				mainNode->scale.scale(1.0f/zoomFactor, 1);
+			}
+			if(window->isKeyPressed(SDLK_k)){
+				mainNode->scale.scale(1, 1.0f/zoomFactor);
+			}
+			if(window->isKeyPressed(SDLK_l)){
+				mainNode->scale.scale(zoomFactor, 1);
+			}
+			
 			
 			// Zooming
 			
