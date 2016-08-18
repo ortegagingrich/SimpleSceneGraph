@@ -105,6 +105,60 @@ public:
 };
 
 
+/*
+ * Buttons to increase/decrease the number of lines in a textbox
+ */
+class TextBoxLineButton : public ComponentButtonSimple2D {
+public:
+	ComponentTextBox2D *textbox;
+	
+	static TextBoxLineButton *createPlusButton(JWindow *win){
+		return new TextBoxLineButton(win, true);
+	}
+	
+	static TextBoxLineButton *createMinusButton(JWindow *win){
+		return new TextBoxLineButton(win, false);
+	}
+	
+	
+	virtual void onLeftClick(MouseButtonEvent *event, float tpf){
+		if(textbox != NULL){
+			if(isIncrease){
+				textbox->lineCount++;
+			}else if(textbox->lineCount > 0){
+				textbox->lineCount--;
+			}
+		}
+	}
+	
+
+private:
+	bool isIncrease; // true if this button increases lines; false if it decreases
+	
+	TextBoxLineButton(JWindow *win, bool type):
+		ComponentButtonSimple2D(win),
+		textbox(NULL),
+		isIncrease(type)
+	{
+		Texture *base, *overlay, *pressed;
+		base = Texture::createFromFile("assets/test/button.png", win);
+		overlay = Texture::createSolidColor(256, 256, win, 0xbb, 0x88, 0xbb, 0x55);
+		pressed = Texture::createFromFile("assets/test/button_pressed.png", win);
+		
+		setTexture(base);
+		setOverlayTexture(overlay);
+		setPressedTexture(pressed);
+		
+		setFont(TEST_FONT);
+		setFontSize(48);
+		if(type){
+			setText("+");
+		}else{
+			setText("-");
+		}
+		
+	}
+};
 
 
 
@@ -169,6 +223,21 @@ int main(int argc, char* argv[]){
 	button1->width = 0.8f;
 	button1->target = loremIpsum;
 	hud->rootNode->attachChild(button1);
+	
+	
+	TextBoxLineButton *button2 = TextBoxLineButton::createMinusButton(window);
+	button2->textbox = loremIpsum;
+	button2->height = 0.1f;
+	button2->width = 0.1f;
+	button2->position.set(-0.1f, -0.9f);
+	hud->rootNode->attachChild(button2);
+	
+	TextBoxLineButton *button3 = TextBoxLineButton::createPlusButton(window);
+	button3->textbox = loremIpsum;
+	button3->height = 0.1f;
+	button3->width = 0.1f;
+	button3->position.set(0.0f, -0.9f);
+	hud->rootNode->attachChild(button3);
 	
 	
 	
