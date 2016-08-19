@@ -16,7 +16,6 @@
  */
 
 Component2D::Component2D():
-	parent(NULL),
 	position(0,0),
 	zLevel(0),
 	rotation(0),
@@ -30,7 +29,9 @@ Component2D::Component2D():
 	zLevelAbsolute(0),
 	rotationAbsolute(0),
 	scaleAbsolute(1,1),
-	hidden(false){}
+	parent(NULL),
+	hidden(false)
+{}
 
 Component2D::~Component2D(){
 	detachFromParent();

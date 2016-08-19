@@ -24,6 +24,7 @@ class InputEvent;
 class Node2D;
 
 class SHARED_EXPORT Component2D {
+friend class Node2D;
 friend class ComponentLine2D;
 friend class ComponentSpriteSimple2D;
 friend class ComponentButtonSimple2D;
@@ -31,7 +32,6 @@ friend class ComponentButtonSimple2D;
 	 * Abstract base class of 2D components.
 	 */
 public:
-	Node2D *parent;
 	
 	Vector2f position;
 	float zLevel;
@@ -64,6 +64,8 @@ public:
 	Vector2f computeRelativePosition(Vector2f worldCoordinates);
 	
 protected:
+	
+	
 	Vector2f positionAbsolute;
 	float zLevelAbsolute;
 	float rotationAbsolute;
@@ -72,6 +74,8 @@ protected:
 	void computeAbsolutePosition(Component2D *reference);
 	
 private:
+	Node2D *parent;
+	
 	bool hidden;
 };
 
@@ -145,7 +149,7 @@ private:
 
 
 
-
+//TODO: Deprecated
 class SHARED_EXPORT ComponentImage2D:
 	virtual public Component2D,
 	public TextureOwner
@@ -176,6 +180,7 @@ protected:
 
 
 
+//TODO: Figure out a better way to deal with input callbacks
 class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have input callbacks registered to them

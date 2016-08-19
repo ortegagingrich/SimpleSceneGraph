@@ -470,6 +470,7 @@ void ComponentDraggable2D::update(Layer2D *layer, float tpf){
 		wc = layer->viewport.viewportToWorld(vc);
 		
 		Vector2f rel;
+		Node2D *parent = getParent();
 		if(inheritPosition && parent != NULL){
 			rel = parent->computeRelativePosition(wc);
 		}else{
@@ -489,6 +490,8 @@ void ComponentDraggable2D::preLeftPress(MouseButtonEvent *event, float tpf){
 	if(layer == NULL) return;
 	Vector2f wc, rel;
 	wc = event->getWorldCoordinates(layer);
+	
+	Node2D *parent = getParent();
 	if(inheritPosition && parent != NULL){
 		rel = parent->computeRelativePosition(wc);
 	}else{
