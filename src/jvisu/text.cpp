@@ -307,6 +307,7 @@ void ComponentTextBox2D::refreshTextures(){
 		if(line == NULL) continue;
 		
 		line->text.clear();
+		line->text = " ";
 		line->fontPath = fontPath;
 		line->fontSize = fontSize;
 		line->colorRed = colorRed;
@@ -341,11 +342,13 @@ void ComponentTextBox2D::refreshTextures(){
 		ComponentSpriteText2D *line = *iter;
 		if(line == NULL) continue;
 		
-		line->text.clear();
-		testString.clear();
 		
 		// First token
 		if(token == NULL) break;
+		
+		line->text.clear();
+		testString.clear();
+		
 		testString.append(" ");
 		testString.append(token);
 		
