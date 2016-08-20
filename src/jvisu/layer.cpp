@@ -112,6 +112,11 @@ void Layer2D::processEvent(InputEvent *event, float tpf){
 }
 
 
+Node2D *Layer2D::getRootNode(){
+	return rootNode;
+}
+
+
 /*
  * Source for LayerBackground
  */

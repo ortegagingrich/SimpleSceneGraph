@@ -69,8 +69,6 @@ public:
 	Viewport2D viewport;
 	ButtonManager buttonManager;
 	
-	NodeRoot2D *rootNode;
-	
 	
 	Layer2D(std::string id);
 	~Layer2D();
@@ -78,7 +76,12 @@ public:
 	virtual void update(float tpf);
 	virtual void render(SDL_Renderer *renderer);
 	virtual void processEvent(InputEvent *event, float tpf);
+	
+	Node2D *getRootNode();
+	
 private:
+	NodeRoot2D *rootNode;
+	
 	std::list<Renderable*> renderables;
 };
 

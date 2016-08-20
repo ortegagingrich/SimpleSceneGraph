@@ -126,7 +126,7 @@ private:
 
 
 RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
-	rootNode = layer->rootNode;
+	rootNode = layer->getRootNode();
 	
 	mainNode = new Node2D();
 	rootNode->attachChild(mainNode);
@@ -167,7 +167,7 @@ RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 	window->addLayerTop(hud);
 	
 	fpsCounter = new ComponentSpriteSimple2D();
-	hud->rootNode->attachChild(fpsCounter);
+	hud->getRootNode()->attachChild(fpsCounter);
 	fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
 	
 	

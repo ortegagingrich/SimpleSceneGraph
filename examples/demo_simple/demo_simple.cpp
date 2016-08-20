@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
 	 * Layer2D Test
 	 */
 	Layer2D *layer2d = new Layer2D("2dlayer");
-	Node2D *rootNode = layer2d->rootNode;
+	Node2D *rootNode = layer2d->getRootNode();
 	window->addLayerTop(layer2d);
 	
 	class OnRightClick : public MouseButtonCallback {

@@ -198,7 +198,7 @@ TEST(Input, EventPriority){
 	layer2 = new Layer2D("Layer 2");
 	node = new NodeInput2D();
 	
-	layer2->rootNode->attachChild(node);
+	layer2->getRootNode()->attachChild(node);
 	window->addLayerBottom(layer2);
 	window->addLayerTop(layer1);
 	

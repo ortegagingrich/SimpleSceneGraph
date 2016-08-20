@@ -128,7 +128,7 @@ private:
 
 
 LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
-	rootNode = layer->rootNode;
+	rootNode = layer->getRootNode();
 	
 	mainNode = new Node2D();
 	rootNode->attachChild(mainNode);
@@ -233,7 +233,7 @@ int main(int argc, char* argv[]){
 			window->addLayerTop(hud);
 			
 			fpsCounter = new ComponentSpriteText2D(window);
-			hud->rootNode->attachChild(fpsCounter);
+			hud->getRootNode()->attachChild(fpsCounter);
 			fpsCounter->position = Vector2f(-window->getAspectRatio(), 1.0f);
 		}
 		

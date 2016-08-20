@@ -127,7 +127,7 @@ int main(int argc, char* argv[]){
 	window->addLayerTop(layer2d);
 	
 	Node2D *mainNode = new Node2D();
-	layer2d->rootNode->attachChild(mainNode);
+	layer2d->getRootNode()->attachChild(mainNode);
 	
 	
 	/*
@@ -135,13 +135,13 @@ int main(int argc, char* argv[]){
 	 */
 	Layer2D *hud = new Layer2D("hud");
 	window->addLayerTop(hud);
-	hud->rootNode->attachChild(new FPSCounter(window));
+	hud->getRootNode()->attachChild(new FPSCounter(window));
 	
 	TestButton *button1 = new TestButton(window, "Fixed Button");
 	button1->setFont(TEST_FONT);
 	button1->setText("Fixed");
 	button1->setFontSize(48);
-	hud->rootNode->attachChild(button1);
+	hud->getRootNode()->attachChild(button1);
 	
 	
 	TestButton *button2 = new TestButton(window, "pixel");
