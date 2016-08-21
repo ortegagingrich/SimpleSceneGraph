@@ -47,31 +47,38 @@ public:
 	Component2D();
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
-	virtual void update(Layer2D *layer, float tpf);
 	
+	// Not API
+	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v) = 0;
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf){};
 	
+	
+	// API
 	bool isHidden(); // Depends also on the parent
 	void hide();
 	void show();
 	void toggleVisibility();
 	
+	
+	// Not part of API
 	virtual Layer2D *getLayer();
 	Node2D *getParent();
 	void detachFromParent();
 	
-	// These are necessary
+	// These are necessary, but not part of API
 	virtual void detachChild(Component2D *child){};
 	virtual void deleteAllChildren(){};
 	virtual bool isNode(){ return false; };
+	virtual bool isVirtual(){ return false; };
 	
 	
+	// Not API
 	Vector2f computeRelativePosition(Vector2f worldCoordinates);
 	
 protected:
 	
-	
+	// Not API
 	Vector2f positionAbsolute;
 	float zLevelAbsolute;
 	float rotationAbsolute;
@@ -172,6 +179,8 @@ public:
 
 
 
+
+
 //TODO: Separate Node into "public" node and "private" node
 
 class SHARED_EXPORT Node2D : virtual public Component2D {
@@ -200,6 +209,13 @@ protected:
 private:
 	std::list<Component2D*> children;
 };
+
+
+class SHARED_EXPORT NodeVirtual2D : public Node2D {
+public:
+	virtual bool isVirtual(){ return true; };
+}
+
 
 
 class SHARED_EXPORT NodeRoot2D : virtual public Node2D {

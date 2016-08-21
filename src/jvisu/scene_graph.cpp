@@ -103,6 +103,7 @@ void Component2D::detachFromParent(){
 
 Node2D *Component2D::getParent(){
 	if(parent != NULL){
+		if(parent->isVirtual()) return parent->getParent();
 		if(parent->isNode()) return (Node2D*) parent;
 	}
 	return NULL;
