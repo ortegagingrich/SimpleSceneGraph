@@ -92,7 +92,6 @@ void ComponentSpriteText2D::collectRenderables(
 	 * though a bit differently.
 	 */
 	
-	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
 	RenderableSprite *sprite = NULL;
@@ -194,7 +193,6 @@ void ComponentTextBox2D::collectRenderables(
 	Viewport2D &viewport,
 	float zmod
 ){
-	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
 	// Do nothing if no dimensions are set

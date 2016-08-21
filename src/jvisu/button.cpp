@@ -282,6 +282,9 @@ ComponentButton2D::ComponentButton2D():
 
 void ComponentButton2D::update(Layer2D *layer, float tpf){
 	
+	Component2D::update(layer, tpf);
+	
+	
 	JWindow *window = layer->getWindow();
 	
 	/*

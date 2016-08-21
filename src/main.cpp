@@ -181,7 +181,7 @@ int main(int argc, char* argv[]){
 	window->addLayerTop(layer2d);
 	
 	Node2D *mainNode = new Node2D();
-	layer2d->rootNode->attachChild(mainNode);
+	layer2d->getRootNode()->attachChild(mainNode);
 	
 	
 	ComponentTextBox2D *loremIpsum = new ComponentTextBox2D(window);
@@ -211,8 +211,9 @@ int main(int argc, char* argv[]){
 	 * Fixed Layer
 	 */
 	Layer2D *hud = new Layer2D("hud");
+	Node2D *rootNode = hud->getRootNode();
 	window->addLayerTop(hud);
-	hud->rootNode->attachChild(new FPSCounter(window));
+	rootNode->attachChild(new FPSCounter(window));
 	
 	ToggleButton *button1 = new ToggleButton(window, "Fixed Button");
 	button1->setFont(TEST_FONT);
@@ -222,7 +223,7 @@ int main(int argc, char* argv[]){
 	button1->height = 0.1f;
 	button1->width = 0.8f;
 	button1->target = loremIpsum;
-	hud->rootNode->attachChild(button1);
+	rootNode->attachChild(button1);
 	
 	
 	TextBoxLineButton *button2 = TextBoxLineButton::createMinusButton(window);
@@ -230,14 +231,14 @@ int main(int argc, char* argv[]){
 	button2->height = 0.1f;
 	button2->width = 0.1f;
 	button2->position.set(-0.1f, -0.9f);
-	hud->rootNode->attachChild(button2);
+	rootNode->attachChild(button2);
 	
 	TextBoxLineButton *button3 = TextBoxLineButton::createPlusButton(window);
 	button3->textbox = loremIpsum;
 	button3->height = 0.1f;
 	button3->width = 0.1f;
 	button3->position.set(0.0f, -0.9f);
-	hud->rootNode->attachChild(button3);
+	rootNode->attachChild(button3);
 	
 	
 	

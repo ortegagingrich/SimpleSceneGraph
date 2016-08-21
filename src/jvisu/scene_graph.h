@@ -47,9 +47,9 @@ public:
 	Component2D();
 	virtual ~Component2D(); // Detaches itself from the parent first
 	
-	virtual void update(Layer2D *layer, float tpf){};
+	virtual void update(Layer2D *layer, float tpf);
 	
-	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v) = 0;
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf){};
 	
 	bool isHidden(); // Depends also on the parent
@@ -58,8 +58,14 @@ public:
 	void toggleVisibility();
 	
 	virtual Layer2D *getLayer();
-	Node2D *getParent(){return parent;};
+	Node2D *getParent();
 	void detachFromParent();
+	
+	// These are necessary
+	virtual void detachChild(Component2D *child){};
+	virtual void deleteAllChildren(){};
+	virtual bool isNode(){ return false; };
+	
 	
 	Vector2f computeRelativePosition(Vector2f worldCoordinates);
 	
@@ -149,38 +155,10 @@ private:
 
 
 
-//TODO: Deprecated
-class SHARED_EXPORT ComponentImage2D:
-	virtual public Component2D,
-	public TextureOwner
-{
-public:
-	/*
-	 * Offset of the upper-left corner of the image in pixels from the actual
-	 * pixel position of the component
-	 */ 
-	const int offsetX, offsetY;
-	
-	const int width, height; // Locked to those of the texture
-	
-	ComponentImage2D(Texture *tex);
-	ComponentImage2D(Texture *tex, int offset_x, int offset_y);
-	virtual ~ComponentImage2D();
-	
-	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	
-	Texture *getTexture() const;
-	
-protected:
-	Texture *texture;
-	
-	void setTexture(Texture *tex);
-	virtual void removeTexture(Texture *tex);
-};
-
 
 
 //TODO: Figure out a better way to deal with input callbacks
+//TODO: Better way: just give every component a callback manager and eliminate this
 class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
 	/**
 	 * 2D Components which can have input callbacks registered to them
@@ -190,6 +168,7 @@ public:
 	
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 };
+
 
 
 
@@ -204,14 +183,19 @@ public:
 	virtual ~Node2D(); // Deletes all child components
 	
 	void attachChild(Component2D *child); // Also detaches child from its current parent
-	void detachChild(Component2D *child);
-	void deleteAllChildren();
+	virtual void detachChild(Component2D *child);
+	virtual void deleteAllChildren();
 	std::list<Component2D*> getChildren() {return children;};
+	
+	virtual bool isNode(){ return true; };
+	
 	
 	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
+	
 protected:
+	void updateChildren(Layer2D *layer, float tpf);
 	void collectChildRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 private:
 	std::list<Component2D*> children;

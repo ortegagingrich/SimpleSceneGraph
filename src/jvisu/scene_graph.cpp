@@ -38,14 +38,10 @@ Component2D::~Component2D(){
 }
 
 
-void Component2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
-	/*
-	 * This superclass method is primarily responsible for computing the absolute
-	 * scale/rotation/position variables based on the parent values.
-	 */
-	
+void Component2D::update(Layer2D *layer, float tpf){
 	computeAbsolutePosition(parent);
 }
+
 
 
 void Component2D::computeAbsolutePosition(Component2D *reference){
@@ -105,6 +101,14 @@ void Component2D::detachFromParent(){
 }
 
 
+Node2D *Component2D::getParent(){
+	if(parent != NULL){
+		if(parent->isNode()) return (Node2D*) parent;
+	}
+	return NULL;
+}
+
+
 Layer2D *Component2D::getLayer(){
 	if(parent != NULL){
 		return parent->getLayer();
@@ -150,7 +154,6 @@ ComponentPoint2D::ComponentPoint2D():
 
 
 void ComponentPoint2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
-	Component2D::collectRenderables(render_list, v);
 	if(isHidden()) return;
 	
 	// Get Viewport Coordinates
@@ -200,7 +203,6 @@ ComponentLine2D::ComponentLine2D(float x1, float y1, float x2, float y2):
 
 
 void ComponentLine2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
-	Component2D::collectRenderables(render_list, v);
 	if(isHidden()) return;
 	
 	/*
@@ -284,7 +286,6 @@ void ComponentSpriteSimple2D::collectRenderables(
 	Viewport2D &viewport,
 	float zmod
 ){
-	Component2D::collectRenderables(render_list, viewport);
 	if(isHidden()) return;
 	
 	RenderableSprite *sprite = makeRenderableFromTexture(texture, viewport);
@@ -302,7 +303,7 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 ){
 	
 	/*
-	 * This Method is a complicated mess.  Three different nearly-unrelated
+	 * This method is a complicated mess.  Three different nearly unrelated
 	 * cases are treated with the same code, hence the unreadability.
 	 * TODO: Reorganize this and add liberal comment descriptions of what is being
 	 * done and for what cases.
@@ -401,79 +402,6 @@ void ComponentSpriteSimple2D::removeTexture(Texture *tex){
 
 
 
-/*
- * ComponentImage2D
- */
-
-ComponentImage2D::ComponentImage2D(Texture *tex):
-	offsetX(0),
-	offsetY(0),
-	width(tex->width),
-	height(tex->height),
-	texture(NULL)
-{
-	setTexture(tex);
-}
-
-ComponentImage2D::ComponentImage2D(Texture *tex, int offset_x, int offset_y):
-	offsetX(offset_x),
-	offsetY(offset_y),
-	width(tex->width),
-	height(tex->height),
-	texture(NULL)
-{
-	setTexture(tex);
-}
-
-
-ComponentImage2D::~ComponentImage2D(){
-	if(texture != NULL) texture->removeOwner(this);
-}
-
-
-void ComponentImage2D::collectRenderables(
-	std::list<Renderable*> &render_list,
-	Viewport2D &viewport
-){
-	Component2D::collectRenderables(render_list, viewport);
-	if(isHidden()) return;
-	
-	if(texture == NULL) return;
-	
-	
-	Vector2f vc = viewport.worldToViewport(positionAbsolute);
-	
-	
-	
-	RenderableSpriteFixed *sprite = NULL;
-	sprite = RenderableSpriteFixed::createRenderableSpriteFixed(
-		vc.x,
-		vc.y,
-		offsetX,
-		offsetY,
-		zLevel,
-		texture,
-		viewport.getViewportRect()
-	);
-	
-	if(sprite != NULL){
-		render_list.push_back(sprite);
-	}
-}
-
-
-Texture *ComponentImage2D::getTexture() const {return texture;}
-
-void ComponentImage2D::setTexture(Texture *tex){
-	if(texture != NULL) texture->removeOwner(this);
-	if(tex != NULL) tex->addOwner(this);
-	texture = tex;
-}
-
-void ComponentImage2D::removeTexture(Texture *tex){
-	if(texture == tex) texture = NULL;
-}
-
 
 
 
@@ -499,20 +427,34 @@ Node2D::~Node2D(){
 
 
 void Node2D::update(Layer2D *layer, float tpf){
+	Component2D::update(layer, tpf);
+	
+	updateChildren(layer, tpf);
+}
+
+void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
+	collectChildRenderables(render_list, v);
+}
+
+
+void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	// The node itself does nothing; the event is passed on to children
+	std::list<Component2D*>::iterator iter;
+	for(iter = children.begin(); iter != children.end(); iter++){
+		Component2D *child = *iter;
+		child->processEvent(event, layer, tpf);
+	}
+}
+
+
+
+void Node2D::updateChildren(Layer2D *layer, float tpf){
 	// Update all children
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
 		Component2D *child = *iter;
 		child->update(layer, tpf);
 	}
-}
-
-
-void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v){
-	// First collect renderables for the node itself with the super method
-	Component2D::collectRenderables(render_list, v);
-	
-	collectChildRenderables(render_list, v);
 }
 
 void Node2D::collectChildRenderables(
@@ -527,14 +469,6 @@ void Node2D::collectChildRenderables(
 	}
 }
 
-void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
-	// The node itself does nothing; the event is passed on to children
-	std::list<Component2D*>::iterator iter;
-	for(iter = children.begin(); iter != children.end(); iter++){
-		Component2D *child = *iter;
-		child->processEvent(event, layer, tpf);
-	}
-}
 
 void Node2D::attachChild(Component2D *child){
 	/**
