@@ -10,7 +10,7 @@
  */
 class JWindow;
 class Layer;
-class ComponentInput2D;
+class Component2D;
 class InputEvent;
 class QuitEvent;
 class KeyButtonEvent;
@@ -28,7 +28,7 @@ public:
 	JEventCallback(): boundManager(NULL) {};
 	JEventCallback(JWindow *window);
 	JEventCallback(Layer *layer);
-	JEventCallback(ComponentInput2D *component);
+	JEventCallback(Component2D *component);
 	
 	virtual ~JEventCallback();
 	virtual void callback(InputEvent *event, float tpf) = 0;
@@ -43,7 +43,7 @@ class SHARED_EXPORT KeyButtonCallback : public JEventCallback {
 public:
 	KeyButtonCallback(JWindow *window);
 	KeyButtonCallback(Layer *layer);
-	KeyButtonCallback(ComponentInput2D *component);
+	KeyButtonCallback(Component2D *component);
 	
 	// Dummy Method; should never be called
 	virtual void callback(InputEvent *event, float tpf){};
@@ -57,7 +57,7 @@ class SHARED_EXPORT MouseButtonCallback : public JEventCallback {
 public:
 	MouseButtonCallback(JWindow *window);
 	MouseButtonCallback(Layer *layer);
-	MouseButtonCallback(ComponentInput2D *component);
+	MouseButtonCallback(Component2D *component);
 	
 	// Dummy Method; should never be called
 	virtual void callback(InputEvent *event, float tpf){};
@@ -71,7 +71,7 @@ class SHARED_EXPORT MouseMotionCallback : public JEventCallback {
 public:
 	MouseMotionCallback(JWindow *window);
 	MouseMotionCallback(Layer *layer);
-	MouseMotionCallback(ComponentInput2D *component);
+	MouseMotionCallback(Component2D *component);
 	
 	// Dummy Method; should never be called
 	virtual void callback(InputEvent *event, float tpf){};
@@ -85,7 +85,7 @@ class SHARED_EXPORT QuitEventCallback : public JEventCallback {
 public:
 	QuitEventCallback(JWindow *window);
 	QuitEventCallback(Layer *layer);
-	QuitEventCallback(ComponentInput2D *component);
+	QuitEventCallback(Component2D *component);
 	
 	// Dummy Method; should never be called
 	virtual void callback(InputEvent *event, float tpf){};

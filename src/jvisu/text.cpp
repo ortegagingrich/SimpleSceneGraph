@@ -11,12 +11,11 @@
 #include "scene_graph.h"
 
 
-/*
- * ComponentSpriteText2D
- */
 
-ComponentSpriteText2D::ComponentSpriteText2D(JWindow *win):
-	ComponentSpriteSimple2D(NULL),
+/*
+ * TextObject
+ */
+TextObject::TextObject():
 	text(""),
 	fontPath(""),
 	fontSize(12),
@@ -24,7 +23,6 @@ ComponentSpriteText2D::ComponentSpriteText2D(JWindow *win):
 	colorGreen(0xff),
 	colorBlue(0xff),
 	colorAlpha(0xff),
-	window(win),
 	oldText(""),
 	oldFontPath(""),
 	oldFontSize(12)
@@ -34,6 +32,16 @@ ComponentSpriteText2D::ComponentSpriteText2D(JWindow *win):
 	oldColor.b = 0xff;
 	oldColor.a = 0xff;
 }
+
+
+
+/*
+ * ComponentSpriteText2D
+ */
+
+ComponentSpriteText2D::ComponentSpriteText2D(JWindow *win):
+	window(win)
+{}
 
 
 void ComponentSpriteText2D::collectRenderables(
@@ -106,8 +114,8 @@ void ComponentSpriteText2D::collectRenderables(
 	if(width > 0 && height > 0){
 		Layer2D *layer = getLayer();
 		if(layer == NULL) return;
-		JWindow *window = layer->getWindow();
-		if(window == NULL) return;
+		JWindow *win = layer->getWindow();
+		if(win == NULL) return;
 		
 		
 		float targetRatio = width / height;
@@ -176,9 +184,9 @@ void ComponentSpriteText2D::collectRenderables(
  */
 
 ComponentTextBox2D::ComponentTextBox2D(JWindow *win):
-	ComponentSpriteText2D(win),
 	lineCount(1),
 	spacingRatio(1.0f),
+	window(win),
 	oldLineCount(0),
 	oldSpacingRatio(1.0f),
 	oldWidth(-1.0f),
@@ -186,6 +194,31 @@ ComponentTextBox2D::ComponentTextBox2D(JWindow *win):
 {
 	refreshTextures();
 }
+
+
+ComponentTextBox2D::~ComponentTextBox2D(){
+	while(!lineList.empty()){
+		delete lineList.front();
+		lineList.pop_front();
+	}
+}
+
+
+
+
+void ComponentTextBox2D::update(Layer2D *layer, float tpf){
+	Component2D::update(layer, tpf);
+	
+	// Refresh line textures, if needed
+	refreshTextures();
+	
+	std::list<ComponentSpriteText2D*>::iterator iter;
+	for(iter = lineList.begin(); iter != lineList.end(); iter++){
+		ComponentSpriteText2D *line = *iter;
+		if(line != NULL) line->update(layer, tpf);
+	}
+}
+
 
 
 void ComponentTextBox2D::collectRenderables(
@@ -198,8 +231,6 @@ void ComponentTextBox2D::collectRenderables(
 	// Do nothing if no dimensions are set
 	if(width < 0 || height < 0) return;
 	
-	// Refresh line textures, if needed
-	refreshTextures();
 	
 	// Collect renderables from line compoments
 	std::list<ComponentSpriteText2D*>::iterator iter;
@@ -245,7 +276,7 @@ void ComponentTextBox2D::refreshTextures(){
 		while( (signed int) lineList.size() != lineCount ){
 			if(oldLineCount < lineCount){
 				ComponentSpriteText2D *line = new ComponentSpriteText2D(window);
-				attachChild(line);
+				line->parent = this;
 				lineList.push_back(line);
 			}else if( !lineList.empty() ){
 				ComponentSpriteText2D *line = lineList.back();

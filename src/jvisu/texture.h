@@ -160,7 +160,6 @@ class SHARED_EXPORT TextureOwner {
 friend class Texture;
 public:
 	virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
-protected:
 	virtual void removeTexture(Texture *texture) = 0;
 };
 

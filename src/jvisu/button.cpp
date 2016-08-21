@@ -45,16 +45,65 @@ ComponentButtonSimple2D::ComponentButtonSimple2D(JWindow *win):
 	overlayTexture(NULL),
 	pressedTexture(NULL)
 {
+	mainSprite = new ComponentSpriteSimple2D();
+	mainSprite->parent = this;
+	
 	textOverlay = new ComponentSpriteText2D(win);
 	textOverlay->parent = this;
+	
+	virtualNode = new NodeVirtual2D();
+	virtualNode->parent = this;
 }
 
 ComponentButtonSimple2D::~ComponentButtonSimple2D(){
 	if(overlayTexture != NULL) overlayTexture->removeOwner(this);
 	if(pressedTexture != NULL) pressedTexture->removeOwner(this);
 	
+	if(mainSprite != NULL) delete mainSprite;
 	if(textOverlay != NULL) delete textOverlay;
+	if(virtualNode != NULL) delete virtualNode;
 }
+
+
+
+/*
+ * Node-like methods
+ */
+
+void ComponentButtonSimple2D::attachChild(Component2D *child){
+	virtualNode->attachChild(child);
+}
+
+void ComponentButtonSimple2D::detachChild(Component2D *child){
+	virtualNode->detachChild(child);
+}
+
+void ComponentButtonSimple2D::deleteAllChildren(){
+	virtualNode->deleteAllChildren();
+}
+
+std::list<Component2D*> ComponentButtonSimple2D::getChildren(){
+	return virtualNode->getChildren();
+}
+
+
+
+/*
+ * Sprite methods
+ */
+
+Texture *ComponentButtonSimple2D::getTexture() const {
+	return mainSprite->getTexture();
+}
+
+void ComponentButtonSimple2D::setTexture(Texture *tex){
+	mainSprite->setTexture(tex);
+}
+
+
+/*
+ * Additional Texture Methods
+ */
 
 
 Texture *ComponentButtonSimple2D::getOverlayTexture() const {
@@ -79,10 +128,10 @@ void ComponentButtonSimple2D::setPressedTexture(Texture *tex){
 
 
 void ComponentButtonSimple2D::removeTexture(Texture *tex){
-	// Super method to check the base texture
-	ComponentSpriteSimple2D::removeTexture(tex);
+	// Check the base texture
+	if(mainSprite != NULL) mainSprite->removeTexture(tex);
 	
-	//Check other textures
+	// Check other textures
 	if(overlayTexture != NULL) overlayTexture = NULL;
 	if(pressedTexture != NULL) pressedTexture = NULL;
 }
@@ -118,9 +167,9 @@ void ComponentButtonSimple2D::setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
 void ComponentButtonSimple2D::update(Layer2D *layer, float tpf){
 	ComponentButton2D::update(layer, tpf);
 	
+	if(mainSprite != NULL) mainSprite->update(layer, tpf);
 	if(textOverlay != NULL) textOverlay->update(layer, tpf);
-	
-	NodeInput2D::update(layer, tpf);
+	if(virtualNode != NULL) virtualNode->update(layer, tpf);
 }
 
 
@@ -133,14 +182,22 @@ void ComponentButtonSimple2D::collectRenderables(
 	if(isHidden()) return;
 	
 	
-	ComponentSpriteSimple2D::collectRenderables(render_list, viewport);
+	
+	// Handle the main sprite
+	mainSprite->fixedSize = fixedSize;
+	mainSprite->width = width;
+	mainSprite->height = height;
+	mainSprite->centerOffset = centerOffset;
+	mainSprite->collectRenderables(render_list, viewport);
+	
+	
 	
 	
 	// Other Textures
 	RenderableSprite *overlaySprite, *pressedSprite;
 	
 	if(overlayTexture != NULL && mouseAlreadyOver){
-		overlaySprite = makeRenderableFromTexture(overlayTexture, viewport);
+		overlaySprite = mainSprite->makeRenderableFromTexture(overlayTexture, viewport);
 		
 		if(overlaySprite != NULL){
 			overlaySprite->zMod = 1.0f;
@@ -149,7 +206,7 @@ void ComponentButtonSimple2D::collectRenderables(
 	}
 	
 	if(pressedTexture != NULL && pendingLeftClick){
-		pressedSprite = makeRenderableFromTexture(pressedTexture, viewport);
+		pressedSprite = mainSprite->makeRenderableFromTexture(pressedTexture, viewport);
 		
 		if(pressedSprite != NULL){
 			pressedSprite->zMod = 2.0f;
@@ -176,14 +233,13 @@ void ComponentButtonSimple2D::collectRenderables(
 	
 	textOverlay->fixedSize = fixedSize;
 	textOverlay->centerOffset = centerOffset;
-	textOverlay->zLevel = zLevelAbsolute;
 	textOverlay->collectRenderables(render_list, viewport, 3.0f);
 	
 	
 	/*
 	 * Collect Renderables for Children
 	 */
-	collectChildRenderables(render_list, viewport);
+	virtualNode->collectRenderables(render_list, viewport);
 }
 
 
@@ -192,7 +248,7 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
 	ComponentButton2D::processEvent(event, layer, tpf);
 	
 	// Send the event to children for processing
-	NodeInput2D::processEvent(event, layer, tpf);
+	virtualNode->processEvent(event, layer, tpf);
 }
 
 
@@ -316,6 +372,8 @@ void ComponentButton2D::update(Layer2D *layer, float tpf){
 
 
 void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
+	Component2D::processEvent(e, layer, tpf);
+	
 	if(e == NULL) return;
 	if(e->getType() == "MOUSEBUTTON"){
 		MouseButtonEvent *event = (MouseButtonEvent*) e;
@@ -473,7 +531,7 @@ void ComponentDraggable2D::update(Layer2D *layer, float tpf){
 		wc = layer->viewport.viewportToWorld(vc);
 		
 		Vector2f rel;
-		Node2D *parent = getParent();
+		Component2D *parent = getParent();
 		if(inheritPosition && parent != NULL){
 			rel = parent->computeRelativePosition(wc);
 		}else{
@@ -494,7 +552,7 @@ void ComponentDraggable2D::preLeftPress(MouseButtonEvent *event, float tpf){
 	Vector2f wc, rel;
 	wc = event->getWorldCoordinates(layer);
 	
-	Node2D *parent = getParent();
+	Component2D *parent = getParent();
 	if(inheritPosition && parent != NULL){
 		rel = parent->computeRelativePosition(wc);
 	}else{

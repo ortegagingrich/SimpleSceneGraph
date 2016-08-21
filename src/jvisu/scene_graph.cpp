@@ -101,12 +101,11 @@ void Component2D::detachFromParent(){
 }
 
 
-Node2D *Component2D::getParent(){
+Component2D *Component2D::getParent(){
 	if(parent != NULL){
 		if(parent->isVirtual()) return parent->getParent();
-		if(parent->isNode()) return (Node2D*) parent;
 	}
-	return NULL;
+	return parent;
 }
 
 
@@ -140,6 +139,16 @@ Vector2f Component2D::computeRelativePosition(Vector2f worldCoordinates){
 	
 	return relativeCoordinates;
 }
+
+
+
+void Component2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	// By default, just pass on to the callback manager
+	callbackManager.processEvent(event, tpf);
+}
+
+
+
 
 
 /*
@@ -177,6 +186,8 @@ void ComponentPoint2D::collectRenderables(std::list<Renderable*> &render_list, V
 		render_list.push_back(point);
 	}
 }
+
+
 
 
 /*
@@ -404,19 +415,6 @@ void ComponentSpriteSimple2D::removeTexture(Texture *tex){
 
 
 
-
-
-/*
- * ComponentInput2D
- */
-
-void ComponentInput2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
-	Component2D::processEvent(event, layer, tpf);
-	
-	callbackManager.processEvent(event, tpf);
-}
-
-
 /*
  * Node2D
  */
@@ -439,6 +437,8 @@ void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D 
 
 
 void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
+	Component2D::processEvent(event, layer, tpf);
+	
 	// The node itself does nothing; the event is passed on to children
 	std::list<Component2D*>::iterator iter;
 	for(iter = children.begin(); iter != children.end(); iter++){
@@ -519,13 +519,5 @@ Layer2D *NodeRoot2D::getLayer(){
 }
 
 
-/*
- * NodeInput2D
- */
-
-void NodeInput2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
-	ComponentInput2D::processEvent(event, layer, tpf);
-	Node2D::processEvent(event, layer, tpf);
-}
 
 

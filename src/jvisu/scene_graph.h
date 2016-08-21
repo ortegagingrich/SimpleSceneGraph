@@ -19,15 +19,17 @@ class Viewport2D;
 class Renderable;
 class RenderableSprite;
 class InputEvent;
+class ComponentButtonSimple2D;
 
 
-class Node2D;
 
 class SHARED_EXPORT Component2D {
+friend class JEventCallback;
 friend class Node2D;
 friend class ComponentLine2D;
 friend class ComponentSpriteSimple2D;
 friend class ComponentButtonSimple2D;
+friend class ComponentTextBox2D;
 	/**
 	 * Abstract base class of 2D components.
 	 */
@@ -51,7 +53,7 @@ public:
 	// Not API
 	virtual void update(Layer2D *layer, float tpf);
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v) = 0;
-	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf){};
+	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 	
 	
 	// API
@@ -63,7 +65,7 @@ public:
 	
 	// Not part of API
 	virtual Layer2D *getLayer();
-	Node2D *getParent();
+	Component2D *getParent();
 	void detachFromParent();
 	
 	// These are necessary, but not part of API
@@ -87,14 +89,16 @@ protected:
 	void computeAbsolutePosition(Component2D *reference);
 	
 private:
-	Node2D *parent;
+	Component2D *parent;
+	
+	CallbackManager callbackManager;
 	
 	bool hidden;
 };
 
 
 
-class SHARED_EXPORT ComponentPoint2D : virtual public Component2D {
+class SHARED_EXPORT ComponentPoint2D : public Component2D {
 	/**
 	 * 2D components which are rendered as a single point
 	 * TODO: For now, only fixed radius; Future: world radius
@@ -109,7 +113,7 @@ public:
 
 
 
-class SHARED_EXPORT ComponentLine2D : virtual public Component2D {
+class SHARED_EXPORT ComponentLine2D : public Component2D {
 	/**
 	 * 2D components which are rendered as a single line
 	 * TODO: For now, just a fixed width (pixels); Future: with that changes with zooming
@@ -130,9 +134,10 @@ private:
 
 
 class SHARED_EXPORT ComponentSpriteSimple2D:
-	virtual public Component2D,
+	public Component2D,
 	public TextureOwner
 {
+friend class ComponentButtonSimple2D;
 public:
 	bool fixedSize;
 	
@@ -150,10 +155,11 @@ public:
 	Texture *getTexture() const;
 	void setTexture(Texture *tex);
 	
-protected:
-	RenderableSprite *makeRenderableFromTexture(Texture *tex, Viewport2D &viewport);
 	
 	virtual void removeTexture(Texture *tex);
+	
+protected:
+	RenderableSprite *makeRenderableFromTexture(Texture *tex, Viewport2D &viewport);
 private:
 	Texture *texture;
 	// For internal use
@@ -164,26 +170,11 @@ private:
 
 
 
-//TODO: Figure out a better way to deal with input callbacks
-//TODO: Better way: just give every component a callback manager and eliminate this
-class SHARED_EXPORT ComponentInput2D : virtual public Component2D {
-	/**
-	 * 2D Components which can have input callbacks registered to them
-	 */
-public:
-	CallbackManager callbackManager;
-	
-	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
-};
-
-
-
-
 
 
 //TODO: Separate Node into "public" node and "private" node
 
-class SHARED_EXPORT Node2D : virtual public Component2D {
+class SHARED_EXPORT Node2D : public Component2D {
 	/**
 	 * 2D Components which can have child components attached to them
 	 */
@@ -214,11 +205,11 @@ private:
 class SHARED_EXPORT NodeVirtual2D : public Node2D {
 public:
 	virtual bool isVirtual(){ return true; };
-}
+};
 
 
 
-class SHARED_EXPORT NodeRoot2D : virtual public Node2D {
+class SHARED_EXPORT NodeRoot2D : public Node2D {
 public:
 	NodeRoot2D(Layer2D *l);
 	
@@ -230,13 +221,6 @@ private:
 
 
 
-class SHARED_EXPORT NodeInput2D :
-	virtual public Node2D,
-	virtual public ComponentInput2D {
-
-public:
-	virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
-};
 
 
 #endif

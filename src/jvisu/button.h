@@ -12,6 +12,7 @@
 class Layer2D;
 class Viewport2D;
 class Texture;
+class TextureOwner;
 
 class ComponentButtonSimple2D;
 class ComponentSpriteText2D;
@@ -19,8 +20,8 @@ class ComponentSpriteText2D;
 
 
 class SHARED_EXPORT ComponentButton2D:
-	virtual public Component2D,
-	virtual protected JEventCallback
+	public Component2D,
+	protected JEventCallback
 {
 friend class ButtonManager;
 friend class ComponentButtonSimple2D;
@@ -106,15 +107,35 @@ private:
 
 
 class SHARED_EXPORT ComponentButtonSimple2D:
-	virtual public ComponentButton2D,
-	virtual public ComponentSpriteSimple2D,
-	virtual public NodeInput2D
+	public ComponentButton2D,
+	public TextureOwner
 {
 public:
+	
+	// parallel parameters for mainSprite; same as in ComponentSpriteSimple2D
+	bool fixedSize;
+	float width, height;
+	Vector2f centerOffset;
+	
+	
 	
 	ComponentButtonSimple2D(JWindow *win);
 	~ComponentButtonSimple2D();
 	
+	
+	// Node-like methods
+	void attachChild(Component2D *child);
+	virtual void detachChild(Component2D *child);
+	virtual void deleteAllChildren();
+	std::list<Component2D*> getChildren();
+	
+	
+	// Main Sprite methods
+	Texture *getTexture() const;
+	void setTexture(Texture *tex);
+	
+	
+	// Additional Texture Methods
 	Texture *getOverlayTexture() const;
 	Texture *getPressedTexture() const;
 	void setOverlayTexture(Texture *tex);
@@ -141,7 +162,10 @@ protected:
 
 private:
 	Texture *overlayTexture, *pressedTexture;
+	
+	ComponentSpriteSimple2D *mainSprite;
 	ComponentSpriteText2D *textOverlay;
+	NodeVirtual2D *virtualNode;
 };
 
 

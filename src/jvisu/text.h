@@ -17,26 +17,24 @@ class JWindow;
 
 
 
-class SHARED_EXPORT ComponentSpriteText2D : public ComponentSpriteSimple2D {
-friend class ComponentTextBox2D;
+/*
+ * Superclass of objects which can hold text
+ */
+
+class SHARED_EXPORT TextObject {
 public:
 	
+	// All API
 	std::string text;
 	std::string fontPath;
 	int fontSize;
 	
 	Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
-	
-	ComponentSpriteText2D(JWindow *win);
-	
-	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
-	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zm);
+	TextObject();
 	
 protected:
-	JWindow *window;
-	
-private:
+	// Not API
 	std::string oldText;
 	std::string oldFontPath;
 	int oldFontSize;
@@ -45,12 +43,40 @@ private:
 
 
 
-//TODO: Should not inherit centerOffset (possibly get rid of that, period?)
+
+/*
+ * Class of single-line text sprites
+ */
+
+class SHARED_EXPORT ComponentSpriteText2D: 
+	public ComponentSpriteSimple2D,
+	public TextObject
+{
+friend class ComponentTextBox2D;
+public:
+	
+	ComponentSpriteText2D(JWindow *win);
+	
+	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
+	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zm);
+	
+protected:
+	JWindow *window;
+};
+
+
+
+
 class SHARED_EXPORT ComponentTextBox2D:
-	public ComponentSpriteText2D,
-	public Node2D //TODO: change to private node, once implemented
+	public Component2D,
+	public TextObject
 {
 public:
+	
+	bool fixedSize;
+	float width, height;  // Either world or viewport, depending on fixedSize
+	
+	
 	// Number of lines of text to display
 	int lineCount;
 	
@@ -62,6 +88,11 @@ public:
 	
 	
 	ComponentTextBox2D(JWindow *win);
+	~ComponentTextBox2D();
+	
+	
+	virtual void update(Layer2D *layer, float tpf);
+	
 	
 	// Should not be necessary
 	virtual void collectRenderables(
@@ -76,6 +107,9 @@ public:
 		Viewport2D &viewport,
 		float zmod
 	);
+	
+protected:
+	JWindow *window;
 	
 private:
 	int oldLineCount;
