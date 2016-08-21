@@ -141,6 +141,8 @@ int main(int argc, char* argv[]){
 	button1->setFont(TEST_FONT);
 	button1->setText("Fixed");
 	button1->setFontSize(48);
+	button1->height = 0.2f;
+	button1->width = -1;
 	hud->getRootNode()->attachChild(button1);
 	
 	
