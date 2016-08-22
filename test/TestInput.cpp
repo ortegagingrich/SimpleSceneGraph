@@ -170,7 +170,7 @@ TEST(Input, EventPriority){
 		
 		PriorityCallback(JWindow *win): KeyButtonCallback(win), activated(false){};
 		PriorityCallback(Layer *l): KeyButtonCallback(l), activated(false){};
-		PriorityCallback(ComponentInput2D *c): KeyButtonCallback(c), activated(false){};
+		PriorityCallback(Component2D *c): KeyButtonCallback(c), activated(false){};
 		
 		void reset(){activated = false;};
 		
@@ -192,11 +192,11 @@ TEST(Input, EventPriority){
 	JWindow *window = new JWindow(100, 100, false);
 	
 	Layer2D *layer1, *layer2;
-	NodeInput2D *node;
+	Node2D *node;
 	
 	layer1 = new Layer2D("Layer 1");
 	layer2 = new Layer2D("Layer 2");
-	node = new NodeInput2D();
+	node = new Node2D();
 	
 	layer2->getRootNode()->attachChild(node);
 	window->addLayerBottom(layer2);
