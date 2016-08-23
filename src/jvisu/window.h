@@ -27,7 +27,7 @@ public:
 	
 	TopCallbackManager callbackManager;
 	
-	JWindow(int sx, int sy, bool ha);
+	JWindow(int sx, int sy, bool ha, std::string name = "jvisu");
 	~JWindow();
 	int activate();
 	int dispose();

@@ -20,7 +20,7 @@
  * Constructors
  */
 
-JWindow::JWindow(int sx, int sy, bool ha):
+JWindow::JWindow(int sx, int sy, bool ha, std::string name):
 	hardwareAccelerated(ha),
 	screenWidth(sx),
 	screenHeight(sy),
@@ -31,7 +31,7 @@ JWindow::JWindow(int sx, int sy, bool ha):
 	tickRecord(NULL)
 {
 
-	windowName = "jvisu";
+	windowName = name;
 	activate();
 	
 	// Add a background layer

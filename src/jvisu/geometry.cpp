@@ -90,11 +90,11 @@ Vector2f Rect2f::getCenter() const {
 }
 
 float Rect2f::getHeight() const {
-	return xMax - xMin;
+	return yMax - yMin;
 }
 
 float Rect2f::getWidth() const {
-	return yMax - yMin;
+	return xMax - xMin;
 }
 
 

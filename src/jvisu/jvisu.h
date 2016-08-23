@@ -13,6 +13,8 @@
 #include "button.h"
 #include "callback.h"
 #include "input.h"
+#include "vectormath.h"
+#include "geometry.h"
 
 
 // Hopefully this can be engineered out later

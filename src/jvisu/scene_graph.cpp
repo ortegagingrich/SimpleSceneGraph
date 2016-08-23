@@ -440,8 +440,10 @@ void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 	Component2D::processEvent(event, layer, tpf);
 	
 	// The node itself does nothing; the event is passed on to children
+	std::list<Component2D*> iterlist = children;
+	
 	std::list<Component2D*>::iterator iter;
-	for(iter = children.begin(); iter != children.end(); iter++){
+	for(iter = iterlist.begin(); iter != iterlist.end(); iter++){
 		Component2D *child = *iter;
 		child->processEvent(event, layer, tpf);
 	}
@@ -451,8 +453,10 @@ void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 
 void Node2D::updateChildren(Layer2D *layer, float tpf){
 	// Update all children
+	std::list<Component2D*> iterlist = children;
+	
 	std::list<Component2D*>::iterator iter;
-	for(iter = children.begin(); iter != children.end(); iter++){
+	for(iter = iterlist.begin(); iter != iterlist.end(); iter++){
 		Component2D *child = *iter;
 		child->update(layer, tpf);
 	}
@@ -463,8 +467,10 @@ void Node2D::collectChildRenderables(
 	Viewport2D &viewport
 ){
 	// Collect renderables for all child components
+	std::list<Component2D*> iterlist = children;
+	
 	std::list<Component2D*>::iterator iter;
-	for(iter = children.begin(); iter != children.end(); iter++){
+	for(iter = iterlist.begin(); iter != iterlist.end(); iter++){
 		Component2D *child = *iter;
 		child->collectRenderables(render_list, viewport);
 	}
