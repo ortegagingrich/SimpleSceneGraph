@@ -135,6 +135,13 @@ void JWindow::update(float tpf){
 		return;
 	}
 	
+	// Note: Processing of input should be the final step of the update cycle,
+	//       as this may result in the end of the event.
+	processInput(tpf);
+	
+	if(!active) return;
+	
+	
 	// Update all layers
 	std::list<Layer*>::iterator iter;
 	for(iter = layers.begin(); iter != layers.end(); iter++){
@@ -142,12 +149,9 @@ void JWindow::update(float tpf){
 		layer->update(tpf);
 	}
 	
+	
 	// Draw the Window
 	refresh();
-	
-	// Note: Processing of input should be the final step of the update cycle,
-	//       as this may result in the end of the event.
-	processInput(tpf);
 }
 
 
