@@ -21,7 +21,7 @@ class ComponentSpriteText2D;
 
 class SHARED_EXPORT ComponentButton2D:
 	public Component2D,
-	protected JEventCallback
+	protected EventCallback
 {
 friend class ButtonManager;
 friend class ComponentButtonSimple2D;

@@ -15,7 +15,7 @@
 
 struct TickRecord;
 class CallbackManager;
-class JEventCallback;
+class EventCallback;
 class Vector2f;
 
 /*

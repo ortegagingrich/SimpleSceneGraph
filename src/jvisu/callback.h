@@ -20,17 +20,17 @@ class MouseMotionEvent;
 class CallbackManager;
 
 
-class SHARED_EXPORT JEventCallback {
+class SHARED_EXPORT EventCallback {
 friend class CallbackManager;
 public:
 	
 	
-	JEventCallback(): boundManager(NULL) {};
-	JEventCallback(Window *window);
-	JEventCallback(Layer *layer);
-	JEventCallback(Component2D *component);
+	EventCallback(): boundManager(NULL) {};
+	EventCallback(Window *window);
+	EventCallback(Layer *layer);
+	EventCallback(Component2D *component);
 	
-	virtual ~JEventCallback();
+	virtual ~EventCallback();
 	virtual void callback(InputEvent *event, float tpf) = 0;
 protected:
 	CallbackManager *boundManager;
@@ -39,7 +39,7 @@ protected:
 };
 
 
-class SHARED_EXPORT KeyButtonCallback : public JEventCallback {
+class SHARED_EXPORT KeyButtonCallback : public EventCallback {
 public:
 	KeyButtonCallback(Window *window);
 	KeyButtonCallback(Layer *layer);
@@ -53,7 +53,7 @@ protected:
 };
 
 
-class SHARED_EXPORT MouseButtonCallback : public JEventCallback {
+class SHARED_EXPORT MouseButtonCallback : public EventCallback {
 public:
 	MouseButtonCallback(Window *window);
 	MouseButtonCallback(Layer *layer);
@@ -67,7 +67,7 @@ protected:
 };
 
 
-class SHARED_EXPORT MouseMotionCallback : public JEventCallback {
+class SHARED_EXPORT MouseMotionCallback : public EventCallback {
 public:
 	MouseMotionCallback(Window *window);
 	MouseMotionCallback(Layer *layer);
@@ -81,7 +81,7 @@ protected:
 };
 
 
-class SHARED_EXPORT QuitEventCallback : public JEventCallback {
+class SHARED_EXPORT QuitEventCallback : public EventCallback {
 public:
 	QuitEventCallback(Window *window);
 	QuitEventCallback(Layer *layer);
@@ -104,12 +104,12 @@ public:
 	CallbackManager();
 	~CallbackManager();
 	
-	void registerCallback(JEventCallback *callback);
-	void unregisterCallback(JEventCallback *callback);
+	void registerCallback(EventCallback *callback);
+	void unregisterCallback(EventCallback *callback);
 	virtual void processEvent(InputEvent *event, float tpf);
 private:
 	// Registered Callbacks
-	std::list<JEventCallback*> registered;
+	std::list<EventCallback*> registered;
 };
 
 /*

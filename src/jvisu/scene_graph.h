@@ -24,7 +24,7 @@ class ComponentButtonSimple2D;
 
 
 class SHARED_EXPORT Component2D {
-friend class JEventCallback;
+friend class EventCallback;
 friend class Node2D;
 friend class ComponentLine2D;
 friend class ComponentSpriteSimple2D;
