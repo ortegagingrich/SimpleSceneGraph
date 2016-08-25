@@ -29,11 +29,11 @@ void Layer::processEvent(InputEvent *event, float tpf){
 }
 
 
-JWindow *Layer::getWindow(){
+Window *Layer::getWindow(){
 	return window;
 }
 
-void Layer::setWindow(JWindow *win){
+void Layer::setWindow(Window *win){
 	/**
 	 * Should only be called by the window.
 	 */

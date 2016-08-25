@@ -40,7 +40,7 @@ static std::string load_lorem_ipsum(){
 
 class FPSCounter : public ComponentSpriteText2D {
 public:
-	FPSCounter(JWindow *win): ComponentSpriteText2D(win){
+	FPSCounter(Window *win): ComponentSpriteText2D(win){
 		fontPath = TEST_FONT;
 		fontSize = 24;
 		text = "[FPS]";
@@ -67,11 +67,11 @@ public:
 class ToggleButton : public ComponentButtonSimple2D {
 public:
 	std::string label;
-	JWindow *window;
+	Window *window;
 	Component2D *target; // The compoment whose visibility is to be toggled.
 	
 	
-	ToggleButton(JWindow *win, std::string txt):
+	ToggleButton(Window *win, std::string txt):
 		ComponentButtonSimple2D(win),
 		label(txt),
 		window(win),
@@ -112,11 +112,11 @@ class TextBoxLineButton : public ComponentButtonSimple2D {
 public:
 	ComponentTextBox2D *textbox;
 	
-	static TextBoxLineButton *createPlusButton(JWindow *win){
+	static TextBoxLineButton *createPlusButton(Window *win){
 		return new TextBoxLineButton(win, true);
 	}
 	
-	static TextBoxLineButton *createMinusButton(JWindow *win){
+	static TextBoxLineButton *createMinusButton(Window *win){
 		return new TextBoxLineButton(win, false);
 	}
 	
@@ -135,7 +135,7 @@ public:
 private:
 	bool isIncrease; // true if this button increases lines; false if it decreases
 	
-	TextBoxLineButton(JWindow *win, bool type):
+	TextBoxLineButton(Window *win, bool type):
 		ComponentButtonSimple2D(win),
 		textbox(NULL),
 		isIncrease(type)
@@ -168,8 +168,8 @@ private:
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	//JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	//Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
+	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	
@@ -252,10 +252,10 @@ int main(int argc, char* argv[]){
 		const float panSpeed = 0.025;
 		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
-		JWindow *window;
+		Window *window;
 		Layer2D *layer;
 		Node2D *mainNode;
-		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
+		ViewportController(Window *win, Layer2D *l, Node2D *m):
 			window(win),
 			layer(l),
 			mainNode(m)

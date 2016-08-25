@@ -8,7 +8,7 @@
 /*
  * Source for InputEvent
  */
-InputEvent *InputEvent::createInputEvent(SDL_Event event, JWindow *win){
+InputEvent *InputEvent::createInputEvent(SDL_Event event, Window *win){
 	/**
 	 * Factory method to produce an event of the appropriate sub-type
 	 */
@@ -29,7 +29,7 @@ InputEvent *InputEvent::createInputEvent(SDL_Event event, JWindow *win){
 
 
 
-InputEvent::InputEvent(SDL_Event event, JWindow *win):
+InputEvent::InputEvent(SDL_Event event, Window *win):
 	window(win),
 	sdlEvent(event),
 	consumed(false)
@@ -54,7 +54,7 @@ void InputEventPermanent::consume(){
  * Source for KeyButtonEvent
  */
 
-KeyButtonEvent::KeyButtonEvent(SDL_Event event, JWindow*win):
+KeyButtonEvent::KeyButtonEvent(SDL_Event event, Window*win):
 	ButtonEvent(event, win),
 	key(event.key.keysym.sym)
 {}
@@ -73,7 +73,7 @@ bool KeyButtonEvent::isReleased(){
  * Source for MouseButtonEvent
  */
 
-MouseButtonEvent::MouseButtonEvent(SDL_Event event, JWindow *win):
+MouseButtonEvent::MouseButtonEvent(SDL_Event event, Window *win):
 	ButtonEvent(event, win),
 	screenX(event.button.x),
 	screenY(event.button.y)
@@ -124,7 +124,7 @@ bool MouseButtonEvent::isRightButton(){
  * Source for MouseMotionEvent
  */
 
-MouseMotionEvent::MouseMotionEvent(SDL_Event event, JWindow *win):
+MouseMotionEvent::MouseMotionEvent(SDL_Event event, Window *win):
 	InputEvent(event, win),
 	screenX(event.motion.x),
 	screenY(event.motion.y),
@@ -169,5 +169,5 @@ bool MouseMotionEvent::middleButtonPressed(){
 /*
  * Source for QuitEvent
  */
-QuitEvent::QuitEvent(SDL_Event event, JWindow *win): InputEventPermanent(event, win) {}
+QuitEvent::QuitEvent(SDL_Event event, Window *win): InputEventPermanent(event, win) {}
 

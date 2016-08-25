@@ -9,7 +9,7 @@
  * Source for Input Callbacks (defined in window.h)
  */
 
-JEventCallback::JEventCallback(JWindow *window):
+JEventCallback::JEventCallback(Window *window):
 	boundManager(&(window->callbackManager)) 
 {
 	boundManager->registerCallback(this);
@@ -43,7 +43,7 @@ void JEventCallback::precallback(InputEvent *event, float tpf){
 /*
  * Source for KeyButtonCallback
  */
-KeyButtonCallback::KeyButtonCallback(JWindow *window): JEventCallback(window){}
+KeyButtonCallback::KeyButtonCallback(Window *window): JEventCallback(window){}
 KeyButtonCallback::KeyButtonCallback(Layer *layer): JEventCallback(layer){}
 KeyButtonCallback::KeyButtonCallback(Component2D *component):
 	JEventCallback(component){}
@@ -60,7 +60,7 @@ void KeyButtonCallback::precallback(InputEvent *event, float tpf){
  * Source for MouseButtonCallback
  */
 
-MouseButtonCallback::MouseButtonCallback(JWindow *window): JEventCallback(window){}
+MouseButtonCallback::MouseButtonCallback(Window *window): JEventCallback(window){}
 MouseButtonCallback::MouseButtonCallback(Layer *layer): JEventCallback(layer){}
 MouseButtonCallback::MouseButtonCallback(Component2D *component):
 	JEventCallback(component){}
@@ -77,7 +77,7 @@ void MouseButtonCallback::precallback(InputEvent *event, float tpf){
  * Source for MouseMotionCallback
  */
 
-MouseMotionCallback::MouseMotionCallback(JWindow *window): JEventCallback(window){}
+MouseMotionCallback::MouseMotionCallback(Window *window): JEventCallback(window){}
 MouseMotionCallback::MouseMotionCallback(Layer *layer): JEventCallback(layer){}
 MouseMotionCallback::MouseMotionCallback(Component2D *component):
 	JEventCallback(component){}
@@ -94,7 +94,7 @@ void MouseMotionCallback::precallback(InputEvent *event, float tpf){
  * Source for QuitEventCallback
  */
 
-QuitEventCallback::QuitEventCallback(JWindow *window): JEventCallback(window){}
+QuitEventCallback::QuitEventCallback(Window *window): JEventCallback(window){}
 QuitEventCallback::QuitEventCallback(Layer *layer): JEventCallback(layer){}
 QuitEventCallback::QuitEventCallback(Component2D *component):
 	JEventCallback(component){}

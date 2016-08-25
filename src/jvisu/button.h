@@ -119,7 +119,7 @@ public:
 	
 	
 	
-	ComponentButtonSimple2D(JWindow *win);
+	ComponentButtonSimple2D(Window *win);
 	~ComponentButtonSimple2D();
 	
 	
@@ -176,7 +176,7 @@ class SHARED_EXPORT ComponentDraggable2D:
 {
 public:
 	
-	ComponentDraggable2D(JWindow *win);
+	ComponentDraggable2D(Window *win);
 	
 	virtual void update(Layer2D *layer, float tpf);
 	

@@ -39,7 +39,7 @@ TextObject::TextObject():
  * ComponentSpriteText2D
  */
 
-ComponentSpriteText2D::ComponentSpriteText2D(JWindow *win):
+ComponentSpriteText2D::ComponentSpriteText2D(Window *win):
 	window(win)
 {}
 
@@ -114,7 +114,7 @@ void ComponentSpriteText2D::collectRenderables(
 	if(width > 0 && height > 0){
 		Layer2D *layer = getLayer();
 		if(layer == NULL) return;
-		JWindow *win = layer->getWindow();
+		Window *win = layer->getWindow();
 		if(win == NULL) return;
 		
 		
@@ -183,7 +183,7 @@ void ComponentSpriteText2D::collectRenderables(
  * ComponentTextBox2D
  */
 
-ComponentTextBox2D::ComponentTextBox2D(JWindow *win):
+ComponentTextBox2D::ComponentTextBox2D(Window *win):
 	lineCount(1),
 	spacingRatio(1.0f),
 	window(win),

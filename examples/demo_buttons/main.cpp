@@ -30,7 +30,7 @@ std::string TEST_FONT = "assets/font/LiberationSerif-Regular.ttf";
 
 class FPSCounter : public ComponentSpriteText2D {
 public:
-	FPSCounter(JWindow *win): ComponentSpriteText2D(win){
+	FPSCounter(Window *win): ComponentSpriteText2D(win){
 		fontPath = TEST_FONT;
 		fontSize = 24;
 		text = "[FPS]";
@@ -54,9 +54,9 @@ public:
 class TestButton : public ComponentDraggable2D {
 public:
 	std::string label;
-	JWindow *window;
+	Window *window;
 	
-	TestButton(JWindow *win, std::string txt):
+	TestButton(Window *win, std::string txt):
 		ComponentDraggable2D(win),
 		label(txt),
 		window(win)
@@ -114,8 +114,8 @@ public:
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	//JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	//Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
+	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	
@@ -229,10 +229,10 @@ int main(int argc, char* argv[]){
 		const float panSpeed = 0.025;
 		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
-		JWindow *window;
+		Window *window;
 		Layer2D *layer;
 		Node2D *mainNode;
-		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
+		ViewportController(Window *win, Layer2D *l, Node2D *m):
 			window(win),
 			layer(l),
 			mainNode(m)

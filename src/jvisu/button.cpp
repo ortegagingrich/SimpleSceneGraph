@@ -41,7 +41,7 @@
  * ComponentButtonSimple2D
  */
 
-ComponentButtonSimple2D::ComponentButtonSimple2D(JWindow *win):
+ComponentButtonSimple2D::ComponentButtonSimple2D(Window *win):
 	overlayTexture(NULL),
 	pressedTexture(NULL)
 {
@@ -259,7 +259,7 @@ bool ComponentButtonSimple2D::isInside(float x, float y, Layer2D *layer){
 	 * are inside of the sprite's rectangle
 	 */
 	if(layer == NULL) return false;
-	JWindow *window = layer->getWindow();
+	Window *window = layer->getWindow();
 	if(window == NULL) return false;
 	
 	
@@ -341,7 +341,7 @@ void ComponentButton2D::update(Layer2D *layer, float tpf){
 	Component2D::update(layer, tpf);
 	
 	
-	JWindow *window = layer->getWindow();
+	Window *window = layer->getWindow();
 	
 	/*
 	 * Click Processing
@@ -513,7 +513,7 @@ void ComponentButton2D::preEndMouseOver(MouseMotionEvent *event, float tpf){
  * ComponentDraggable2D
  */
 
-ComponentDraggable2D::ComponentDraggable2D(JWindow *win):
+ComponentDraggable2D::ComponentDraggable2D(Window *win):
 	ComponentButtonSimple2D(win),
 	anchor(0.0f, 0.0f)
 {}
@@ -523,7 +523,7 @@ void ComponentDraggable2D::update(Layer2D *layer, float tpf){
 	// If there is a pending left click, a drag must be in progress
 	if(pendingLeftClick){
 		// Get the current world coordinates of the mouse cursor
-		JWindow *window = layer->getWindow();
+		Window *window = layer->getWindow();
 		int sx = window->getMouseX();
 		int sy = window->getMouseY();
 		Vector2f vc, wc;

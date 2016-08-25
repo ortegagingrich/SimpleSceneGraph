@@ -32,12 +32,12 @@ class RectDrawerClickCallback;
 class RectDrawer {
 friend class RectDrawerClickCallback;
 public:
-	JWindow *window;
+	Window *window;
 	Layer2D *layer, *hud;
 	Node2D *rootNode, *mainNode;
 	ComponentSpriteSimple2D *fpsCounter;
 	
-	RectDrawer(JWindow *win, Layer2D *lay);
+	RectDrawer(Window *win, Layer2D *lay);
 	
 	void update(float tpf);
 private:
@@ -125,7 +125,7 @@ private:
 
 
 
-RectDrawer::RectDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
+RectDrawer::RectDrawer(Window *win, Layer2D *lay): window(win), layer(lay) {
 	rootNode = layer->getRootNode();
 	
 	mainNode = new Node2D();
@@ -208,7 +208,7 @@ void RectDrawer::update(float tpf){
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	/*
@@ -237,10 +237,10 @@ int main(int argc, char* argv[]){
 		const float panSpeed = 0.025;
 		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
-		JWindow *window;
+		Window *window;
 		Layer2D *layer;
 		Node2D *mainNode;
-		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
+		ViewportController(Window *win, Layer2D *l, Node2D *m):
 			window(win),
 			layer(l),
 			mainNode(m)

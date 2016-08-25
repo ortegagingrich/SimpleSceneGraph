@@ -13,7 +13,7 @@
 
 class Renderable;
 class Viewport2D;
-class JWindow;
+class Window;
 
 
 
@@ -55,13 +55,13 @@ class SHARED_EXPORT ComponentSpriteText2D:
 friend class ComponentTextBox2D;
 public:
 	
-	ComponentSpriteText2D(JWindow *win);
+	ComponentSpriteText2D(Window *win);
 	
 	virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zm);
 	
 protected:
-	JWindow *window;
+	Window *window;
 };
 
 
@@ -87,7 +87,7 @@ public:
 	float spacingRatio;
 	
 	
-	ComponentTextBox2D(JWindow *win);
+	ComponentTextBox2D(Window *win);
 	~ComponentTextBox2D();
 	
 	
@@ -109,7 +109,7 @@ public:
 	);
 	
 protected:
-	JWindow *window;
+	Window *window;
 	
 private:
 	int oldLineCount;

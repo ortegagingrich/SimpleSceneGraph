@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
 	printf("\tLeft Click to toggle background image.\n");
 	printf("\tRight Click to print both screen and \"world\" coordinates.\n");
 	
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	/*
@@ -109,14 +109,14 @@ int main(int argc, char* argv[]){
 	 */
 	class OnExit : public QuitEventCallback {
 	public:
-		OnExit(JWindow *win): QuitEventCallback(win), window(win) {};
+		OnExit(Window *win): QuitEventCallback(win), window(win) {};
 		virtual void callback(QuitEvent *event, float tpf){
 			printf("Disposing from new Callback.\n");
 			window->dispose();
 			event->consume();
 		};
 	private:
-		JWindow *window;
+		Window *window;
 	};
 	new OnExit(window);
 	

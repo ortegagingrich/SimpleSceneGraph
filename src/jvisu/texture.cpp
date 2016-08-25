@@ -11,7 +11,7 @@
  * Texture Factory Methods
  */
 
-Texture *Texture::createSolidColor(int w, int h, JWindow *win,
+Texture *Texture::createSolidColor(int w, int h, Window *win,
                                    Uint8 r, Uint8 g, Uint8 b, Uint8 a){
 	if(win == NULL || w < 1 || h < 1) return NULL;
 	
@@ -25,7 +25,7 @@ Texture *Texture::createFromText(
 	std::string text,
 	std::string font,
 	int size,
-	JWindow *win,
+	Window *win,
 	Uint8 r,
 	Uint8 g,
 	Uint8 b,
@@ -62,7 +62,7 @@ Texture *Texture::createFromText(
 }
 
 
-Texture *Texture::createFromFile(std::string path, JWindow *win){
+Texture *Texture::createFromFile(std::string path, Window *win){
 	if(win == NULL) return NULL;
 	
 	// Crude, but necessary: we need to determine the dimensions of the texture.
@@ -93,7 +93,7 @@ Texture *Texture::createFromFile(std::string path, JWindow *win){
  * Texture Solid
  */
 
-TextureSolid::TextureSolid(int w, int h, JWindow *win,
+TextureSolid::TextureSolid(int w, int h, Window *win,
                            Uint8 r, Uint8 g, Uint8 b, Uint8 a):
 	Texture(w, h, win),
 	colorRed(r),
@@ -147,7 +147,7 @@ bool TextureSolid::load(){
 TextureText::TextureText(
 	int w,
 	int h,
-	JWindow *win,
+	Window *win,
 	std::string txt,
 	std::string font,
 	int size,
@@ -218,7 +218,7 @@ bool TextureText::load(){
  * TextureImage
  */
 
-TextureImage::TextureImage(int w, int h, JWindow *win, std::string path):
+TextureImage::TextureImage(int w, int h, Window *win, std::string path):
 	Texture(w, h, win),
 	filePath(path)
 {}
@@ -263,7 +263,7 @@ bool TextureImage::load(){
  * Texture Class Member Functions
  */
 
-Texture::Texture(int w, int h, JWindow *win):
+Texture::Texture(int w, int h, Window *win):
 	window(win),
 	width(w),
 	height(h),

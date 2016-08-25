@@ -21,14 +21,14 @@ class Vector2f;
 /*
  * Main window class
  */
-class SHARED_EXPORT JWindow {
+class SHARED_EXPORT Window {
 public:
 	const bool hardwareAccelerated;
 	
 	TopCallbackManager callbackManager;
 	
-	JWindow(int sx, int sy, bool ha, std::string name = "jvisu");
-	~JWindow();
+	Window(int sx, int sy, bool ha, std::string name = "jvisu");
+	~Window();
 	int activate();
 	int dispose();
 	

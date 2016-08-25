@@ -28,7 +28,7 @@ TEST(Input, MultipleButtonCallbacks){
 	class CallbackLeftMouse : public MouseButtonCallback {
 	public:
 		bool activated;
-		CallbackLeftMouse(JWindow *win): MouseButtonCallback(win), activated(false){};
+		CallbackLeftMouse(Window *win): MouseButtonCallback(win), activated(false){};
 		
 		void reset(){activated = false;};
 		
@@ -45,7 +45,7 @@ TEST(Input, MultipleButtonCallbacks){
 	class CallbackRightMouse : public MouseButtonCallback {
 	public:
 		bool activated;
-		CallbackRightMouse(JWindow *win): MouseButtonCallback(win), activated(false){};
+		CallbackRightMouse(Window *win): MouseButtonCallback(win), activated(false){};
 		
 		void reset(){activated = false;};
 		
@@ -62,7 +62,7 @@ TEST(Input, MultipleButtonCallbacks){
 	class CallbackKey : public KeyButtonCallback {
 	public:
 		bool activated;
-		CallbackKey(JWindow *win): KeyButtonCallback(win), activated(false){};
+		CallbackKey(Window *win): KeyButtonCallback(win), activated(false){};
 		
 		void reset(){activated = false;};
 		
@@ -79,7 +79,7 @@ TEST(Input, MultipleButtonCallbacks){
 	/*
 	 * Make Window
 	 */
-	JWindow *window = new JWindow(100, 100, false);
+	Window *window = new Window(100, 100, false);
 	
 	CallbackLeftMouse *clm = new CallbackLeftMouse(window);
 	CallbackRightMouse *crm = new CallbackRightMouse(window);
@@ -168,7 +168,7 @@ TEST(Input, EventPriority){
 	public:
 		bool activated;
 		
-		PriorityCallback(JWindow *win): KeyButtonCallback(win), activated(false){};
+		PriorityCallback(Window *win): KeyButtonCallback(win), activated(false){};
 		PriorityCallback(Layer *l): KeyButtonCallback(l), activated(false){};
 		PriorityCallback(Component2D *c): KeyButtonCallback(c), activated(false){};
 		
@@ -189,7 +189,7 @@ TEST(Input, EventPriority){
 	 * Setup
 	 */
 	
-	JWindow *window = new JWindow(100, 100, false);
+	Window *window = new Window(100, 100, false);
 	
 	Layer2D *layer1, *layer2;
 	Node2D *node;

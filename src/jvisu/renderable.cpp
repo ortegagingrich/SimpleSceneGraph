@@ -55,7 +55,7 @@ RenderableLine::RenderableLine(float xi1, float yi1, float xi2, float yi2, float
 {}
 
 
-void RenderableLine::render(SDL_Renderer *renderer, JWindow *window){
+void RenderableLine::render(SDL_Renderer *renderer, Window *window){
 	// Compute screen coordinates
 	int px1, py1, px2, py2;
 	window->viewportToScreen(x1, y1, px1, py1);
@@ -110,7 +110,7 @@ RenderablePoint::RenderablePoint(float x, float y, float z, int w,
 {}
 
 
-void RenderablePoint::render(SDL_Renderer *renderer, JWindow *window){
+void RenderablePoint::render(SDL_Renderer *renderer, Window *window){
 	// First, compute the pixel coordinates of the point center
 	int pixelX, pixelY;
 	window->viewportToScreen(xPosition, yPosition, pixelX, pixelY);
@@ -192,7 +192,7 @@ float r, Texture *tex):
 {}
 
 
-void RenderableSprite::render(SDL_Renderer *renderer, JWindow *window){
+void RenderableSprite::render(SDL_Renderer *renderer, Window *window){
 	SDL_Texture *sdlTexture = texture->getSdlTexture();
 	float deg = rotation * RAD_2_DEG;
 	
@@ -263,7 +263,7 @@ RenderableSpriteFixed::RenderableSpriteFixed(
 {}
 
 
-void RenderableSpriteFixed::render(SDL_Renderer *renderer, JWindow *window){
+void RenderableSpriteFixed::render(SDL_Renderer *renderer, Window *window){
 	
 	SDL_Texture *sdlTexture = texture->getSdlTexture();
 	

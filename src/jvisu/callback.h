@@ -8,7 +8,7 @@
 /*
  * Abstract Superclass for event callbacks
  */
-class JWindow;
+class Window;
 class Layer;
 class Component2D;
 class InputEvent;
@@ -26,7 +26,7 @@ public:
 	
 	
 	JEventCallback(): boundManager(NULL) {};
-	JEventCallback(JWindow *window);
+	JEventCallback(Window *window);
 	JEventCallback(Layer *layer);
 	JEventCallback(Component2D *component);
 	
@@ -41,7 +41,7 @@ protected:
 
 class SHARED_EXPORT KeyButtonCallback : public JEventCallback {
 public:
-	KeyButtonCallback(JWindow *window);
+	KeyButtonCallback(Window *window);
 	KeyButtonCallback(Layer *layer);
 	KeyButtonCallback(Component2D *component);
 	
@@ -55,7 +55,7 @@ protected:
 
 class SHARED_EXPORT MouseButtonCallback : public JEventCallback {
 public:
-	MouseButtonCallback(JWindow *window);
+	MouseButtonCallback(Window *window);
 	MouseButtonCallback(Layer *layer);
 	MouseButtonCallback(Component2D *component);
 	
@@ -69,7 +69,7 @@ protected:
 
 class SHARED_EXPORT MouseMotionCallback : public JEventCallback {
 public:
-	MouseMotionCallback(JWindow *window);
+	MouseMotionCallback(Window *window);
 	MouseMotionCallback(Layer *layer);
 	MouseMotionCallback(Component2D *component);
 	
@@ -83,7 +83,7 @@ protected:
 
 class SHARED_EXPORT QuitEventCallback : public JEventCallback {
 public:
-	QuitEventCallback(JWindow *window);
+	QuitEventCallback(Window *window);
 	QuitEventCallback(Layer *layer);
 	QuitEventCallback(Component2D *component);
 	

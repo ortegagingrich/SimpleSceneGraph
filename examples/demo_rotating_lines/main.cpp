@@ -34,11 +34,11 @@ class LineDrawer {
 friend class LineDrawerDragCallback;
 friend class LineDrawerClickCallback;
 public:
-	JWindow *window;
+	Window *window;
 	Layer2D *layer;
 	Node2D *rootNode, *mainNode, *previewNode;
 	
-	LineDrawer(JWindow *win, Layer2D *lay);
+	LineDrawer(Window *win, Layer2D *lay);
 private:
 	
 	ComponentPoint2D *downPoint;
@@ -127,7 +127,7 @@ private:
 
 
 
-LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
+LineDrawer::LineDrawer(Window *win, Layer2D *lay): window(win), layer(lay) {
 	rootNode = layer->getRootNode();
 	
 	mainNode = new Node2D();
@@ -190,7 +190,7 @@ LineDrawer::LineDrawer(JWindow *win, Layer2D *lay): window(win), layer(lay) {
 int main(int argc, char* argv[]){
 	printf("\nEntry Point for jvisu demos.\n");
 	
-	JWindow *window = new JWindow(1280, 720, USE_HARDWARE_ACCELERATION);
+	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	
 	
 	/*
@@ -219,12 +219,12 @@ int main(int argc, char* argv[]){
 		const float panSpeed = 0.025;
 		const float rotSpeed = 0.05;
 		const float zoomFactor = 1.05;
-		JWindow *window;
+		Window *window;
 		Layer2D *layer, *hud;
 		Node2D *mainNode;
 		ComponentSpriteText2D *fpsCounter;
 		
-		ViewportController(JWindow *win, Layer2D *l, Node2D *m):
+		ViewportController(Window *win, Layer2D *l, Node2D *m):
 			window(win),
 			layer(l),
 			mainNode(m)

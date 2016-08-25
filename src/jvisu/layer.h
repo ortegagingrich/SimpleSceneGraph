@@ -14,7 +14,7 @@
 #include "button_manager.h"
 
 
-class JWindow;
+class Window;
 class InputEvent;
 class Node2D;
 class NodeRoot2D;
@@ -34,11 +34,11 @@ public:
 	virtual void render(SDL_Renderer *renderer) = 0;
 	virtual void processEvent(InputEvent *event, float tpf);
 	
-	JWindow *getWindow();
-	void setWindow(JWindow *window);
+	Window *getWindow();
+	void setWindow(Window *window);
 	
 protected:
-	JWindow *window;
+	Window *window;
 };
 
 

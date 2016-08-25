@@ -15,7 +15,7 @@
  * Event-Based Input
  */
 
-class JWindow;
+class Window;
 class Layer2D;
 class Viewport2D;
 
@@ -27,12 +27,12 @@ class Viewport2D;
 class SHARED_EXPORT InputEvent {
 public:
 	// Factory Method
-	static InputEvent *createInputEvent(SDL_Event event, JWindow *win);
+	static InputEvent *createInputEvent(SDL_Event event, Window *win);
 	
 	
 	virtual ~InputEvent(){};
 	
-	const JWindow *window;
+	const Window *window;
 	const SDL_Event sdlEvent;
 	
 	virtual std::string getType(){return "NONE";};
@@ -41,7 +41,7 @@ public:
 	virtual void consume();
 
 protected:
-	InputEvent(SDL_Event event, JWindow *win);
+	InputEvent(SDL_Event event, Window *win);
 private:
 	bool consumed;
 };
@@ -55,7 +55,7 @@ public:
 	virtual bool isConsumed();
 	virtual void consume();
 protected:
-	InputEventPermanent(SDL_Event event, JWindow *win) : InputEvent(event, win){};
+	InputEventPermanent(SDL_Event event, Window *win) : InputEvent(event, win){};
 };
 
 
@@ -68,7 +68,7 @@ public:
 	virtual bool isPressed() = 0;
 	virtual bool isReleased() = 0;
 protected:
-	ButtonEvent(SDL_Event event, JWindow *win): InputEvent(event, win) {};
+	ButtonEvent(SDL_Event event, Window *win): InputEvent(event, win) {};
 };
 
 
@@ -86,7 +86,7 @@ public:
 	virtual bool isPressed();
 	virtual bool isReleased();
 protected:
-	KeyButtonEvent(SDL_Event event, JWindow *win);
+	KeyButtonEvent(SDL_Event event, Window *win);
 };
 
 
@@ -112,7 +112,7 @@ public:
 	bool isRightButton();
 	bool isMiddleButton();
 protected:
-	MouseButtonEvent(SDL_Event event, JWindow *win);
+	MouseButtonEvent(SDL_Event event, Window *win);
 	
 	Vector2f viewportCoordinates;
 };
@@ -134,7 +134,7 @@ public:
 	bool rightButtonPressed();
 	bool middleButtonPressed();
 protected:
-	MouseMotionEvent(SDL_Event event, JWindow *win);
+	MouseMotionEvent(SDL_Event event, Window *win);
 	
 	Vector2f viewportCoordinates;
 };
@@ -150,7 +150,7 @@ friend class InputEvent;
 public:
 	virtual std::string getType(){return "QUIT";};
 protected:
-	QuitEvent(SDL_Event event, JWindow *win);
+	QuitEvent(SDL_Event event, Window *win);
 };
 
 

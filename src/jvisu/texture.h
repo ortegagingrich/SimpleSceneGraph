@@ -32,7 +32,7 @@
 #include "sdl.h"
 
 
-class JWindow;
+class Window;
 class TextureOwner;
 
 
@@ -45,7 +45,7 @@ public:
 	static Texture *createSolidColor(
 		int w,
 		int h,
-		JWindow *win,
+		Window *win,
 		Uint8 r,
 		Uint8 g,
 		Uint8 b,
@@ -55,7 +55,7 @@ public:
 		std::string text,
 		std::string font,
 		int size,
-		JWindow *win,
+		Window *win,
 		Uint8 r,
 		Uint8 g,
 		Uint8 b,
@@ -63,7 +63,7 @@ public:
 	);
 	static Texture *createFromFile(
 		std::string filepath,
-		JWindow *win
+		Window *win
 	);
 	
 	
@@ -71,7 +71,7 @@ public:
 	 * Texture Base Class
 	 */
 	
-	JWindow* const window;
+	Window* const window;
 	const int width, height;
 	
 	virtual ~Texture();
@@ -92,7 +92,7 @@ protected:
 	bool loaded;
 	SDL_Texture *sdlTexture;
 	
-	Texture(int w, int h, JWindow *win);
+	Texture(int w, int h, Window *win);
 
 private:
 	void init();
@@ -110,7 +110,7 @@ public:
 	virtual bool load();
 	
 protected:
-	TextureSolid(int w, int h, JWindow *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	TextureSolid(int w, int h, Window *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
 
 
@@ -129,7 +129,7 @@ protected:
 	TextureText(
 		int w,
 		int h,
-		JWindow *win,
+		Window *win,
 		std::string txt,
 		std::string font,
 		int size,
@@ -150,7 +150,7 @@ public:
 	virtual bool load();
 	
 protected:
-	TextureImage(int w, int h, JWindow *win, std::string path);
+	TextureImage(int w, int h, Window *win, std::string path);
 };
 
 

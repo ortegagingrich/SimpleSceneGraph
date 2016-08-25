@@ -21,7 +21,7 @@
 #include "geometry.h"
 
 
-class JWindow;
+class Window;
 class Texture;
 
 
@@ -37,7 +37,7 @@ public:
 	
 	virtual std::string getType() const {return "Renderable";};
 	
-	virtual void render(SDL_Renderer *renderer, JWindow *window) = 0;
+	virtual void render(SDL_Renderer *renderer, Window *window) = 0;
 
 protected:
 	Renderable(float z): zLevel(z), zMod(0.0f) {};
@@ -69,7 +69,7 @@ public:
 	
 	virtual std::string getType() const {return "RenderableLine";};
 	
-	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	virtual void render(SDL_Renderer *renderer, Window *window);
 	
 protected:
 	RenderableLine(float xi1, float yi1, float xi2, float yi2, float z, int w,
@@ -100,7 +100,7 @@ public:
 	
 	virtual std::string getType() const {return "RenderablePoint";};
 	
-	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	virtual void render(SDL_Renderer *renderer, Window *window);
 	
 protected:
 	RenderablePoint(float x, float y, float z, int w,
@@ -134,7 +134,7 @@ public:
 	
 	virtual std::string getType() const {return "RenderableSprite";};
 	
-	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	virtual void render(SDL_Renderer *renderer, Window *window);
 
 protected:
 	RenderableSprite(float xp, float yp, float w, float h, float z, float r,
@@ -168,7 +168,7 @@ public:
 	
 	virtual std::string getType() const {return "RenderableSpriteFixed";};
 	
-	virtual void render(SDL_Renderer *renderer, JWindow *window);
+	virtual void render(SDL_Renderer *renderer, Window *window);
 	
 protected:
 	RenderableSpriteFixed(float xp, float yp, int xo, int yo, float z, Texture *tex);

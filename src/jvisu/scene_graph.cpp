@@ -325,7 +325,7 @@ RenderableSprite *ComponentSpriteSimple2D::makeRenderableFromTexture(
 	
 	Layer2D *layer = getLayer();
 	if(layer == NULL) return NULL;
-	JWindow *window = layer->getWindow();
+	Window *window = layer->getWindow();
 	if(window == NULL) return NULL;
 	
 	
