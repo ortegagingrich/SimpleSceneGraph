@@ -12,6 +12,10 @@
 #include "jvisu.h"
 
 
+using namespace jvisu;
+
+
+
 #ifdef __linux__
 const bool USE_HARDWARE_ACCELERATION = true;
 #endif
