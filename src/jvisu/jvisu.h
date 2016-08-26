@@ -5,6 +5,10 @@
 #ifndef JVISU_H
 #define JVISU_H
 
+
+namespace jvisu {};
+
+
 #include "window.h"
 #include "layer.h"
 #include "texture.h"

@@ -4,8 +4,13 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
+#include "../src/jvisu/jvisu.h"
+
 #include "../src/jvisu/geometry.h"
 #include "../src/jvisu/vectormath.h"
+
+
+using namespace jvisu;
 
 
 static void printLine(Line2f line){

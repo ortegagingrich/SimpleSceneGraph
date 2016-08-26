@@ -4,7 +4,12 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
+#include "../src/jvisu/jvisu.h"
+
 #include "../src/jvisu/viewport.h"
+
+
+using namespace jvisu;
 
 
 TEST(CoordinateTransform2D, viewportToWorld){

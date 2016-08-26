@@ -13,6 +13,10 @@
 #include "../src/jvisu/sdl.h"
 
 
+using namespace jvisu;
+
+
+
 TEST(Input, MultipleButtonCallbacks){
 	/**
 	 * This test involves two callbacks defined for mouse button events and one

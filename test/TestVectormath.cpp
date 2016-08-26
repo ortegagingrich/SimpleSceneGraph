@@ -3,7 +3,14 @@
  */
 #include <cstdio>
 #include <gtest/gtest.h>
+
+#include "../src/jvisu/jvisu.h"
+
 #include "../src/jvisu/vectormath.h"
+
+
+using namespace jvisu;
+
 
 
 const double TOLERANCE = 1e-6;
