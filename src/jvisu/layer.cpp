@@ -10,6 +10,8 @@
 #include "input.h"
 
 
+using namespace jvisu;
+
 
 /*
  * Source for Abstract Base Layer Class

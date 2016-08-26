@@ -37,6 +37,9 @@
 #include "geometry.h"
 
 
+using namespace jvisu;
+
+
 /*
  * ComponentButtonSimple2D
  */

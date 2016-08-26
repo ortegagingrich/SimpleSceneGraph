@@ -5,6 +5,8 @@
 #include "viewport.h"
 #include "vectormath.h"
 
+using namespace jvisu;
+
 
 /*
  * Source for Viewport2D

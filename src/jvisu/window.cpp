@@ -14,6 +14,8 @@
 #include "input.h"
 #include "vectormath.h"
 
+using namespace jvisu;
+
 
 
 /*

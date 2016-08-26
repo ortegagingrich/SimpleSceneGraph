@@ -5,6 +5,8 @@
 #include "tick.h"
 #include "shared_exports.h"
 
+using namespace jvisu;
+
 
 static TickRecord *MASTER_RECORD = NULL;
 
@@ -31,7 +33,7 @@ static long time_ms(){
 
 
 
-SHARED_EXPORT TickRecord *create_tick_record(int size){
+SHARED_EXPORT TickRecord *jvisu::create_tick_record(int size){
 	TickRecord *record = (TickRecord*) malloc(sizeof(TickRecord));
 	record->tpf_record = (float*) malloc(size * sizeof(float));
 	int i;
@@ -47,7 +49,7 @@ SHARED_EXPORT TickRecord *create_tick_record(int size){
 }
 
 
-SHARED_EXPORT void delete_tick_record(TickRecord *record){
+SHARED_EXPORT void jvisu::delete_tick_record(TickRecord *record){
 	if(record != NULL){
 		free(record->tpf_record);
 		free(record);
@@ -55,7 +57,7 @@ SHARED_EXPORT void delete_tick_record(TickRecord *record){
 }
 
 
-SHARED_EXPORT float compute_tick_record_fps(TickRecord *record){
+SHARED_EXPORT float jvisu::compute_tick_record_fps(TickRecord *record){
 	if(record == NULL){
 		if(MASTER_RECORD == NULL){
 			return 0.0f;
@@ -82,7 +84,7 @@ SHARED_EXPORT float compute_tick_record_fps(TickRecord *record){
 }
 
 
-SHARED_EXPORT float tick(int target_fps, TickRecord *record){
+SHARED_EXPORT float jvisu::tick(int target_fps, TickRecord *record){
 	if(record == NULL){
 		if(MASTER_RECORD == NULL){
 			MASTER_RECORD = create_tick_record(10);

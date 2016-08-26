@@ -3,6 +3,8 @@
 #include "vectormath.h"
 #include "utils.h"
 
+using namespace jvisu;
+
 
 /*
  * Line2f

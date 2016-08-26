@@ -14,76 +14,78 @@
 #include "button_manager.h"
 
 
-class Window;
-class InputEvent;
-class Node2D;
-class NodeRoot2D;
-class Renderable;
+namespace jvisu {
+
+	class Window;
+	class InputEvent;
+	class Node2D;
+	class NodeRoot2D;
+	class Renderable;
 
 
-// Abstract base class for layers
-class SHARED_EXPORT Layer {
-public:
-	const std::string id;
-	CallbackManager callbackManager;
+	// Abstract base class for layers
+	class SHARED_EXPORT Layer {
+	public:
+		const std::string id;
+		CallbackManager callbackManager;
 	
-	Layer(std::string id);
-	virtual ~Layer();
+		Layer(std::string id);
+		virtual ~Layer();
 	
-	virtual void update(float tpf){};
-	virtual void render(SDL_Renderer *renderer) = 0;
-	virtual void processEvent(InputEvent *event, float tpf);
+		virtual void update(float tpf){};
+		virtual void render(SDL_Renderer *renderer) = 0;
+		virtual void processEvent(InputEvent *event, float tpf);
 	
-	Window *getWindow();
-	void setWindow(Window *window);
+		Window *getWindow();
+		void setWindow(Window *window);
 	
-protected:
-	Window *window;
-};
+	protected:
+		Window *window;
+	};
 
 
-class SHARED_EXPORT LayerBackground: public Layer {
-public:
-	LayerBackground(std::string id);
-	LayerBackground(std::string id, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	LayerBackground(std::string id, std::string imagePath);
+	class SHARED_EXPORT LayerBackground: public Layer {
+	public:
+		LayerBackground(std::string id);
+		LayerBackground(std::string id, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		LayerBackground(std::string id, std::string imagePath);
 	
-	virtual ~LayerBackground();
+		virtual ~LayerBackground();
 	
-	virtual void render(SDL_Renderer *renderer);
+		virtual void render(SDL_Renderer *renderer);
 	
-	void clearBackgroundImage();
-	void setBackgroundImage(std::string path, Uint8 alpha);
-	void setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha);
+		void clearBackgroundImage();
+		void setBackgroundImage(std::string path, Uint8 alpha);
+		void setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha);
 	
-private:
-	Uint8 backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha;
-	Uint8 backgroundImageAlpha;
-	SDL_Surface *backgroundImageSurface = NULL;
-};
+	private:
+		Uint8 backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha;
+		Uint8 backgroundImageAlpha;
+		SDL_Surface *backgroundImageSurface = NULL;
+	};
 
 
-// Put Viewport Here!!! (It's a good idea, I promise.)
-class SHARED_EXPORT Layer2D: public Layer {
-public:
-	Viewport2D viewport;
-	ButtonManager buttonManager;
+	// Put Viewport Here!!! (It's a good idea, I promise.)
+	class SHARED_EXPORT Layer2D: public Layer {
+	public:
+		Viewport2D viewport;
+		ButtonManager buttonManager;
 	
 	
-	Layer2D(std::string id);
-	~Layer2D();
+		Layer2D(std::string id);
+		~Layer2D();
 	
-	virtual void update(float tpf);
-	virtual void render(SDL_Renderer *renderer);
-	virtual void processEvent(InputEvent *event, float tpf);
+		virtual void update(float tpf);
+		virtual void render(SDL_Renderer *renderer);
+		virtual void processEvent(InputEvent *event, float tpf);
 	
-	Node2D *getRootNode();
+		Node2D *getRootNode();
 	
-private:
-	NodeRoot2D *rootNode;
+	private:
+		NodeRoot2D *rootNode;
 	
-	std::list<Renderable*> renderables;
-};
-
+		std::list<Renderable*> renderables;
+	};
+}
 
 #endif

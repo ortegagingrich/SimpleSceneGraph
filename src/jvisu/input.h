@@ -11,150 +11,152 @@
 #include "vectormath.h"
 
 
-/*
- * Event-Based Input
- */
 
-class Window;
-class Layer2D;
-class Viewport2D;
-
-
-/*
- * Base Class
- */
-
-class SHARED_EXPORT InputEvent {
-public:
-	// Factory Method
-	static InputEvent *createInputEvent(SDL_Event event, Window *win);
-	
-	
-	virtual ~InputEvent(){};
-	
-	const Window *window;
-	const SDL_Event sdlEvent;
-	
-	virtual std::string getType(){return "NONE";};
-	
-	virtual bool isConsumed();
-	virtual void consume();
-
-protected:
-	InputEvent(SDL_Event event, Window *win);
-private:
-	bool consumed;
-};
-
-
-class SHARED_EXPORT InputEventPermanent : public InputEvent {
-	/**
-	 * Input events which cannot be consumed
+namespace jvisu {
+	/*
+	 * Event-Based Input
 	 */
-public:
-	virtual bool isConsumed();
-	virtual void consume();
-protected:
-	InputEventPermanent(SDL_Event event, Window *win) : InputEvent(event, win){};
-};
+
+	class Window;
+	class Layer2D;
+	class Viewport2D;
 
 
-/*
- * Abstract Button Events
- */
+	/*
+	 * Base Class
+	 */
 
-class SHARED_EXPORT ButtonEvent : public InputEvent {
-public:
-	virtual bool isPressed() = 0;
-	virtual bool isReleased() = 0;
-protected:
-	ButtonEvent(SDL_Event event, Window *win): InputEvent(event, win) {};
-};
-
-
-/*
- * Keyboard Events
- */
-
-class SHARED_EXPORT KeyButtonEvent : public ButtonEvent {
-friend class InputEvent;
-public:
-	const SDL_Keycode key;
+	class SHARED_EXPORT InputEvent {
+	public:
+		// Factory Method
+		static InputEvent *createInputEvent(SDL_Event event, Window *win);
 	
-	virtual std::string getType(){return "KEYBUTTON";};
 	
-	virtual bool isPressed();
-	virtual bool isReleased();
-protected:
-	KeyButtonEvent(SDL_Event event, Window *win);
-};
-
-
-/*
- * Mouse Events
- */
-
-class SHARED_EXPORT MouseButtonEvent : public ButtonEvent {
-friend class InputEvent;
-public:
-	const int screenX, screenY;
+		virtual ~InputEvent(){};
 	
-	virtual std::string getType(){return "MOUSEBUTTON";};
+		const Window *window;
+		const SDL_Event sdlEvent;
 	
-	Vector2f getViewportCoordinates(){return viewportCoordinates;};
-	Vector2f getWorldCoordinates(const Layer2D *layer);
-	Vector2f getWorldCoordinates(const Viewport2D &viewport);
+		virtual std::string getType(){return "NONE";};
 	
-	virtual bool isPressed();
-	virtual bool isReleased();
+		virtual bool isConsumed();
+		virtual void consume();
+
+	protected:
+		InputEvent(SDL_Event event, Window *win);
+	private:
+		bool consumed;
+	};
+
+
+	class SHARED_EXPORT InputEventPermanent : public InputEvent {
+		/**
+		 * Input events which cannot be consumed
+		 */
+	public:
+		virtual bool isConsumed();
+		virtual void consume();
+	protected:
+		InputEventPermanent(SDL_Event event, Window *win) : InputEvent(event, win){};
+	};
+
+
+	/*
+	 * Abstract Button Events
+	 */
+
+	class SHARED_EXPORT ButtonEvent : public InputEvent {
+	public:
+		virtual bool isPressed() = 0;
+		virtual bool isReleased() = 0;
+	protected:
+		ButtonEvent(SDL_Event event, Window *win): InputEvent(event, win) {};
+	};
+
+
+	/*
+	 * Keyboard Events
+	 */
+
+	class SHARED_EXPORT KeyButtonEvent : public ButtonEvent {
+	friend class InputEvent;
+	public:
+		const SDL_Keycode key;
 	
-	bool isLeftButton();
-	bool isRightButton();
-	bool isMiddleButton();
-protected:
-	MouseButtonEvent(SDL_Event event, Window *win);
+		virtual std::string getType(){return "KEYBUTTON";};
 	
-	Vector2f viewportCoordinates;
-};
+		virtual bool isPressed();
+		virtual bool isReleased();
+	protected:
+		KeyButtonEvent(SDL_Event event, Window *win);
+	};
 
 
-class SHARED_EXPORT MouseMotionEvent : public InputEvent {
-friend class InputEvent;
-public:
-	const int screenX, screenY;
-	const int deltaX, deltaY;
+	/*
+	 * Mouse Events
+	 */
+
+	class SHARED_EXPORT MouseButtonEvent : public ButtonEvent {
+	friend class InputEvent;
+	public:
+		const int screenX, screenY;
 	
-	virtual std::string getType(){return "MOUSEMOTION";};
+		virtual std::string getType(){return "MOUSEBUTTON";};
 	
-	Vector2f getViewportCoordinates(){return viewportCoordinates;};
-	Vector2f getWorldCoordinates(const Layer2D *layer);
-	Vector2f getWorldCoordinates(const Viewport2D &viewport);
+		Vector2f getViewportCoordinates(){return viewportCoordinates;};
+		Vector2f getWorldCoordinates(const Layer2D *layer);
+		Vector2f getWorldCoordinates(const Viewport2D &viewport);
 	
-	bool leftButtonPressed();
-	bool rightButtonPressed();
-	bool middleButtonPressed();
-protected:
-	MouseMotionEvent(SDL_Event event, Window *win);
+		virtual bool isPressed();
+		virtual bool isReleased();
 	
-	Vector2f viewportCoordinates;
-};
+		bool isLeftButton();
+		bool isRightButton();
+		bool isMiddleButton();
+	protected:
+		MouseButtonEvent(SDL_Event event, Window *win);
+	
+		Vector2f viewportCoordinates;
+	};
+
+
+	class SHARED_EXPORT MouseMotionEvent : public InputEvent {
+	friend class InputEvent;
+	public:
+		const int screenX, screenY;
+		const int deltaX, deltaY;
+	
+		virtual std::string getType(){return "MOUSEMOTION";};
+	
+		Vector2f getViewportCoordinates(){return viewportCoordinates;};
+		Vector2f getWorldCoordinates(const Layer2D *layer);
+		Vector2f getWorldCoordinates(const Viewport2D &viewport);
+	
+		bool leftButtonPressed();
+		bool rightButtonPressed();
+		bool middleButtonPressed();
+	protected:
+		MouseMotionEvent(SDL_Event event, Window *win);
+	
+		Vector2f viewportCoordinates;
+	};
 
 
 
-/*
- * Quit Event
- */
+	/*
+	 * Quit Event
+	 */
 
-class SHARED_EXPORT QuitEvent : public InputEventPermanent {
-friend class InputEvent;
-public:
-	virtual std::string getType(){return "QUIT";};
-protected:
-	QuitEvent(SDL_Event event, Window *win);
-};
+	class SHARED_EXPORT QuitEvent : public InputEventPermanent {
+	friend class InputEvent;
+	public:
+		virtual std::string getType(){return "QUIT";};
+	protected:
+		QuitEvent(SDL_Event event, Window *win);
+	};
 
 
-
+}
 
 #endif
 

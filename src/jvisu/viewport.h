@@ -11,62 +11,64 @@
 #include "geometry.h"
 
 
-class Layer2D;
+namespace jvisu {
+
+	class Layer2D;
 
 
-class SHARED_EXPORT Viewport2D {
-friend class Layer2D;
-public:
+	class SHARED_EXPORT Viewport2D {
+	friend class Layer2D;
+	public:
 	
-	Viewport2D();
+		Viewport2D();
 	
-	Vector2f getCenter() const;
-	float getRadiusX() const;
-	float getRadiusY() const;
-	float getInverseRadiusX() const;
-	float getInverseRadiusY() const;
-	float getAspectRatio() const;
-	bool isAspectRatioPreserved() const;
-	bool isAspectRatioLocked() const;
-	
-	
-	void setCenter(float x, float y);
-	void setCenter(Vector2f center);
-	void setRadiusX(float rx);
-	void setRadiusY(float ry);
-	void setAspectRatio(float newRatio);
-	
-	void setAspectRatioPreserved(bool preserved);  // Deprecated - should always be preserved
-	void lockAspectRatio();  // Deprecated
-	void unlockAspectRatio(); // Deprecated - should always be locked
+		Vector2f getCenter() const;
+		float getRadiusX() const;
+		float getRadiusY() const;
+		float getInverseRadiusX() const;
+		float getInverseRadiusY() const;
+		float getAspectRatio() const;
+		bool isAspectRatioPreserved() const;
+		bool isAspectRatioLocked() const;
 	
 	
-	bool inViewport(float x, float y) const;
-	bool inViewport(Vector2f point) const;
+		void setCenter(float x, float y);
+		void setCenter(Vector2f center);
+		void setRadiusX(float rx);
+		void setRadiusY(float ry);
+		void setAspectRatio(float newRatio);
 	
-	void worldToViewport(float xin, float yin, float &xout, float &yout) const;
-	void viewportToWorld(float xin, float yin, float &xout, float &yout) const;
-	Vector2f worldToViewport(Vector2f in) const;
-	Vector2f viewportToWorld(Vector2f in) const;
+		void setAspectRatioPreserved(bool preserved);  // Deprecated - should always be preserved
+		void lockAspectRatio();  // Deprecated
+		void unlockAspectRatio(); // Deprecated - should always be locked
 	
-	Rect2f getWorldRect() const;
-	Rect2f getViewportRect() const;
+	
+		bool inViewport(float x, float y) const;
+		bool inViewport(Vector2f point) const;
+	
+		void worldToViewport(float xin, float yin, float &xout, float &yout) const;
+		void viewportToWorld(float xin, float yin, float &xout, float &yout) const;
+		Vector2f worldToViewport(Vector2f in) const;
+		Vector2f viewportToWorld(Vector2f in) const;
+	
+		Rect2f getWorldRect() const;
+		Rect2f getViewportRect() const;
 
-protected:
-	void forceAspectRatio(float newRatio);
-private:
-	float centerX, centerY;
-	float radiusX, radiusY;
-	float inverseRadiusX, inverseRadiusY;
-	float minX, minY, maxX, maxY;
-	bool aspectPreserved;
-	bool aspectLocked;
-	bool scaleY;
+	protected:
+		void forceAspectRatio(float newRatio);
+	private:
+		float centerX, centerY;
+		float radiusX, radiusY;
+		float inverseRadiusX, inverseRadiusY;
+		float minX, minY, maxX, maxY;
+		bool aspectPreserved;
+		bool aspectLocked;
+		bool scaleY;
 	
-	void setRadii(float rx, float ry);
-};
+		void setRadii(float rx, float ry);
+	};
 
-
+}
 
 #endif
 

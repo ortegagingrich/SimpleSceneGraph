@@ -2,6 +2,9 @@
 #include "geometry.h"
 #include "vectormath.h"
 
+using namespace jvisu;
+
+
 /*
  * The Cohen-Sutherland algorithm for line clipping
  */

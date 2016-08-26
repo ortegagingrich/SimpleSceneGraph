@@ -8,8 +8,9 @@
 #include "vectormath.h"
 
 
-bool cohen_sutherland(Line2f &line, Rect2f rect);
-
+namespace jvisu{
+	bool cohen_sutherland(Line2f &line, Rect2f rect);
+}
 
 
 #endif

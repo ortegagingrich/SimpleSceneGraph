@@ -4,6 +4,8 @@
 #include "input.h"
 #include "scene_graph.h"
 
+using namespace jvisu;
+
 
 /*
  * Source for Input Callbacks (defined in window.h)

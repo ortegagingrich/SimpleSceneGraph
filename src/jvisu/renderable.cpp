@@ -10,6 +10,8 @@
 #include "texture.h"
 
 
+using namespace jvisu;
+
 
 /*
  * RenderableLine

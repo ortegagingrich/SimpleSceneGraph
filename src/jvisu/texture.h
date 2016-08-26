@@ -32,164 +32,141 @@
 #include "sdl.h"
 
 
-class Window;
-class TextureOwner;
+namespace jvisu {
+
+	class Window;
+	class TextureOwner;
 
 
 
-class SHARED_EXPORT Texture {
-public:
-	/*
-	 * Factory Methods for Textures
-	 */
-	static Texture *createSolidColor(
-		int w,
-		int h,
-		Window *win,
-		Uint8 r,
-		Uint8 g,
-		Uint8 b,
-		Uint8 a
-	);
-	static Texture *createFromText(
-		std::string text,
-		std::string font,
-		int size,
-		Window *win,
-		Uint8 r,
-		Uint8 g,
-		Uint8 b,
-		Uint8 a
-	);
-	static Texture *createFromFile(
-		std::string filepath,
-		Window *win
-	);
+	class SHARED_EXPORT Texture {
+	public:
+		/*
+		 * Factory Methods for Textures
+		 */
+		static Texture *createSolidColor(
+			int w,
+			int h,
+			Window *win,
+			Uint8 r,
+			Uint8 g,
+			Uint8 b,
+			Uint8 a
+		);
+		static Texture *createFromText(
+			std::string text,
+			std::string font,
+			int size,
+			Window *win,
+			Uint8 r,
+			Uint8 g,
+			Uint8 b,
+			Uint8 a
+		);
+		static Texture *createFromFile(
+			std::string filepath,
+			Window *win
+		);
 	
 	
-	/*
-	 * Texture Base Class
-	 */
+		/*
+		 * Texture Base Class
+		 */
 	
-	Window* const window;
-	const int width, height;
+		Window* const window;
+		const int width, height;
 	
-	virtual ~Texture();
+		virtual ~Texture();
 	
-	virtual bool load() = 0;
-	virtual bool reload();
-	virtual void unload();
-	bool isLoaded() const;
+		virtual bool load() = 0;
+		virtual bool reload();
+		virtual void unload();
+		bool isLoaded() const;
 	
-	void addOwner(TextureOwner *owner);
-	void removeOwner(TextureOwner *owner);
+		void addOwner(TextureOwner *owner);
+		void removeOwner(TextureOwner *owner);
 	
-	float getAspectRatio() const;
+		float getAspectRatio() const;
 	
-	SDL_Texture *getSdlTexture() const; // returns NULL if not loaded
+		SDL_Texture *getSdlTexture() const; // returns NULL if not loaded
 	
-protected:
-	bool loaded;
-	SDL_Texture *sdlTexture;
+	protected:
+		bool loaded;
+		SDL_Texture *sdlTexture;
 	
-	Texture(int w, int h, Window *win);
+		Texture(int w, int h, Window *win);
 
-private:
-	void init();
-	std::list<TextureOwner*> owners;
-};
-
-
+	private:
+		void init();
+		std::list<TextureOwner*> owners;
+	};
 
 
-class SHARED_EXPORT TextureSolid : public Texture {
-friend class Texture;
-public:
-	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+
+
+	class SHARED_EXPORT TextureSolid : public Texture {
+	friend class Texture;
+	public:
+		const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
-	virtual bool load();
+		virtual bool load();
 	
-protected:
-	TextureSolid(int w, int h, Window *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-};
+	protected:
+		TextureSolid(int w, int h, Window *win, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	};
 
 
 
-class SHARED_EXPORT TextureText : public Texture {
-friend class Texture;
-public:
-	const std::string fontName;
-	const int fontSize;
-	const std::string text;
-	const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
+	class SHARED_EXPORT TextureText : public Texture {
+	friend class Texture;
+	public:
+		const std::string fontName;
+		const int fontSize;
+		const std::string text;
+		const Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
-	virtual bool load();
+		virtual bool load();
 
-protected:
-	TextureText(
-		int w,
-		int h,
-		Window *win,
-		std::string txt,
-		std::string font,
-		int size,
-		Uint8 red,
-		Uint8 green,
-		Uint8 blue,
-		Uint8 alpha
-	);
-};
+	protected:
+		TextureText(
+			int w,
+			int h,
+			Window *win,
+			std::string txt,
+			std::string font,
+			int size,
+			Uint8 red,
+			Uint8 green,
+			Uint8 blue,
+			Uint8 alpha
+		);
+	};
 
 
 
-class SHARED_EXPORT TextureImage : public Texture {
-friend class Texture;
-public:
-	const std::string filePath;
+	class SHARED_EXPORT TextureImage : public Texture {
+	friend class Texture;
+	public:
+		const std::string filePath;
 	
-	virtual bool load();
+		virtual bool load();
 	
-protected:
-	TextureImage(int w, int h, Window *win, std::string path);
-};
+	protected:
+		TextureImage(int w, int h, Window *win, std::string path);
+	};
 
 
 
 
-class SHARED_EXPORT TextureOwner {
-friend class Texture;
-public:
-	virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
-	virtual void removeTexture(Texture *texture) = 0;
-};
+	class SHARED_EXPORT TextureOwner {
+	friend class Texture;
+	public:
+		virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
+		virtual void removeTexture(Texture *texture) = 0;
+	};
 
-
+}
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

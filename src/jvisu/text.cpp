@@ -10,6 +10,8 @@
 #include "texture.h"
 #include "scene_graph.h"
 
+using namespace jvisu;
+
 
 
 /*

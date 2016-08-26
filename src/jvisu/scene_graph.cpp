@@ -10,6 +10,8 @@
 #include "viewport.h"
 #include "window.h"
 
+using namespace jvisu;
+
 
 /*
  * Component2D

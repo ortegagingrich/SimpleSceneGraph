@@ -4,6 +4,8 @@
 #include "vectormath.h"
 #include "viewport.h"
 
+using namespace jvisu;
+
 
 /*
  * Source for InputEvent

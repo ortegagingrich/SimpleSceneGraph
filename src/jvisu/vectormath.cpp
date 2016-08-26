@@ -2,6 +2,8 @@
 #include <cmath>
 #include "vectormath.h"
 
+using namespace jvisu;
+
 
 /*
  * Vector2f

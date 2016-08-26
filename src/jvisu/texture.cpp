@@ -6,6 +6,8 @@
 #include "window.h"
 #include "texture.h"
 
+using namespace jvisu;
+
 
 /*
  * Texture Factory Methods

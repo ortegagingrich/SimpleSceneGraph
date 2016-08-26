@@ -7,6 +7,8 @@
 #include "vectormath.h"
 #include "geometry.h"
 
+using namespace jvisu;
+
 
 // To keep track of how many windows are active.  If this drops to 0, SDL shuts down.
 static int WINDOWS_ACTIVE = 0;
@@ -44,7 +46,7 @@ static void quit(){
 
 
 
-int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy){
+int jvisu::create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy){
 	/**
 	 * Attempts to create a new SDL window and place a pointer to it in the
 	 * provided address.
@@ -79,7 +81,7 @@ int create_SDL_window(SDL_Window **win, const char *window_name, int sx, int sy)
 	return 0;
 }
 
-void remove_SDL_window(SDL_Window *window){
+void jvisu::remove_SDL_window(SDL_Window *window){
 	/**
 	 * Destroys the provided SDL window and shuts down SDL if there are no windows left.
 	 */
@@ -93,7 +95,7 @@ void remove_SDL_window(SDL_Window *window){
 }
 
 
-SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
+SDL_Renderer *jvisu::create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
 	/**
 	 * Attempts to create an SDL renderer.
 	 */
@@ -109,7 +111,7 @@ SDL_Renderer *create_SDL_renderer(SDL_Window *window, int hardware_accelerated){
  * SDL Wrapper methods
  */
 
-int render_copy_clip(
+int jvisu::render_copy_clip(
 	SDL_Renderer *renderer,
 	SDL_Texture *texture,
 	const SDL_Rect *srcrect_in,
@@ -243,39 +245,7 @@ int render_copy_clip(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void print_SDL_error(){
+void jvisu::print_SDL_error(){
 	printf("SDL ERROR: %s\n", SDL_GetError());
 }
 
