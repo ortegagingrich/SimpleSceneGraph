@@ -35,7 +35,7 @@ static int computeOutcode(float x, float y, const Rect2f &rect){
 }
 
 
-bool cohen_sutherland(Line2f &line, Rect2f rect){
+bool jvisu::cohen_sutherland(Line2f &line, Rect2f rect){
 	Vector2f p1, p2;
 	p1 = line.startPoint;
 	p2 = line.endPoint;

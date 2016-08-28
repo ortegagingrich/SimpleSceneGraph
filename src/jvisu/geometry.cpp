@@ -117,7 +117,7 @@ bool Rect2f::operator==(Rect2f rect) const {
  * Intersection Methods
  */
 
-bool calculate_intersection(Line2f l1, Line2f l2){
+bool jvisu::calculate_intersection(Line2f l1, Line2f l2){
 	/**
 	 * Checks to see if the two line segments intersect at a SINGLE point.  If
 	 * the line segments are collinear, false is always returned!
@@ -126,7 +126,7 @@ bool calculate_intersection(Line2f l1, Line2f l2){
 	return calculate_intersection(l1, l2, dummy);
 }
 
-bool calculate_intersection(Line2f l1, Line2f l2, Vector2f &out){
+bool jvisu::calculate_intersection(Line2f l1, Line2f l2, Vector2f &out){
 	/**
 	 * Checks to see if the two line segments intersect at a SINGLE point.  If
 	 * the line segments are collinear, false is always returned!  If a single
@@ -162,18 +162,18 @@ bool calculate_intersection(Line2f l1, Line2f l2, Vector2f &out){
 	}
 }
 
-bool calculate_intersection(Rect2f rect, Vector2f point){
+bool jvisu::calculate_intersection(Rect2f rect, Vector2f point){
 	float x = point.x;
 	float y = point.y;
 	return x >= rect.xMin && x <= rect.xMax && y >= rect.yMin && y <= rect.yMax;
 }
 
-bool calculate_intersection(Rect2f rect, Line2f line){
+bool jvisu::calculate_intersection(Rect2f rect, Line2f line){
 	Line2f dummy;
 	return calculate_intersection(rect, line, dummy);
 }
 
-bool calculate_intersection(Rect2f rect, Line2f line, Line2f &out){
+bool jvisu::calculate_intersection(Rect2f rect, Line2f line, Line2f &out){
 	if(cohen_sutherland(line, rect)){
 		out = line;
 		return true;
@@ -181,12 +181,12 @@ bool calculate_intersection(Rect2f rect, Line2f line, Line2f &out){
 	return false;
 }
 
-bool calculate_intersection(Rect2f r1, Rect2f r2){
+bool jvisu::calculate_intersection(Rect2f r1, Rect2f r2){
 	Rect2f dummy;
 	return calculate_intersection(r1, r2, dummy);
 }
 
-bool calculate_intersection(Rect2f r1, Rect2f r2, Rect2f &out){
+bool jvisu::calculate_intersection(Rect2f r1, Rect2f r2, Rect2f &out){
 	float newMinX, newMinY, newMaxX, newMaxY;
 	newMinX = r1.xMin > r2.xMin ? r1.xMin : r2.xMin;
 	newMaxX = r1.xMax < r2.xMax ? r1.xMax : r2.xMax;

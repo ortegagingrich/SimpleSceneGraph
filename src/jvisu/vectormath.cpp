@@ -154,7 +154,7 @@ Vector2f Vector2f::operator/(float scalar) const {
 	return w;
 }
 
-Vector2f operator*(float scalar, Vector2f v){
+Vector2f jvisu::operator*(float scalar, Vector2f v){
 	return v * scalar;
 }
 
