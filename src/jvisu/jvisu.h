@@ -9,6 +9,11 @@
 namespace jvisu {};
 
 
+#define internal private
+#define INCLUDE
+
+
+
 #include "window.h"
 #include "layer.h"
 #include "texture.h"
@@ -23,5 +28,11 @@ namespace jvisu {};
 
 // Hopefully this can be engineered out later
 #include "sdl.h"
+
+
+
+#undef internal
+#undef INCLUDE
+
 
 #endif
