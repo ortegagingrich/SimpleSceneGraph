@@ -87,7 +87,8 @@ namespace jvisu {
 		void removeOwner(TextureOwner *owner);
 	
 		float getAspectRatio() const;
-	
+		
+	internal:
 		SDL_Texture *getSdlTexture() const; // returns NULL if not loaded
 	
 	protected:

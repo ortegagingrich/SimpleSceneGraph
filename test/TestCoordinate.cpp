@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu.h"
+#include "../src/jvisu/jvisu_test.h"
 
 #include "../src/jvisu/viewport.h"
 

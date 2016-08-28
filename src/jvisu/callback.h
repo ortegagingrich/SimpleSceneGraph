@@ -109,6 +109,8 @@ namespace jvisu {
 	
 		void registerCallback(EventCallback *callback);
 		void unregisterCallback(EventCallback *callback);
+		
+	internal:
 		virtual void processEvent(InputEvent *event, float tpf);
 	private:
 		// Registered Callbacks
@@ -122,7 +124,7 @@ namespace jvisu {
 	 */
 	class SHARED_EXPORT TopCallbackManager: public CallbackManager {
 	friend class MouseButtonEvent;
-	public:
+	internal:
 		virtual void processEvent(InputEvent *event, float tpf);
 	private:
 		// Variables used to log input events

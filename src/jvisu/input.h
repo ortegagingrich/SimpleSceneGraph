@@ -33,10 +33,13 @@ namespace jvisu {
 	
 	
 		virtual ~InputEvent(){};
-	
+		
+	internal:
 		const Window *window;
 		const SDL_Event sdlEvent;
-	
+		
+	public:
+		
 		virtual std::string getType(){return "NONE";};
 	
 		virtual bool isConsumed();

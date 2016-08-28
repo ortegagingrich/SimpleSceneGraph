@@ -8,7 +8,8 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu.h"
+#include "../src/jvisu/jvisu_test.h"
+
 #include "../src/jvisu/window.h"
 #include "../src/jvisu/sdl.h"
 

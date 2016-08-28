@@ -31,6 +31,9 @@ namespace jvisu {
 	
 		Window(int sx, int sy, bool ha, std::string name = "jvisu");
 		~Window();
+		
+		
+		bool isActive() const;
 		int activate();
 		int dispose();
 	
@@ -39,20 +42,15 @@ namespace jvisu {
 		float tick(int target_fps);
 		float getFPS() const; // Only works if tick is being used.
 	
-	
-		bool isActive() const;
+		
 		int getScreenWidth() const;
 		int getScreenHeight() const;
 		float getAspectRatio() const;
-	
+		
+		
 		// Coordinate Transformations
 		void viewportToScreen(float xin, float yin, int &xout, int &yout) const;
 		void screenToViewport(int xin, int yin, float &xout, float &yout) const;
-	
-	
-		SDL_PixelFormat *getFormat() const;
-		SDL_Renderer *getRenderer();
-		SDL_Surface *createNewSurface();
 	
 	
 		void addLayerTop(Layer *layer);
@@ -69,8 +67,12 @@ namespace jvisu {
 		bool isMiddleMouseButtonPressed();
 		int getMouseX();
 		int getMouseY();
-	
-		// Mainly public for testing purposes:
+		
+	internal:
+		SDL_PixelFormat *getFormat() const;
+		SDL_Renderer *getRenderer();
+		SDL_Surface *createNewSurface();
+		
 		void processEvent(InputEvent *event, float tpf);
 		void processEvent(SDL_Event event, float tpf);
 	

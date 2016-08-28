@@ -31,10 +31,15 @@ namespace jvisu {
 	
 		Layer(std::string id);
 		virtual ~Layer();
+		
+	
+	internal:
 	
 		virtual void update(float tpf){};
 		virtual void render(SDL_Renderer *renderer) = 0;
 		virtual void processEvent(InputEvent *event, float tpf);
+	
+	public:
 	
 		Window *getWindow();
 		void setWindow(Window *window);
@@ -51,9 +56,11 @@ namespace jvisu {
 		LayerBackground(std::string id, std::string imagePath);
 	
 		virtual ~LayerBackground();
-	
+		
+	internal:
 		virtual void render(SDL_Renderer *renderer);
-	
+		
+	public:
 		void clearBackgroundImage();
 		void setBackgroundImage(std::string path, Uint8 alpha);
 		void setBackgroundColor(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha);
@@ -74,11 +81,13 @@ namespace jvisu {
 	
 		Layer2D(std::string id);
 		~Layer2D();
-	
+		
+	internal:
 		virtual void update(float tpf);
 		virtual void render(SDL_Renderer *renderer);
 		virtual void processEvent(InputEvent *event, float tpf);
-	
+		
+	public:
 		Node2D *getRootNode();
 	
 	private:

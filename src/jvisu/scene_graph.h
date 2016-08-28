@@ -52,32 +52,34 @@ namespace jvisu {
 		virtual ~Component2D(); // Detaches itself from the parent first
 	
 	
-		// Not API
+	internal:
 		virtual void update(Layer2D *layer, float tpf);
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v) = 0;
 		virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
 	
 	
-		// API
+	public:
 		bool isHidden(); // Depends also on the parent
 		void hide();
 		void show();
 		void toggleVisibility();
 	
 	
-		// Not part of API
+	internal:
 		virtual Layer2D *getLayer();
 		Component2D *getParent();
 		int detachFromParent();
 	
-		// These are necessary, but not part of API
+	public:
 		virtual int detachChild(Component2D *child){return 0;};
 		virtual int deleteAllChildren(){return 0;};
+		
+	internal:
 		virtual bool isNode(){ return false; };
 		virtual bool isVirtual(){ return false; };
-	
-	
-		// Not API
+		
+		
+	public:
 		Vector2f computeRelativePosition(Vector2f worldCoordinates);
 	
 	protected:
@@ -112,7 +114,8 @@ namespace jvisu {
 		Uint8 colorRed, colorGreen, colorBlue, colorAlpha;
 	
 		ComponentPoint2D();
-	
+		
+	internal:
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	};
 
@@ -129,7 +132,8 @@ namespace jvisu {
 	
 		ComponentLine2D();
 		ComponentLine2D(float x1, float y1, float x2, float y2);
-	
+		
+	internal:
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 	private:
 		// For internal use only; these are not really components
@@ -154,9 +158,11 @@ namespace jvisu {
 		ComponentSpriteSimple2D(Texture *tex);
 		virtual ~ComponentSpriteSimple2D();
 	
+	internal:
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 		virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zmod);
 	
+	public:
 		Texture *getTexture() const;
 		void setTexture(Texture *tex);
 	
@@ -191,7 +197,8 @@ namespace jvisu {
 		virtual int detachChild(Component2D *child);
 		virtual int deleteAllChildren();
 		std::list<Component2D*> getChildren() {return children;};
-	
+		
+	internal:
 		virtual bool isNode(){ return true; };
 	
 	
@@ -208,16 +215,16 @@ namespace jvisu {
 
 
 	class SHARED_EXPORT NodeVirtual2D : public Node2D {
-	public:
+	internal:
 		virtual bool isVirtual(){ return true; };
 	};
 
 
 
 	class SHARED_EXPORT NodeRoot2D : public Node2D {
-	public:
+	internal:
 		NodeRoot2D(Layer2D *l);
-	
+		
 		virtual Layer2D *getLayer();
 	
 	private:

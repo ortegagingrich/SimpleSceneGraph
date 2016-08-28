@@ -25,7 +25,7 @@ namespace jvisu {
 
 	class SHARED_EXPORT ComponentButton2D:
 		public Component2D,
-		protected EventCallback
+		internal EventCallback
 	{
 	friend class ButtonManager;
 	friend class ComponentButtonSimple2D;
@@ -33,14 +33,16 @@ namespace jvisu {
 	public:
 	
 		ComponentButton2D();
-	
+		
+		
 		// Necessary to keep track of past input events for click, double click, etc.
+	internal:
 		virtual void update(Layer2D *layer, float tpf);
-	
 		virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
-	
+		
 		virtual void callback(InputEvent *event, float tpf){};
-	
+		
+	public:
 		virtual bool isPressed() const;
 	
 		// Abstract Callback Methods
@@ -156,7 +158,7 @@ namespace jvisu {
 		void setTextColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	
 	
-	
+	internal:
 		virtual void update(Layer2D *layer, float tpf);
 		virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v);
 		virtual void processEvent(InputEvent *event, Layer2D *layer, float tpf);
@@ -182,10 +184,11 @@ namespace jvisu {
 	
 		ComponentDraggable2D(Window *win);
 	
-		virtual void update(Layer2D *layer, float tpf);
-	
 		virtual void onDragStart(float tpf){};
 		virtual void onDragEnd(float tpf){};
+		
+	internal:
+		virtual void update(Layer2D *layer, float tpf);
 	
 	protected:
 		virtual void preLeftPress(MouseButtonEvent *event, float tpf);

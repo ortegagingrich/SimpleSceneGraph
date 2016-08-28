@@ -9,8 +9,7 @@
 namespace jvisu {};
 
 
-#define internal private
-#define INCLUDE
+#define internal public
 
 
 #include "vectormath.h"
@@ -35,7 +34,6 @@ namespace jvisu {};
 
 
 #undef internal
-#undef INCLUDE
 
 
 #endif

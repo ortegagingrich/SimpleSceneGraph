@@ -59,7 +59,8 @@ namespace jvisu {
 	public:
 	
 		ComponentSpriteText2D(Window *win);
-	
+		
+	internal:
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v);
 		virtual void collectRenderables(std::list<Renderable*> &r, Viewport2D &v, float zm);
 	
@@ -94,9 +95,9 @@ namespace jvisu {
 		~ComponentTextBox2D();
 	
 	
+	internal:
 		virtual void update(Layer2D *layer, float tpf);
-	
-	
+		
 		// Should not be necessary
 		virtual void collectRenderables(
 			std::list<Renderable*> &render_list,
@@ -104,7 +105,7 @@ namespace jvisu {
 		){
 			collectRenderables(render_list, viewport, 0.0f);
 		}
-	
+		
 		virtual void collectRenderables(
 			std::list<Renderable*> &render_list,
 			Viewport2D &viewport,
