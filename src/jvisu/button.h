@@ -3,6 +3,8 @@
 
 #include <list>
 
+#include "shared_exports.h"
+
 #include "callback.h"
 #include "scene_graph.h"
 #include "button_manager.h"

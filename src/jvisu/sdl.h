@@ -15,6 +15,8 @@
 #include <SDL_ttf.h>
 #endif
 
+#include "shared_exports.h"
+
 
 
 namespace jvisu {

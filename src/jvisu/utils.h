@@ -4,6 +4,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "shared_exports.h"
+
 #include "geometry.h"
 #include "vectormath.h"
 

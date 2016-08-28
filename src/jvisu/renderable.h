@@ -17,6 +17,9 @@
 
 #include <string>
 #include <list>
+
+#include "shared_exports.h"
+
 #include "sdl.h"
 #include "geometry.h"
 
