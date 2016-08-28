@@ -31,6 +31,7 @@ Component2D::Component2D():
 	zLevelAbsolute(0),
 	rotationAbsolute(0),
 	scaleAbsolute(1,1),
+	locked(false),
 	parent(NULL),
 	hidden(false)
 {}
@@ -96,11 +97,14 @@ void Component2D::toggleVisibility(){
 	hidden = !hidden;
 }
 
-void Component2D::detachFromParent(){
-	if(parent != NULL){
-		parent->detachChild(this);
+int Component2D::detachFromParent(){
+	if(parent != NULL && !locked){
+		return parent->detachChild(this);
+	}else{
+		return -1;
 	}
 }
+
 
 
 Component2D *Component2D::getParent(){
@@ -146,7 +150,9 @@ Vector2f Component2D::computeRelativePosition(Vector2f worldCoordinates){
 
 void Component2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 	// By default, just pass on to the callback manager
+	locked = true;
 	callbackManager.processEvent(event, tpf);
+	locked = false;
 }
 
 
@@ -441,6 +447,8 @@ void Node2D::collectRenderables(std::list<Renderable*> &render_list, Viewport2D 
 void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 	Component2D::processEvent(event, layer, tpf);
 	
+	locked = true;
+	
 	// The node itself does nothing; the event is passed on to children
 	std::list<Component2D*> iterlist = children;
 	
@@ -449,6 +457,8 @@ void Node2D::processEvent(InputEvent *event, Layer2D *layer, float tpf){
 		Component2D *child = *iter;
 		child->processEvent(event, layer, tpf);
 	}
+	
+	locked = false;
 }
 
 
@@ -479,40 +489,52 @@ void Node2D::collectChildRenderables(
 }
 
 
-void Node2D::attachChild(Component2D *child){
+int Node2D::attachChild(Component2D *child){
 	/**
 	 * Provided that it is not null, the provided component is attached to this
 	 * node as a child.  If that component is already attached to a node, it is
 	 * first detached.
 	 */
-	if(child == NULL) return;
+	if(locked) return -1;
+	
+	if(child == NULL) return -1;
 	
 	if(child->parent != NULL){
-		child->detachFromParent();
+		if(child->detachFromParent() < 0) return -1;
 	}
 	
 	child->parent = this;
 	children.push_back(child);
+	
+	return 0;
 }
 
-void Node2D::detachChild(Component2D *child){
+int Node2D::detachChild(Component2D *child){
 	/**
 	 * Detaches the provided component, provided that it is one this node's
 	 * children
 	 */
-	if(child->parent != this) return;
+	if(locked) return -1;
+	
+	if(child->parent != this) return -1;
 	
 	children.remove(child);
 	child->parent = NULL;
+	
+	return 0;
 }
 
-void Node2D::deleteAllChildren(){
+int Node2D::deleteAllChildren(){
 	/**
 	 * Not only detaches, but also deletes all child components.
 	 */
+	if(locked) return -1;
+	
 	while(!children.empty()){
 		delete children.front();
 	}
+	
+	return 0;
 }
 
 

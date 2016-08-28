@@ -126,9 +126,9 @@ namespace jvisu {
 	
 	
 		// Node-like methods
-		void attachChild(Component2D *child);
-		virtual void detachChild(Component2D *child);
-		virtual void deleteAllChildren();
+		int attachChild(Component2D *child);
+		virtual int detachChild(Component2D *child);
+		virtual int deleteAllChildren();
 		std::list<Component2D*> getChildren();
 	
 	

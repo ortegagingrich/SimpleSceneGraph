@@ -73,16 +73,16 @@ ComponentButtonSimple2D::~ComponentButtonSimple2D(){
  * Node-like methods
  */
 
-void ComponentButtonSimple2D::attachChild(Component2D *child){
-	virtualNode->attachChild(child);
+int ComponentButtonSimple2D::attachChild(Component2D *child){
+	return virtualNode->attachChild(child);
 }
 
-void ComponentButtonSimple2D::detachChild(Component2D *child){
-	virtualNode->detachChild(child);
+int ComponentButtonSimple2D::detachChild(Component2D *child){
+	return virtualNode->detachChild(child);
 }
 
-void ComponentButtonSimple2D::deleteAllChildren(){
-	virtualNode->deleteAllChildren();
+int ComponentButtonSimple2D::deleteAllChildren(){
+	return virtualNode->deleteAllChildren();
 }
 
 std::list<Component2D*> ComponentButtonSimple2D::getChildren(){
@@ -250,8 +250,10 @@ void ComponentButtonSimple2D::processEvent(InputEvent *event, Layer2D *layer, fl
 	// Process the event for the button
 	ComponentButton2D::processEvent(event, layer, tpf);
 	
+	locked = true;
 	// Send the event to children for processing
 	virtualNode->processEvent(event, layer, tpf);
+	locked = false;
 }
 
 
@@ -377,6 +379,8 @@ void ComponentButton2D::update(Layer2D *layer, float tpf){
 void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 	Component2D::processEvent(e, layer, tpf);
 	
+	locked = true;
+	
 	if(e == NULL) return;
 	if(e->getType() == "MOUSEBUTTON"){
 		MouseButtonEvent *event = (MouseButtonEvent*) e;
@@ -395,6 +399,7 @@ void ComponentButton2D::processEvent(InputEvent *e, Layer2D *layer, float tpf){
 		}
 	}
 	
+	locked = false;
 }
 
 

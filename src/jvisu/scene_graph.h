@@ -47,7 +47,7 @@ namespace jvisu {
 		bool inheritRotation;
 		bool inheritScale;
 		bool inheritHidden;
-	
+		
 		Component2D();
 		virtual ~Component2D(); // Detaches itself from the parent first
 	
@@ -68,11 +68,11 @@ namespace jvisu {
 		// Not part of API
 		virtual Layer2D *getLayer();
 		Component2D *getParent();
-		void detachFromParent();
+		int detachFromParent();
 	
 		// These are necessary, but not part of API
-		virtual void detachChild(Component2D *child){};
-		virtual void deleteAllChildren(){};
+		virtual int detachChild(Component2D *child){return 0;};
+		virtual int deleteAllChildren(){return 0;};
 		virtual bool isNode(){ return false; };
 		virtual bool isVirtual(){ return false; };
 	
@@ -87,7 +87,10 @@ namespace jvisu {
 		float zLevelAbsolute;
 		float rotationAbsolute;
 		Vector2f scaleAbsolute;
-	
+		
+		bool locked;
+		
+		
 		void computeAbsolutePosition(Component2D *reference);
 	
 	private:
@@ -184,9 +187,9 @@ namespace jvisu {
 		Node2D();
 		virtual ~Node2D(); // Deletes all child components
 	
-		void attachChild(Component2D *child); // Also detaches child from its current parent
-		virtual void detachChild(Component2D *child);
-		virtual void deleteAllChildren();
+		int attachChild(Component2D *child); // Also detaches child from its current parent
+		virtual int detachChild(Component2D *child);
+		virtual int deleteAllChildren();
 		std::list<Component2D*> getChildren() {return children;};
 	
 		virtual bool isNode(){ return true; };
