@@ -50,8 +50,10 @@ namespace jvisu {
 		
 		Component2D();
 		virtual ~Component2D(); // Detaches itself from the parent first
-	
-	
+		
+		// To be overriden by the user as a callback of sorts.
+		virtual void onUpdate(Layer2D *layer, float tpf){};
+		
 	internal:
 		virtual void update(Layer2D *layer, float tpf);
 		virtual void collectRenderables(std::list<Renderable*> &render_list, Viewport2D &v) = 0;

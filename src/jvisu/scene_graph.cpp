@@ -21,16 +21,16 @@ Component2D::Component2D():
 	position(0,0),
 	zLevel(0),
 	rotation(0),
-	scale(1,1),
+	scale(1, 1),
 	inheritPosition(true),
 	inheritZLevel(true),
 	inheritRotation(true),
 	inheritScale(true),
 	inheritHidden(true),
-	positionAbsolute(0,0),
+	positionAbsolute(0, 0),
 	zLevelAbsolute(0),
 	rotationAbsolute(0),
-	scaleAbsolute(1,1),
+	scaleAbsolute(1, 1),
 	locked(false),
 	parent(NULL),
 	hidden(false)
@@ -42,6 +42,8 @@ Component2D::~Component2D(){
 
 
 void Component2D::update(Layer2D *layer, float tpf){
+	onUpdate(layer, tpf);
+	
 	computeAbsolutePosition(parent);
 }
 
