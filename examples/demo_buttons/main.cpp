@@ -43,7 +43,7 @@ public:
 		height = 0.1f;
 	}
 	
-	virtual void update(Layer2D *layer, float tpf){
+	virtual void onUpdate(Layer2D *layer, float tpf){
 		ComponentSpriteText2D::update(layer, tpf);
 		
 		// Make new FPS string

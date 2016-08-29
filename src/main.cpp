@@ -52,8 +52,7 @@ public:
 		height = 0.1f;
 	}
 	
-	virtual void update(Layer2D *layer, float tpf){
-		ComponentSpriteText2D::update(layer, tpf);
+	virtual void onUpdate(Layer2D *layer, float tpf){
 		
 		// Make new FPS string
 		std::stringstream stream;
