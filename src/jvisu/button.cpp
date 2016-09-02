@@ -135,8 +135,8 @@ void ComponentButtonSimple2D::removeTexture(Texture *tex){
 	if(mainSprite != NULL) mainSprite->removeTexture(tex);
 	
 	// Check other textures
-	if(overlayTexture != NULL) overlayTexture = NULL;
-	if(pressedTexture != NULL) pressedTexture = NULL;
+	if(overlayTexture == tex) overlayTexture = NULL;
+	if(pressedTexture == tex) pressedTexture = NULL;
 }
 
 
