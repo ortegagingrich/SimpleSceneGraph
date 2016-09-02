@@ -329,3 +329,27 @@ float Texture::getAspectRatio() const {
 SDL_Texture *Texture::getSdlTexture() const {return sdlTexture;}
 
 
+
+/*
+ * TextureCache
+ */
+
+TextureCache::~TextureCache(){
+	while(!ownedTextures.empty()){
+		Texture *texture = ownedTextures.front();
+		if(texture != NULL) texture->removeOwner(this);
+		ownedTextures.pop_front();
+	}
+}
+
+
+void TextureCache::addTexture(Texture *texture){
+	if(texture != NULL) ownedTextures.push_back(texture);
+}
+
+
+void TextureCache::removeTexture(Texture *texture){
+	ownedTextures.remove(texture);
+}
+
+

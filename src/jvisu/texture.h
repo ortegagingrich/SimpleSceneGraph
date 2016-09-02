@@ -165,6 +165,23 @@ namespace jvisu {
 		virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
 		virtual void removeTexture(Texture *texture) = 0;
 	};
+	
+	
+	
+	/*
+	 * A special type of TextureOwner that just maintains a list of textures
+	 */
+	
+	class SHARED_EXPORT TextureCache : TextureOwner {
+	public:
+		virtual ~TextureCache();
+		
+		virtual void removeTexture(Texture *texture);
+		void addTexture(Texture *texture);
+	
+	private:
+		std::list<Texture*> ownedTextures;
+	};
 
 }
 
