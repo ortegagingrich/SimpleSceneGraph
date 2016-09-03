@@ -69,7 +69,75 @@ TEST(Texture, RecordTextureControl){
 	free(record);
 	
 	delete window;
-	
 }
+
+
+TEST(Texture, SingleOwner){
+	/**
+	 * Attaches three textures to a single texture owner, detaches one then
+	 * deletes the owner.
+	 */
+	
+	Window *window = new Window(100, 100, false);
+	
+	
+	int texture_count = 3;
+	
+	bool *record = (bool*) malloc(3 * sizeof(bool));
+	RecordTexture **textures = (RecordTexture**) malloc(3 * sizeof(RecordTexture*));
+	for(int i = 0; i < 3; i++){
+		textures[i] = new RecordTexture(window, record + i);
+	}
+	
+	
+	// Verify that bools are filled in correctly
+	for(int i = 0; i < texture_count; i++){
+		EXPECT_EQ(true, record[i]);
+	}
+	
+	
+	TextureCache *owner = new TextureCache();
+	for(int i = 0; i < texture_count; i++){
+		owner->addTexture(textures[i]);
+		EXPECT_EQ(true, record[i]);
+	}
+	
+	EXPECT_EQ(owner->textureCount(), texture_count);
+	
+	
+	// Delete one texture
+	delete textures[0];
+	for(int i = 1; i < texture_count; i++){
+		EXPECT_EQ(true, record[i]);
+	}
+	EXPECT_EQ(false, record[0]);
+	EXPECT_EQ(owner->textureCount(), texture_count - 1);
+	
+	
+	// Remove one owner with no others
+	owner->removeTexture(textures[1]);
+	
+	for(int i = 2; i < texture_count; i++){
+		EXPECT_EQ(true, record[i]);
+	}
+	EXPECT_EQ(false, record[0]);
+	EXPECT_EQ(false, record[1]);
+	EXPECT_EQ(owner->textureCount(), texture_count - 2);
+	
+	
+	// Delete the owner; all textures should be freed
+	delete owner;
+	for(int i = 0; i < texture_count; i++){
+		EXPECT_EQ(false, record[i]);
+	}
+	
+	
+	
+	free(textures);
+	free(record);
+	
+	delete window;
+}
+
 
 
