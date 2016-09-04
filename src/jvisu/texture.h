@@ -172,12 +172,14 @@ namespace jvisu {
 	 * A special type of TextureOwner that just maintains a list of textures
 	 */
 	
-	class SHARED_EXPORT TextureCache : TextureOwner {
+	class SHARED_EXPORT TextureCache : public TextureOwner {
 	public:
 		virtual ~TextureCache();
 		
 		virtual void removeTexture(Texture *texture);
 		void addTexture(Texture *texture);
+		
+		int textureCount();
 	
 	private:
 		std::list<Texture*> ownedTextures;

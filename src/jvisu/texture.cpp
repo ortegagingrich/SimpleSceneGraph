@@ -344,12 +344,20 @@ TextureCache::~TextureCache(){
 
 
 void TextureCache::addTexture(Texture *texture){
-	if(texture != NULL) ownedTextures.push_back(texture);
+	if(texture != NULL){
+		texture->addOwner(this);
+		ownedTextures.push_back(texture);
+	}
 }
 
 
 void TextureCache::removeTexture(Texture *texture){
 	ownedTextures.remove(texture);
+}
+
+
+int TextureCache::textureCount(){
+	return ownedTextures.size();
 }
 
 
