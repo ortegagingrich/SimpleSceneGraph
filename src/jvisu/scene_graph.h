@@ -168,11 +168,11 @@ namespace jvisu {
 		Texture *getTexture() const;
 		void setTexture(Texture *tex);
 	
-	
-		virtual void removeTexture(Texture *tex);
-	
 	protected:
+		virtual void removeTexture(Texture *tex);
+		
 		RenderableSprite *makeRenderableFromTexture(Texture *tex, Viewport2D &viewport);
+		
 	private:
 		Texture *texture;
 		// For internal use

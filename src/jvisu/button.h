@@ -146,10 +146,12 @@ namespace jvisu {
 		Texture *getPressedTexture() const;
 		void setOverlayTexture(Texture *tex);
 		void setPressedTexture(Texture *tex);
-	
+		
+	protected:
 		virtual void removeTexture(Texture *tex);
 	
-	
+	public:
+		
 		// Text Overlay Methods
 		void setText(std::string text);
 		void clearText();
