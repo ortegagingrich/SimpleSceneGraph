@@ -75,12 +75,14 @@ public:
 		}
 	};
 	
+protected:
 	virtual void removeTexture(Texture *tex){
 		if(tex == landTexture){
 			landTexture = NULL;
 		}
 	}
 	
+public:
 	virtual void callback(MouseButtonEvent *event, float tpf){
 		bool fixed, useLand;
 		if(event->isLeftButton()){
