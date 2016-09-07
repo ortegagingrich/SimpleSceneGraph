@@ -27,6 +27,7 @@
 
 #include <string>
 #include <list>
+#include <unordered_map>
 
 #include "shared_exports.h"
 #include "sdl.h"
@@ -100,6 +101,7 @@ namespace jvisu {
 	private:
 		void init();
 		std::list<TextureOwner*> owners;
+		std::unordered_map<TextureOwner*, int> ownerTable;
 	};
 
 

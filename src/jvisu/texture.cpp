@@ -275,12 +275,13 @@ Texture::Texture(int w, int h, Window *win):
 
 Texture::~Texture(){
 	
-	// Detach the texture from all of its parents
-	while(!owners.empty()){
-		TextureOwner *owner = owners.front();
-		owner->removeTexture(this);
-		owners.pop_front();
+	for(const auto &result : ownerTable){
+		TextureOwner *owner = (TextureOwner*) result.first;
+		if(owner != NULL){
+			owner->removeTexture(this);
+		}
 	}
+	
 	
 	unload();
 }
@@ -302,22 +303,26 @@ bool Texture::reload(){
 
 
 void Texture::addOwner(TextureOwner *owner){
-	if(owner != NULL) owners.push_front(owner);
+	if(owner != NULL){
+		if(ownerTable.find(owner) != ownerTable.end()){
+			ownerTable[owner]++;
+		}else{
+			ownerTable[owner] = 1;
+		}
+	}
 }
 
 
 void Texture::removeOwner(TextureOwner *owner){
-	/*
-	 * Removes only the first match from the owner's list.  If the list has repeats,
-	 * it is only because the owner uses the texture in more than one way and this
-	 * method must be called once for each "use."
-	 */
-	std::list<TextureOwner*>::iterator iter = std::find(owners.begin(), owners.end(), owner);
-	if(iter != owners.end()){
-		owners.erase(iter);
+	
+	
+	if(ownerTable.find(owner) != ownerTable.end()){
+		ownerTable[owner]--;
+		if(ownerTable[owner] < 1) ownerTable.erase(owner);
 	}
 	
-	if(owners.empty()) delete this;
+	
+	if(ownerTable.empty()) delete this;
 }
 
 
