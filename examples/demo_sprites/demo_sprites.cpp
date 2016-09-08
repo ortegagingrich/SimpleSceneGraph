@@ -76,7 +76,7 @@ public:
 	};
 	
 protected:
-	virtual void removeTexture(Texture *tex){
+	virtual void removeTextureReference(Texture *tex){
 		if(tex == landTexture){
 			landTexture = NULL;
 		}
