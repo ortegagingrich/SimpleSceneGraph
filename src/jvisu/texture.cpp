@@ -278,7 +278,7 @@ Texture::~Texture(){
 	for(const auto &result : ownerTable){
 		TextureOwner *owner = (TextureOwner*) result.first;
 		if(owner != NULL){
-			owner->removeTexture(this);
+			owner->removeTextureReference(this);
 		}
 	}
 	
@@ -356,7 +356,7 @@ void TextureCache::addTexture(Texture *texture){
 }
 
 
-void TextureCache::removeTexture(Texture *texture){
+void TextureCache::removeTextureReference(Texture *texture){
 	ownedTextures.remove(texture);
 }
 

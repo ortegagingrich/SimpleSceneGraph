@@ -169,7 +169,7 @@ namespace jvisu {
 		void setTexture(Texture *tex);
 	
 	protected:
-		virtual void removeTexture(Texture *tex);
+		virtual void removeTextureReference(Texture *tex);
 		
 		RenderableSprite *makeRenderableFromTexture(Texture *tex, Viewport2D &viewport);
 		

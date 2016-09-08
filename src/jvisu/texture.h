@@ -167,7 +167,7 @@ namespace jvisu {
 		virtual ~TextureOwner(){}; // Must have destructor which deletes all textures
 		
 		// Meant to be called directly by the texture
-		virtual void removeTexture(Texture *texture) = 0;
+		virtual void removeTextureReference(Texture *texture) = 0;
 	};
 	
 	
@@ -177,16 +177,16 @@ namespace jvisu {
 	 */
 	
 	class SHARED_EXPORT TextureCache : public TextureOwner {
-	protected:
-		virtual ~TextureCache();
-		
-		virtual void removeTexture(Texture *texture);
-		
 	public:
+		virtual ~TextureCache();
 		void addTexture(Texture *texture);
 		
 		int textureCount();
 	
+	protected:
+		
+		virtual void removeTextureReference(Texture *texture);
+		
 	private:
 		std::list<Texture*> ownedTextures;
 	};

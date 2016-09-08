@@ -148,7 +148,7 @@ namespace jvisu {
 		void setPressedTexture(Texture *tex);
 		
 	protected:
-		virtual void removeTexture(Texture *tex);
+		virtual void removeTextureReference(Texture *tex);
 	
 	public:
 		

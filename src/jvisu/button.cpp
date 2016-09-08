@@ -130,9 +130,9 @@ void ComponentButtonSimple2D::setPressedTexture(Texture *tex){
 }
 
 
-void ComponentButtonSimple2D::removeTexture(Texture *tex){
+void ComponentButtonSimple2D::removeTextureReference(Texture *tex){
 	// Check the base texture
-	if(mainSprite != NULL) mainSprite->removeTexture(tex);
+	if(mainSprite != NULL) mainSprite->removeTextureReference(tex);
 	
 	// Check other textures
 	if(overlayTexture == tex) overlayTexture = NULL;

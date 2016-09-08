@@ -418,7 +418,7 @@ void ComponentSpriteSimple2D::setTexture(Texture *tex){
 }
 
 // Internal Use Only!  Called when a texture is manually deleted on its owners
-void ComponentSpriteSimple2D::removeTexture(Texture *tex){
+void ComponentSpriteSimple2D::removeTextureReference(Texture *tex){
 	if(texture == tex) texture = NULL;
 }
 
