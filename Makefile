@@ -77,7 +77,7 @@ demo_%:
 	$(eval in=$(shell find examples/$@ -type f -iname '*.cpp'))
 	$(eval hs=$(shell find examples/$@ -type f -iname '*.h'))
 	$(eval out=$(subst examples,bin/examples,$(subst .cpp,.o,$(in))))
-	$(CC) -Isrc/jvisu -c $(in) -o $(out)
+	$(CC) $(CFLAGS) -Isrc/jvisu -c $(in) -o $(out)
 	$(LINK) $(out) $(LIBRARY) $(LFLAGS) -o bin/examples/$@/$@
 	./bin/examples/$@/$@
 
