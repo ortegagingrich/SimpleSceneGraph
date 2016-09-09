@@ -356,6 +356,12 @@ void TextureCache::addTexture(Texture *texture){
 }
 
 
+void TextureCache::removeTexture(Texture *texture){
+	removeTextureReference(texture);
+	if(texture != NULL) texture->removeOwner(this);
+}
+
+
 void TextureCache::removeTextureReference(Texture *texture){
 	ownedTextures.remove(texture);
 }

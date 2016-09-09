@@ -180,6 +180,7 @@ namespace jvisu {
 	public:
 		virtual ~TextureCache();
 		void addTexture(Texture *texture);
+		void removeTexture(Texture *texture);
 		
 		int textureCount();
 	
