@@ -31,6 +31,8 @@ public:
 };
 
 
+
+
 TEST(Texture, RecordTextureControl){
 	/**
 	 * This test just makes sure that the record texture system for these tests
@@ -125,11 +127,12 @@ TEST(Texture, SingleOwner){
 	EXPECT_EQ(owner->textureCount(), texture_count - 2);
 	
 	
-	// Delete the owner; all textures should be freed
+	// Delete the owner; all textures should be freed 
 	delete owner;
 	for(int i = 0; i < texture_count; i++){
 		EXPECT_EQ(false, record[i]);
 	}
+	
 	
 	
 	
