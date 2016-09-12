@@ -5,6 +5,7 @@
 bin/exe
 bin/test/exe
 *~
+docs/
 Debug/
 x64/
 jvisu.*
