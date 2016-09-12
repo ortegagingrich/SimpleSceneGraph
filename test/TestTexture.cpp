@@ -6,10 +6,10 @@
 #include <cstdlib>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu_test.h"
+#include "../src/ssg/ssg_test.h"
 
 
-using namespace jvisu;
+using namespace ssg;
 
 
 // Class of textures which leave a record of when they are freed

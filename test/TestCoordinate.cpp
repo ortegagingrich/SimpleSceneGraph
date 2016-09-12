@@ -4,12 +4,12 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu_test.h"
+#include "../src/ssg/ssg_test.h"
 
-#include "../src/jvisu/viewport.h"
+#include "../src/ssg/viewport.h"
 
 
-using namespace jvisu;
+using namespace ssg;
 
 
 TEST(CoordinateTransform2D, viewportToWorld){

@@ -8,13 +8,13 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu_test.h"
+#include "../src/ssg/ssg_test.h"
 
-#include "../src/jvisu/window.h"
-#include "../src/jvisu/sdl.h"
+#include "../src/ssg/window.h"
+#include "../src/ssg/sdl.h"
 
 
-using namespace jvisu;
+using namespace ssg;
 
 
 

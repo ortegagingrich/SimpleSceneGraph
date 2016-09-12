@@ -1,5 +1,5 @@
 /**
- * Some tests/prototyping using raw SDL (not jvisu)
+ * Some tests/prototyping using raw SDL (not ssg)
  */
 #include <time.h>
 
@@ -11,7 +11,7 @@
 #endif
 
 #include <cstdio>
-#include "jvisu.h"
+#include "ssg.h"
 
 
 #ifdef __linux__

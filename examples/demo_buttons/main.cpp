@@ -10,10 +10,10 @@
 #include <windows.h>
 #endif
 
-#include "jvisu.h"
+#include "ssg.h"
 
 
-using namespace jvisu;
+using namespace ssg;
 
 
 
@@ -115,7 +115,7 @@ public:
  * This function is the primary entry point for demo/testing purposes.
  */
 int main(int argc, char* argv[]){
-	printf("\nEntry Point for jvisu demos.\n");
+	printf("\nEntry Point for ssg demos.\n");
 	
 	//Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);
 	Window *window = new Window(1280, 720, USE_HARDWARE_ACCELERATION);

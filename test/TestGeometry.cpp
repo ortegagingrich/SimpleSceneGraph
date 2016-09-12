@@ -4,13 +4,13 @@
 #include <cstdio>
 #include <gtest/gtest.h>
 
-#include "../src/jvisu/jvisu.h"
+#include "../src/ssg/ssg.h"
 
-#include "../src/jvisu/geometry.h"
-#include "../src/jvisu/vectormath.h"
+#include "../src/ssg/geometry.h"
+#include "../src/ssg/vectormath.h"
 
 
-using namespace jvisu;
+using namespace ssg;
 
 
 static void printLine(Line2f line){

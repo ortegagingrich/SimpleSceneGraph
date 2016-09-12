@@ -12,9 +12,9 @@
 #include <windows.h>
 #endif
 
-#include "jvisu.h"
+#include "ssg.h"
 
-using namespace jvisu;
+using namespace ssg;
 
 
 
@@ -30,7 +30,7 @@ const bool USE_HARDWARE_ACCELERATION = true;
  * This function is the primary entry point for demo/testing purposes.
  */
 int main(int argc, char* argv[]){
-	printf("\nSimple Demo for jvisu.\n");
+	printf("\nSimple Demo for ssg.\n");
 	printf("\tPress Space to toggle background color.\n");
 	printf("\tLeft Click to toggle background image.\n");
 	printf("\tRight Click to print both screen and \"world\" coordinates.\n");
