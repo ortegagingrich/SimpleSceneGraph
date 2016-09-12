@@ -44,7 +44,6 @@ public:
 	}
 	
 	virtual void onUpdate(Layer2D *layer, float tpf){
-		ComponentSpriteText2D::update(layer, tpf);
 		
 		// Make new FPS string
 		std::stringstream stream;
