@@ -86,6 +86,11 @@ test: $(TEST_EXE)
 	./$(TEST_EXE)
 
 
+.phony: docs
+docs: lib
+	doxygen Doxyfile
+
+
 .phony: clobber
 clobber:
 	rm -f $(shell find $(BIN_FOLDER) -type f -iname '*.o')
@@ -94,6 +99,7 @@ clobber:
 	rm -f $(TEST_EXE)
 	rm -f $(LIBRARY)
 	rm -f $(BUILD_FOLDER)/include/*.h
+	rm -rf docs/*
 
 
 .phony: list
