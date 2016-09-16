@@ -283,6 +283,23 @@ SDL_Renderer *Window::getRenderer() {
  */
 
 void Window::viewportToScreen(float xin, float yin, int &xout, int &yout) const {
+	/**
+	 * Computes the transformation of coordinates from viewport coordinates to 
+	 * screen coordinates.
+	 * 
+	 * Screen Coordinates are the same as in SDL.  They are integers representing
+	 * pixels.  The top-left corner of the window is the origin.  The positive
+	 * x-direction is to the right and the positive y-direction is downward.
+	 * 
+	 * Viewport Coordinates are floats independent of pixels.  The origin is at
+	 * the center of the screen/window.  The positive x-direction is to the right
+	 * and the positive y-direction is upward.  The top and bottom of the screen/
+	 * window are at y = 1.0f and y = -1.0f, respectively.  The sides of the screen are
+	 * scaled appropriately to maintain the aspect ratio.  For example, if the
+	 * window has an aspect ratio of 2:1, the left edge of the screen will be
+	 * x = -2.0f and the right edge will be x = 2.0f.
+	 */
+	
 	float ar = getAspectRatio();
 	xout = std::floor(0.5f * (xin + ar) * screenWidth / ar);
 	yout = std::floor(0.5f * (1 - yin) * screenHeight);
@@ -295,6 +312,23 @@ void Window::viewportToScreen(float xin, float yin, int &xout, int &yout) const 
 }
 
 void Window::screenToViewport(int xin, int yin, float &xout, float &yout) const {
+	/**
+	 * Computes the transformation of coordinates from screen coordinates to 
+	 * viewport coordinates.
+	 * 
+	 * Screen Coordinates are the same as in SDL.  They are integers representing
+	 * pixels.  The top-left corner of the window is the origin.  The positive
+	 * x-direction is to the right and the positive y-direction is downward.
+	 * 
+	 * Viewport Coordinates are floats independent of pixels.  The origin is at
+	 * the center of the screen/window.  The positive x-direction is to the right
+	 * and the positive y-direction is upward.  The top and bottom of the screen/
+	 * window are at y = 1.0f and y = -1.0f, respectively.  The sides of the screen are
+	 * scaled appropriately to maintain the aspect ratio.  For example, if the
+	 * window has an aspect ratio of 2:1, the left edge of the screen will be
+	 * x = -2.0f and the right edge will be x = 2.0f.
+	 */
+	
 	xout = (2 * ((xin + 0.5f) / (float) screenWidth) - 1) * getAspectRatio();
 	yout = 1 - 2 * ((yin + 0.5f) / (float) screenHeight);
 }
