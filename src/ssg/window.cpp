@@ -128,9 +128,13 @@ int Window::dispose(){
 /*
  * Main Update Methods
  */
-void Window::update(float tpf){
+void ssg::Window::update(float tpf){
 	/**
-	 * This method should be called once per frame.
+	 * This method should be called once per frame.  It takes care of all updating
+	 * of layers/scene graphs/components/input/callbacks, etc.  It also redraws
+	 * the screen.
+	 * 
+	 * @param tpf the time (in seconds) since the last frame.
 	 */
 	if(!active){
 		printf("Updating an inactive Window.\n");
@@ -157,14 +161,21 @@ void Window::update(float tpf){
 }
 
 
-float Window::tick(int target_fps){
+float ssg::Window::tick(int target_fps){
 	/**
 	 * Optional Method to handle frame-rate advancement, measurement, stabilization, etc.
+	 * 
+	 * If the user wishes to have the ssg window maintain a set framerate, this
+	 * method should be called once for every time Window::update() is called.
+	 * 
+	 * @param target_fps the target framerate
+	 * @return the actual time (in seconds) taken by the last frame (i.e. since
+	 * the last time that Window::tick() was called).
 	 */
 	return ::tick(target_fps, tickRecord);
 }
 
-float Window::getFPS() const {
+float ssg::Window::getFPS() const {
 	/**
 	 * Measures the FPS of the window tick cycle.  Note:  this only works if the
 	 * user is calling tick() on this window every cycle.
@@ -173,7 +184,7 @@ float Window::getFPS() const {
 }
 
 
-void Window::refresh(){
+void ssg::Window::refresh(){
 	/**
 	 * This method re-draws everything to the SDL surface.  Although only called
 	 * when it is needed, in practice, this method is generally called every frame.
@@ -209,7 +220,7 @@ void Window::refresh(){
 }
 
 
-void Window::processInput(float tpf){
+void ssg::Window::processInput(float tpf){
 	/**
 	 * Checks for and processes all SDL input events and calls the appropriate
 	 * callbacks.
@@ -282,7 +293,7 @@ SDL_Renderer *Window::getRenderer() {
  * Coordinate Transforms
  */
 
-void Window::viewportToScreen(float xin, float yin, int &xout, int &yout) const {
+void ssg::Window::viewportToScreen(float xin, float yin, int &xout, int &yout) const {
 	/**
 	 * Computes the transformation of coordinates from viewport coordinates to 
 	 * screen coordinates.
@@ -311,7 +322,7 @@ void Window::viewportToScreen(float xin, float yin, int &xout, int &yout) const 
 	while(yout >= screenHeight) yout--;*/
 }
 
-void Window::screenToViewport(int xin, int yin, float &xout, float &yout) const {
+void ssg::Window::screenToViewport(int xin, int yin, float &xout, float &yout) const {
 	/**
 	 * Computes the transformation of coordinates from screen coordinates to 
 	 * viewport coordinates.
