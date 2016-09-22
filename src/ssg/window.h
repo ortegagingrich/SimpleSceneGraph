@@ -34,10 +34,12 @@ namespace ssg {
 		
 		
 		bool isActive() const;
+		
+	private:
 		int activate();
 		int dispose();
-	
-	
+		
+	public:
 		void update(float tpf);
 		float tick(int target_fps);
 		float getFPS() const; // Only works if tick is being used.
