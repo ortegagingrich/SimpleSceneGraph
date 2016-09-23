@@ -179,6 +179,8 @@ float ssg::Window::getFPS() const {
 	/**
 	 * Measures the FPS of the window tick cycle.  Note:  this only works if the
 	 * user is calling tick() on this window every cycle.
+	 * 
+	 * @return a float containing the approximate frame rate in hertz.
 	 */
 	return compute_tick_record_fps(tickRecord);
 }
@@ -234,12 +236,28 @@ void ssg::Window::processInput(float tpf){
 }
 
 void Window::processEvent(SDL_Event sdlEvent, float tpf){
+	/**
+	 * Internal Method: Force the window to process the provided pseudo-input event.
+	 * This method is called internally from the primary update routine and is
+	 * only exposed for the purposes of white-box testing.
+	 * 
+	 * @param sdlEvent the SDL event struct representing the spoofed event
+	 * @param tpf the time, in seconds, since the last frame
+	 */
 	InputEvent *event = InputEvent::createInputEvent(sdlEvent, this);
 	processEvent(event, tpf);
 	delete event;
 }
 
 void Window::processEvent(InputEvent *event, float tpf){
+	/**
+	 * Internal Method: Force the window to process the provided pseudo-input event.
+	 * This method is called internally from the primary update routine and is
+	 * only exposed for the purposes of white-box testing.
+	 * 
+	 * @param event the input event object
+	 * @param tpf the time, in seconds, since the last frame
+	 */
 	
 	// Pass the event on to layers for processing.
 	std::list<Layer*>::reverse_iterator iter;
@@ -263,7 +281,7 @@ void Window::processEvent(InputEvent *event, float tpf){
 
 
 SDL_Surface *Window::createNewSurface(){
-	/**
+	/*
 	 * Creates an empty surface with the same properties as the window surface.
 	 */
 	return SDL_CreateRGBSurface(0, screenWidth, screenHeight, 32, 0, 0, 0, 0);
@@ -273,10 +291,40 @@ SDL_Surface *Window::createNewSurface(){
 /*
  * Property Methods
  */
-bool Window::isActive() const { return active; }
-int Window::getScreenWidth() const { return screenWidth;}
-int Window::getScreenHeight() const { return screenHeight;}
+bool Window::isActive() const { 
+	/**
+	 * Checks to see if the window is currently active.
+	 * 
+	 * @return a boolean specifying whether or not the window is active
+	 */
+	return active;
+}
+
+int Window::getScreenWidth() const {
+	/**
+	 * Returns the width of the window's screen in pixels.
+	 * 
+	 * @return an integer representing the window width
+	 */
+	return screenWidth;
+}
+
+int Window::getScreenHeight() const {
+	/**
+	 * Returns the height of the window's screen in pixels.
+	 * 
+	 * @return an integer representing the window height
+	 */
+	return screenHeight;
+}
+
 float Window::getAspectRatio() const {
+	/**
+	 * Returns the window screen's aspect ratio.  The aspect ratio is defined as
+	 * the screen width divided by the screen height.
+	 * 
+	 * @return a float containing the aspect ratio
+	 */
 	return (float) screenWidth / (float) screenHeight;
 }
 
@@ -309,6 +357,11 @@ void ssg::Window::viewportToScreen(float xin, float yin, int &xout, int &yout) c
 	 * scaled appropriately to maintain the aspect ratio.  For example, if the
 	 * window has an aspect ratio of 2:1, the left edge of the screen will be
 	 * x = -2.0f and the right edge will be x = 2.0f.
+	 * 
+	 * @param xin the input x-coordinate (viewport coordinates)
+	 * @param yin the input y-coordinate (viewport coordinates)
+	 * @param xout an int where the output x (screen) coordinate will be stored
+	 * @param yout an int where the output y (screen) coordinate will be stored
 	 */
 	
 	float ar = getAspectRatio();
@@ -338,6 +391,11 @@ void ssg::Window::screenToViewport(int xin, int yin, float &xout, float &yout) c
 	 * scaled appropriately to maintain the aspect ratio.  For example, if the
 	 * window has an aspect ratio of 2:1, the left edge of the screen will be
 	 * x = -2.0f and the right edge will be x = 2.0f.
+	 * 
+	 * @param xin the input (screen) x-coordinate
+	 * @param yin the input (screen) y-coordinate
+	 * @param xout a float where the output (viewport) x-coordinate will be stored
+	 * @param yout a float where the output (viewport) y-coordinate will be stored
 	 */
 	
 	xout = (2 * ((xin + 0.5f) / (float) screenWidth) - 1) * getAspectRatio();
@@ -376,8 +434,10 @@ bool Window::registerLayer(Layer *layer){
 
 void Window::addLayerTop(Layer *layer){
 	/**
-	 * Adds the provided layer to the back of the layer list.  The provided 
-	 * layer must be bound to the present window.
+	 * Attempts to add the provided layer to the top of the window's layer list.
+	 * The new layer will appear on top of all existing layers.
+	 * 
+	 * @param layer a pointer to the layer to be added to the window
 	 */
 	if(!registerLayer(layer)) return;
 	
@@ -386,8 +446,10 @@ void Window::addLayerTop(Layer *layer){
 
 void Window::addLayerBottom(Layer *layer){
 	/**
-	 * Adds the provided layer to the front of the layer list.  The provided 
-	 * layer must be bound to the present window.
+	 * Attempts to add the provided layer to the bottom of the window's layer list.
+	 * The new layer will appear underneath all existing layers.
+	 * 
+	 * @param layer a pointer to the layer to be added to the window
 	 */
 	if(!registerLayer(layer)) return;
 	
@@ -396,8 +458,13 @@ void Window::addLayerBottom(Layer *layer){
 
 void Window::addLayerAt(Layer *layer, int position){
 	/**
-	 * Adds the provided layer to the layer list at the specified position.  The
-	 * provided layer must be bound to the present window.
+	 * Attempts to add the provided layer to the window's layer list at the
+	 * provided position.
+	 * 
+	 * @param layer a pointer to the layer to be added to the window
+	 * @param position the position at which the layer is to be inserted.  This
+	 * is counted from the bottom up, so position = 0 corresponds to inserting a
+	 * layer at the bottom.
 	 */
 	if(!registerLayer(layer)) return;
 	
@@ -415,9 +482,11 @@ void Window::addLayerAt(Layer *layer, int position){
 void Window::removeLayer(Layer *layer){
 	/**
 	 * Attempts to remove a layer with the same id as the provided layer.  Note
-	 * that this step does not call the layer's destructor; that is up to the
-	 * user.  Note that calling a layer's destructor automatically calls this,
+	 * that this step does not call the layer's destructor; that is the responsibility
+	 * of the user.  Note that calling a layer's destructor automatically calls this,
 	 * so that is the preferred way to delete a layer.
+	 * 
+	 * @param layer a pointer to the layer to remove from the window
 	 */
 	if(layer == NULL) return;
 	
@@ -434,8 +503,11 @@ void Window::removeLayer(Layer *layer){
 
 Layer *Window::getLayerById(std::string id){
 	/**
-	 * Attempts to retrieve a layer with the specified id.  If no such layer
-	 * exists, NULL is returned.
+	 * Attempts to retrieve a layer with the specified id.
+	 * 
+	 * @param id a string containing the desired layer's id.
+	 * @return the layer assigned to this window with the provided id, provided
+	 * that such a layer exists.  If no such layer exists, NULL is returned.
 	 */
 	
 	std::list<Layer*>::iterator iter;
@@ -449,37 +521,72 @@ Layer *Window::getLayerById(std::string id){
 
 std::list<Layer*> Window::getLayers(){
 	/**
-	 * Returns a list of all layers currently in this window.
+	 * @return a list of all layers currently in this window.
 	 */
 	return layers;
 }
 
 
 bool Window::isKeyPressed(SDL_Keycode keycode){
+	/**
+	 * Checks to see if the input key corresponding to the provided SDL2 keycode
+	 * is currently being pressed.
+	 * 
+	 * @param keycode the SDL2 keycode corresponding to the key of interest
+	 * @return a boolean indicating whether or not the key is pressed.
+	 */
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 	SDL_Scancode scancode = SDL_GetScancodeFromKey(keycode);
 	return keystate[scancode] != 0;
 }
 
 bool Window::isLeftMouseButtonPressed(){
+	/**
+	 * Checks to see if the left mouse button is currently being pressed.
+	 * 
+	 * @return a boolean indicating whether or not the left mouse button is
+	 * currently pressed.
+	 */
 	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT);
 }
 
 bool Window::isRightMouseButtonPressed(){
+	/**
+	 * Checks to see if the right mouse button is currently being pressed.
+	 * 
+	 * @return a boolean indicating whether or not the right mouse button is
+	 * currently pressed.
+	 */
 	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
 }
 
 bool Window::isMiddleMouseButtonPressed(){
+	/**
+	 * Checks to see if the middle mouse button is currently being pressed.
+	 * 
+	 * @return a boolean indicating whether or not the middle mouse button is
+	 * currently pressed.
+	 */
 	return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_MIDDLE);
 }
 
 int Window::getMouseX(){
+	/**
+	 * Obtains the x-component of the mouse cursor's screen coordinates.
+	 * 
+	 * @return an int containing the (screen) x-coordinate of the mouse cursor.
+	 */
 	int x;
 	SDL_GetMouseState(&x, NULL);
 	return x;
 }
 
 int Window::getMouseY(){
+	/**
+	 * Obtains the y-component of the mouse cursor's screen coordinates.
+	 * 
+	 * @return an int containing the (screen) y-coordinate of the mouse cursor.
+	 */
 	int y;
 	SDL_GetMouseState(NULL, &y);
 	return y;
