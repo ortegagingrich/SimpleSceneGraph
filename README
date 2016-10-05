@@ -21,7 +21,7 @@ for example,
 make demo_lorem_ipsum
 ```
 
-A slightly more substantial example may be found here. [TODO: put rectstack example on github and link from here.]
+A slightly more substantial example may be [found here](https://github.com/ortegagingrich/SimpleSceneGraph). 
 
 To build the library, use:
 ```
