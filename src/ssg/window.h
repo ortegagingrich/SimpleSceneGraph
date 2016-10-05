@@ -35,7 +35,7 @@ namespace ssg {
 		
 		bool isActive() const;
 		
-	private:
+	internal:
 		int activate();
 		int dispose();
 		

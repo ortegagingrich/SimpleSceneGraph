@@ -11,7 +11,9 @@
 #endif
 
 #include <cstdio>
-#include "ssg.h"
+#include "ssg_test.h"
+
+using namespace ssg;
 
 
 #ifdef __linux__
